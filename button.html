@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Button Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #ffffff;
+    }
+    button {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      color: #33322E;
+      background-color: #FFB81C;
+      border: none;
+      border-radius: 40px;
+      padding: 12px 24px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      outline: none;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      background-color: #38B000;
+      color: #FFF9EC;
+    }
+  </style>
+</head>
+<body>
+  <button id="probar-btn">Probar gratis</button>
+  <script>
+    // JavaScript placeholder: optional interactions
+    const button = document.getElementById('probar-btn');
+    button.addEventListener('click', () => console.log('Probar gratis clicked'));
+  </script>
+</body>
+</html>
