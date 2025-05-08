@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System Test</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Inter:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+  <style>
+    :root {
+/* Color roles */
+--color-primary: #FF6B35;
+--color-accent: #3AA553;
+--color-background: #FFF9EC;
+--color-text: #33322E;
+--color-cta: #FFB81C;
+--color-link: #5E2CA5;
+
+/* Typography */
+--font-heading: 'Poppins', sans-serif;
+--font-body: 'Inter', sans-serif;
+--font-accent: 'Inconsolata', monospace;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--color-background);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+    }
+    h1 {
+      font-family: var(--font-heading);
+      color: var(--color-primary);
+      margin: 2rem 1rem 0;
+    }
+    h2 {
+      font-family: var(--font-heading);
+      color: var(--color-accent);
+      margin: 1rem;
+    }
+    p {
+      margin: 1rem;
+    }
+    .cta-button {
+      display: inline-block;
+      background-color: var(--color-cta);
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-family: var(--font-body);
+      cursor: pointer;
+      margin: 1rem;
+    }
+    a {
+      color: var(--color-link);
+      text-decoration: none;
+      margin: 1rem;
+    }
+    blockquote {
+      font-family: var(--font-accent);
+      border-left: 4px solid var(--color-accent);
+      padding-left: 1rem;
+      margin: 1rem;
+      color: var(--color-accent);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Design System Test</h1>
+    <h2>Subheading Example</h2>
+    <p>This is a sample paragraph to test body text styling. Change the CSS variables at the top to see different design systems.</p>
+    <a href="#">Secondary Action Link</a>
+    <button class="cta-button">Call to Action</button>
+    <blockquote>"This is an accent quote styled with the accent font."</blockquote>
+  </main>
+</body>
+</html>
