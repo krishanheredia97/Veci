@@ -59,6 +59,11 @@
       color: var(--color-accent);
       margin: 1rem;
     }
+    h3 {
+      font-family: var(--font-heading);
+      color: var(--color-accent);
+      margin: 1rem;
+    }
     p {
       margin: 1rem;
     }
@@ -84,6 +89,44 @@
       margin: 1rem;
       color: var(--color-accent);
     }
+    /* Test elements: card container, status buttons, and tooltip */
+    .card-container {
+      border: 1px solid var(--color-border);
+      background-color: var(--color-surface);
+      padding: 1rem;
+      margin: 1rem;
+      border-radius: 0.5rem;
+    }
+    .card-container button {
+      margin-top: 1rem;
+    }
+    .success-button {
+      background-color: var(--color-success);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-family: var(--font-body);
+      cursor: pointer;
+      margin: 1rem 0.5rem 1rem 1rem;
+    }
+    .error-button {
+      background-color: var(--color-error);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-family: var(--font-body);
+      cursor: pointer;
+      margin: 1rem 0.5rem 1rem 0;
+    }
+    .tooltip {
+      display: inline-block;
+      background-color: var(--color-info);
+      color: #fff;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      border-radius: 0.25rem;
+      margin: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -94,6 +137,23 @@
     <a href="#">Secondary Action Link</a>
     <button class="cta-button">Call to Action</button>
     <blockquote>"This is an accent quote styled with the accent font."</blockquote>
+    <h2>Color Role Examples</h2>
+    <div>
+      <h3>Card Container</h3>
+      <div class="card-container">
+        <p>Card content with surface background and border.</p>
+        <button>Card Button</button>
+      </div>
+    </div>
+    <div>
+      <h3>Status Buttons</h3>
+      <button class="success-button">Success</button>
+      <button class="error-button">Error</button>
+    </div>
+    <div>
+      <h3>Tooltip Example</h3>
+      <div class="tooltip">This is an info tooltip</div>
+    </div>
   </main>
 </body>
 </html>
