@@ -18,18 +18,17 @@
         .animated-text {
             font-size: 2rem;
             color: black;
-            cursor: pointer;
-            transition: all 0.1s ease-in-out;
         }
         
-        .animated-text:hover {
-            transform: scale(1.45) rotate(-2deg);
-            font-weight: bold;
-            text-transform: uppercase;
+        .text-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
         }
         
         .animated-text.glowing {
-            transform: scale(1.45) rotate(-2deg);
+            transform: scale(1.15) rotate(-2deg);
             font-weight: bold;
             text-transform: uppercase;
             animation: flicker 0.3s infinite alternate;
@@ -103,7 +102,10 @@
     </style>
 </head>
 <body>
-    <div class="animated-text">se atienden solas</div>
+    <div class="text-wrapper">
+        <h1 style="font-family: var(--font-heading);">TU MESERO AL INSTANTE</h1>
+        <div class="animated-text">Ahora las mesas se atienden solas</div>
+    </div>
     <div class="image-container">
         <img src="assets/images/scene1.png" class="active">
         <img src="assets/images/scene2.png">
