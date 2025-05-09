@@ -50,9 +50,48 @@
         height: 100vh;
         position: relative;
     }
+    .toggle-btn {
+      position: absolute;
+      left: calc(50% - var(--img-size) - 20px);
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px 15px;
+      background: #38B000;
+      color: white;
+      border: none;
+      border-radius: 30%;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 3;
+    }
+    .toggle-btn:hover {
+      opacity: 0.8;
+    }
   </style>
 </head>
 <body>
-  <img src="assets/images/scene4.png" alt="scene4" />
+  <button class="toggle-btn" id="animationToggle">Stop</button>
+  <img src="assets/images/scene4.png" alt="scene4" id="glowingImage" />
+
+  <script>
+    const toggleBtn = document.getElementById('animationToggle');
+    const image = document.getElementById('glowingImage');
+    
+    toggleBtn.addEventListener('click', () => {
+      if (image.style.animation.includes('glow')) {
+        image.style.animation = 'none';
+        image.style.boxShadow = 'none';
+        image.style.filter = 'none';
+        toggleBtn.textContent = 'Start';
+        toggleBtn.style.background = '#555';
+      } else {
+        image.style.animation = 'glow 0.8s ease-in-out infinite';
+        image.style.boxShadow = '';
+        image.style.filter = '';
+        toggleBtn.textContent = 'Stop';
+        toggleBtn.style.background = '#38B000';
+      }
+    });
+  </script>
 </body>
 </html>
