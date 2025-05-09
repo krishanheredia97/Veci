@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hero Section</title>
     <link rel="stylesheet" href="src/components/design_system.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             display: flex;
@@ -54,7 +55,6 @@
             align-items: center;
             justify-content: center;
             flex: 0 0 auto;
-            margin-top: 1rem;
         }
         
         img { 
@@ -62,8 +62,9 @@
             --img-inactive-size: calc(var(--img-size) * 0.9);
             --base-size: var(--img-size);
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: var(--img-inactive-size);
             height: var(--img-inactive-size);
             border-radius: 30%;
@@ -91,10 +92,10 @@
                     0 0 0 calc(var(--base-size) * 0.12) rgba(56, 176, 0, 0.4),
                     0 0 0 calc(var(--base-size) * 0.16) rgba(56, 176, 0, 0.2);
                 filter: drop-shadow(0 0 calc(var(--base-size) * 0.1) #38B000);
-                transform: translate(0, 0) rotate(0deg);
+                transform: translate(-50%, -50%) rotate(0deg);
             }
             25% {
-                transform: translate(0, 0) rotate(1deg);
+                transform: translate(-50%, -50%) rotate(1deg);
             }
             50% {
                 box-shadow: 
@@ -103,11 +104,46 @@
                     0 0 0 calc(var(--base-size) * 0.1) rgba(56, 176, 0, 0.4),
                     0 0 0 calc(var(--base-size) * 0.1333) rgba(56, 176, 0, 0.2);
                 filter: drop-shadow(0 0 calc(var(--base-size) * 0.14) #38B000);
-                transform: translate(0, 0) rotate(-1deg);
+                transform: translate(-50%, -50%) rotate(-1deg);
             }
             75% {
-                transform: translate(0, 0) rotate(1deg);
+                transform: translate(-50%, -50%) rotate(1deg);
             }
+        }
+        
+        .feature-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height: 24px;
+            overflow: hidden;
+        }
+        .feature-container {
+            position: relative;
+            height: 24px;
+            width: 200px;
+            display: flex;
+            align-items: center;
+        }
+        .feature-text {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--color-text, #33322E);
+            font-family: var(--font-body, sans-serif);
+            line-height: 1;
+        }
+        .feature-text.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .checkmark {
+            color: var(--color-primary, #FF6B35);
+            flex-shrink: 0;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -117,6 +153,13 @@
             <h1 style="font-family: var(--font-heading);">TU MESERO <br> AL INSTANTE</h1>
             <div class="static-text">
               ¿Tu equipo no da abasto? Automatiza la toma de pedidos y deja que tu personal se enfoque en despachar y cobrar.
+            </div>
+            <div class="feature-badge">
+              <i class="fas fa-check checkmark"></i>
+              <div class="feature-container">
+                <span class="feature-text active">Memoriza tu menú</span>
+                <span class="feature-text">Responde de inmediato</span>
+              </div>
             </div>
         </div>
         <div class="image-container">
@@ -154,6 +197,18 @@
         }
 
         setTimeout(cycle, 500);
+    </script>
+    <script>
+        function cycleFeatures() {
+          const features = document.querySelectorAll('.feature-text');
+          let activeIndex = [...features].findIndex(f => f.classList.contains('active'));
+          
+          features[activeIndex].classList.remove('active');
+          activeIndex = (activeIndex + 1) % features.length;
+          features[activeIndex].classList.add('active');
+        }
+        
+        setInterval(cycleFeatures, 1500);
     </script>
 </body>
 </html>
