@@ -4,74 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hero Section</title>
+    <link rel="stylesheet" href="src/components/design_system.css">
     <style>
         body {
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            padding-left: 500px;
-            padding-right: 300px;
-            font-family: Arial, sans-serif;
+            padding: 0 10%;
+            font-family: var(--font-body);
+            background-color: var(--color-background);
         }
         
-        .animated-text {
-            font-size: 2rem;
-            color: black;
+        .wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 15rem;
+            margin: 0 5%;
         }
-        
+
         .text-wrapper {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 0.5rem;
+            gap: 1.5rem;
+            text-align: left;
+            flex: 1;
         }
         
         .text-wrapper h1 {
-            font-size: 3rem;
-            color: #FF6B35;
+            font-family: var(--font-heading);
+            font-size: 6rem;
+            color: var(--color-primary);
         }
         
-        .static-text {
-            font-size: 2rem;
-            color: black;
+        .static-text, .animated-text {
+            font-family: var(--font-body);
+            font-size: 1.5rem;
+            color: var(--color-text);
         }
         
-        .animated-text.glowing {
-            transform: scale(1.15) rotate(-2deg);
-            font-weight: bold;
-            text-transform: uppercase;
-            animation: flicker 0.3s infinite alternate;
-        }
-        
-        @keyframes flicker {
-            0% { color: #38B000; }
-            50% { color: #2E8B57; }
-            100% { color: #3CB371; }
-        }
-
         .image-container {
             position: relative;
-            width: 240px;
-            height: 240px;
-            margin-left: auto;
+            width: 25vw;
+            height: 25vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            margin-top: 1rem;
         }
         
         img { 
-            --img-size: 200px;
+            --img-size: 20vw;
             --img-inactive-size: calc(var(--img-size) * 0.9);
             --base-size: var(--img-size);
+            position: absolute;
+            top: 0;
+            left: 0;
             width: var(--img-inactive-size);
             height: var(--img-inactive-size);
             border-radius: 30%;
             overflow: hidden;
-            position: absolute;
             z-index: 2;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
+            transition: opacity 0.3s ease;
             opacity: 0;
         }
         
@@ -92,11 +90,11 @@
                     0 0 0 calc(var(--base-size) * 0.08) rgba(56, 176, 0, 0.6),
                     0 0 0 calc(var(--base-size) * 0.12) rgba(56, 176, 0, 0.4),
                     0 0 0 calc(var(--base-size) * 0.16) rgba(56, 176, 0, 0.2);
-                filter: drop-shadow(0 0 calc(var(--base-size) * 0.67) #38B000);
-                transform: translate(-50%, -50%) rotate(0deg);
+                filter: drop-shadow(0 0 calc(var(--base-size) * 0.1) #38B000);
+                transform: translate(0, 0) rotate(0deg);
             }
             25% {
-                transform: translate(-50%, -50%) rotate(1deg);
+                transform: translate(0, 0) rotate(1deg);
             }
             50% {
                 box-shadow: 
@@ -104,33 +102,35 @@
                     0 0 0 calc(var(--base-size) * 0.0666) rgba(56, 176, 0, 0.6),
                     0 0 0 calc(var(--base-size) * 0.1) rgba(56, 176, 0, 0.4),
                     0 0 0 calc(var(--base-size) * 0.1333) rgba(56, 176, 0, 0.2);
-                filter: drop-shadow(0 0 calc(var(--base-size) * 1.67) #38B000);
-                transform: translate(-50%, -50%) rotate(-1deg);
+                filter: drop-shadow(0 0 calc(var(--base-size) * 0.14) #38B000);
+                transform: translate(0, 0) rotate(-1deg);
             }
             75% {
-                transform: translate(-50%, -50%) rotate(1deg);
+                transform: translate(0, 0) rotate(1deg);
             }
         }
     </style>
 </head>
 <body>
-    <div class="text-wrapper">
-        <h1 style="font-family: var(--font-heading);">TU MESERO AL INSTANTE</h1>
-        <div class="static-text">¿Muchos pedidos y poco personal?</div>
-        <div class="animated-text">Ahora las mesas se atienden solas</div>
-    </div>
-    <div class="image-container">
-        <img src="assets/images/scene1.png" class="active">
-        <img src="assets/images/scene2.png">
-        <img src="assets/images/scene3.png">
-        <img src="assets/images/scene4.png">
+    <div class="wrapper">
+        <div class="text-wrapper">
+            <h1 style="font-family: var(--font-heading);">TU MESERO <br> AL INSTANTE</h1>
+            <div class="static-text">
+              ¿Tu equipo no da abasto? Automatiza la toma de pedidos y deja que tu personal se enfoque en despachar y cobrar.
+            </div>
+        </div>
+        <div class="image-container">
+            <img src="assets/images/scene1.png" class="active">
+            <img src="assets/images/scene2.png">
+            <img src="assets/images/scene3.png">
+            <img src="assets/images/scene4.png">
+        </div>
     </div>
 
     <script>
         let currentIndex = 0;
         const images = document.querySelectorAll('img');
         const totalImages = images.length;
-        const text = document.querySelector('.animated-text');
 
         function cycle() {
             // Remove all active classes
@@ -146,13 +146,6 @@
                 images[currentIndex].classList.add('active', 'last-active');
             } else {
                 images[currentIndex].classList.add('active');
-            }
-            
-            // Toggle text animation based on image glow
-            if (currentIndex === totalImages - 1) {
-                text.classList.add('glowing');
-            } else {
-                text.classList.remove('glowing');
             }
             
             // Set appropriate delay based on which frame is showing
