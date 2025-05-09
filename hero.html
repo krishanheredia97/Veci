@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Section</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding-left: 500px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .animated-text {
+            font-size: 2rem;
+            color: black;
+            cursor: pointer;
+            transition: all 0.1s ease-in-out;
+        }
+        
+        .animated-text:hover {
+            transform: scale(1.45) rotate(-2deg);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .animated-text.glowing {
+            transform: scale(1.45) rotate(-2deg);
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: flicker 0.3s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0% { color: #38B000; }
+            50% { color: #2E8B57; }
+            100% { color: #3CB371; }
+        }
+
+        .image-container {
+            position: relative;
+            width: 240px;
+            height: 240px;
+        }
+        
+        img { 
+            --img-size: 200px;
+            --img-inactive-size: calc(var(--img-size) * 0.9);
+            --base-size: var(--img-size);
+            width: var(--img-inactive-size);
+            height: var(--img-inactive-size);
+            border-radius: 30%;
+            overflow: hidden;
+            position: absolute;
+            z-index: 2;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        img.active {
+            opacity: 1;
+        }
+        
+        img.last-active {
+            animation: glow 0.8s ease-in-out infinite;
+            width: var(--img-size);
+            height: var(--img-size);
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 
+                    0 0 0 calc(var(--base-size) * 0.04) rgba(56, 176, 0, 0.8),
+                    0 0 0 calc(var(--base-size) * 0.08) rgba(56, 176, 0, 0.6),
+                    0 0 0 calc(var(--base-size) * 0.12) rgba(56, 176, 0, 0.4),
+                    0 0 0 calc(var(--base-size) * 0.16) rgba(56, 176, 0, 0.2);
+                filter: drop-shadow(0 0 calc(var(--base-size) * 0.67) #38B000);
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            25% {
+                transform: translate(-50%, -50%) rotate(1deg);
+            }
+            50% {
+                box-shadow: 
+                    0 0 0 calc(var(--base-size) * 0.0333) rgba(56, 176, 0, 0.8),
+                    0 0 0 calc(var(--base-size) * 0.0666) rgba(56, 176, 0, 0.6),
+                    0 0 0 calc(var(--base-size) * 0.1) rgba(56, 176, 0, 0.4),
+                    0 0 0 calc(var(--base-size) * 0.1333) rgba(56, 176, 0, 0.2);
+                filter: drop-shadow(0 0 calc(var(--base-size) * 1.67) #38B000);
+                transform: translate(-50%, -50%) rotate(-1deg);
+            }
+            75% {
+                transform: translate(-50%, -50%) rotate(1deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-text">se atienden solas</div>
+    <div class="image-container">
+        <img src="assets/images/scene1.png" class="active">
+        <img src="assets/images/scene2.png">
+        <img src="assets/images/scene3.png">
+        <img src="assets/images/scene4.png">
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const images = document.querySelectorAll('img');
+        const totalImages = images.length;
+        const text = document.querySelector('.animated-text');
+
+        function cycle() {
+            // Remove all active classes
+            images.forEach(img => {
+                img.classList.remove('active', 'last-active');
+            });
+            
+            // Move to next image
+            currentIndex = (currentIndex + 1) % totalImages;
+            
+            // Add appropriate class based on position
+            if (currentIndex === totalImages - 1) {
+                images[currentIndex].classList.add('active', 'last-active');
+            } else {
+                images[currentIndex].classList.add('active');
+            }
+            
+            // Toggle text animation based on image glow
+            if (currentIndex === totalImages - 1) {
+                text.classList.add('glowing');
+            } else {
+                text.classList.remove('glowing');
+            }
+            
+            // Set appropriate delay based on which frame is showing
+            const delay = (currentIndex === totalImages - 1) ? 4000 : 1000;
+            setTimeout(cycle, delay);
+        }
+
+        setTimeout(cycle, 500);
+    </script>
+</body>
+</html>
