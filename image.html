@@ -31,12 +31,28 @@
             transform: translate(-50%, -50%) rotate(1deg);
         }
     }
+    
+    body {
+        margin: 0;
+        height: 100vh;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .image-container {
+        position: relative;
+        width: 240px;
+        height: 240px;
+    }
+    
     img { 
-        --img-size: 20vw; /* Use viewport width for responsiveness */
+        --img-size: 200px;
         --img-inactive-size: calc(var(--img-size) * 0.9);
         --base-size: var(--img-size);
-        width: var(--img-size);
-        height: var(--img-size);
+        width: var(--img-inactive-size);
+        height: var(--img-inactive-size);
         border-radius: 30%;
         overflow: hidden;
         position: absolute;
@@ -44,60 +60,56 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        transition: all 0.3s ease;
+        opacity: 0;
+    }
+    
+    img.active {
+        opacity: 1;
+    }
+    
+    img.last-active {
         animation: glow 0.8s ease-in-out infinite;
-        transition: width 0.3s ease, height 0.3s ease;
-    }
-    body {
-        margin: 0;
-        height: 100vh;
-        position: relative;
-    }
-    .toggle-btn {
-      position: absolute;
-      left: calc(50% - var(--img-size) - 20px);
-      top: 50%;
-      transform: translateY(-50%);
-      padding: 10px 15px;
-      background: #38B000;
-      color: white;
-      border: none;
-      border-radius: 30%;
-      cursor: pointer;
-      font-weight: bold;
-      z-index: 3;
-    }
-    .toggle-btn:hover {
-      opacity: 0.8;
+        width: var(--img-size);
+        height: var(--img-size);
     }
   </style>
 </head>
 <body>
-  <button class="toggle-btn" id="animationToggle">Stop</button>
-  <img src="assets/images/scene4.png" alt="scene4" id="glowingImage" />
+  <div class="image-container">
+    <img src="assets/images/scene1.png" class="active">
+    <img src="assets/images/scene2.png">
+    <img src="assets/images/scene3.png">
+    <img src="assets/images/scene4.png">
+  </div>
 
   <script>
-    const toggleBtn = document.getElementById('animationToggle');
-    const image = document.getElementById('glowingImage');
-    
-    toggleBtn.addEventListener('click', () => {
-      if (image.style.animation.includes('glow')) {
-        image.style.animation = 'none';
-        image.style.boxShadow = 'none';
-        image.style.filter = 'none';
-        image.style.width = 'var(--img-inactive-size)';
-        image.style.height = 'var(--img-inactive-size)';
-        toggleBtn.textContent = 'Start';
-        toggleBtn.style.background = '#555';
-      } else {
-        image.style.animation = 'glow 0.8s ease-in-out infinite';
-        image.style.boxShadow = '';
-        image.style.filter = '';
-        image.style.width = 'var(--img-size)';
-        image.style.height = 'var(--img-size)';
-        toggleBtn.textContent = 'Stop';
-        toggleBtn.style.background = '#38B000';
-      }
-    });
+    let currentIndex = 0;
+    const images = document.querySelectorAll('img');
+    const totalImages = images.length;
+
+    function cycle() {
+        // Remove all active classes
+        images.forEach(img => {
+            img.classList.remove('active', 'last-active');
+        });
+        
+        // Move to next image
+        currentIndex = (currentIndex + 1) % totalImages;
+        
+        // Add appropriate class based on position
+        if (currentIndex === totalImages - 1) {
+            images[currentIndex].classList.add('active', 'last-active');
+        } else {
+            images[currentIndex].classList.add('active');
+        }
+        
+        // Set appropriate delay based on which frame is showing
+        const delay = (currentIndex === totalImages - 1) ? 4000 : 1000;
+        setTimeout(cycle, delay);
+    }
+
+    setTimeout(cycle, 500);
   </script>
 </body>
 </html>
