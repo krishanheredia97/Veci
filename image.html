@@ -8,11 +8,11 @@
     @keyframes glow {
         0%, 100% {
             box-shadow: 
-                0 0 0 24px rgba(56, 176, 0, 0.8),
-                0 0 0 48px rgba(56, 176, 0, 0.6),
-                0 0 0 72px rgba(56, 176, 0, 0.4),
-                0 0 0 96px rgba(56, 176, 0, 0.2);
-            filter: drop-shadow(0 0 4px #38B000);
+                0 0 0 calc(var(--base-size) * 0.04) rgba(56, 176, 0, 0.8),
+                0 0 0 calc(var(--base-size) * 0.08) rgba(56, 176, 0, 0.6),
+                0 0 0 calc(var(--base-size) * 0.12) rgba(56, 176, 0, 0.4),
+                0 0 0 calc(var(--base-size) * 0.16) rgba(56, 176, 0, 0.2);
+            filter: drop-shadow(0 0 calc(var(--base-size) * 0.67) #38B000);
             transform: translate(-50%, -50%) rotate(0deg);
         }
         25% {
@@ -20,11 +20,11 @@
         }
         50% {
             box-shadow: 
-                0 0 0 20px rgba(56, 176, 0, 0.8),
-                0 0 0 40px rgba(56, 176, 0, 0.6),
-                0 0 0 60px rgba(56, 176, 0, 0.4),
-                0 0 0 80px rgba(56, 176, 0, 0.2);
-            filter: drop-shadow(0 0 10px #38B000);
+                0 0 0 calc(var(--base-size) * 0.0333) rgba(56, 176, 0, 0.8),
+                0 0 0 calc(var(--base-size) * 0.0666) rgba(56, 176, 0, 0.6),
+                0 0 0 calc(var(--base-size) * 0.1) rgba(56, 176, 0, 0.4),
+                0 0 0 calc(var(--base-size) * 0.1333) rgba(56, 176, 0, 0.2);
+            filter: drop-shadow(0 0 calc(var(--base-size) * 1.67) #38B000);
             transform: translate(-50%, -50%) rotate(-1deg);
         }
         75% {
@@ -32,8 +32,10 @@
         }
     }
     img { 
-        width: 600px;
-        height: 600px;
+        --img-size: 20vw; /* Use viewport width for responsiveness */
+        --base-size: var(--img-size);
+        width: var(--img-size);
+        height: var(--img-size);
         border-radius: 30%;
         overflow: hidden;
         position: absolute;
