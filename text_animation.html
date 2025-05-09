@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .animated-text {
+            font-size: 60px;
+            color: black;
+            cursor: pointer;
+            transition: all 0.1s ease-in-out;
+        }
+        
+        .animated-text:hover {
+            transform: scale(1.45) rotate(-2deg);
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: flicker 0.3s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0% { color: #38B000; }
+            50% { color: #2E8B57; }
+            100% { color: #3CB371; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-text">se atienden solas</div>
+</body>
+</html>
