@@ -33,6 +33,7 @@
     }
     img { 
         --img-size: 20vw; /* Use viewport width for responsiveness */
+        --img-inactive-size: calc(var(--img-size) * 0.9);
         --base-size: var(--img-size);
         width: var(--img-size);
         height: var(--img-size);
@@ -44,6 +45,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         animation: glow 0.8s ease-in-out infinite;
+        transition: width 0.3s ease, height 0.3s ease;
     }
     body {
         margin: 0;
@@ -82,12 +84,16 @@
         image.style.animation = 'none';
         image.style.boxShadow = 'none';
         image.style.filter = 'none';
+        image.style.width = 'var(--img-inactive-size)';
+        image.style.height = 'var(--img-inactive-size)';
         toggleBtn.textContent = 'Start';
         toggleBtn.style.background = '#555';
       } else {
         image.style.animation = 'glow 0.8s ease-in-out infinite';
         image.style.boxShadow = '';
         image.style.filter = '';
+        image.style.width = 'var(--img-size)';
+        image.style.height = 'var(--img-size)';
         toggleBtn.textContent = 'Stop';
         toggleBtn.style.background = '#38B000';
       }
