@@ -1,14 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const navbarCta = document.querySelector('.cta-button');
-  const stickyCta = document.querySelector('.sticky-cta');
-
-  function handleCtaClick() {
-    alert('CTA clicked!');
-  }
-
-  navbarCta.addEventListener('click', handleCtaClick);
-  stickyCta.addEventListener('click', handleCtaClick);
-
   // Close mobile menu when clicking outside
   document.addEventListener('click', function(event) {
     const navLinks = document.querySelector('.nav-links');
