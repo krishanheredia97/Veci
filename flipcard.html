@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flip Card</title>
+    <title>Flip Card Carousel</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -19,6 +20,31 @@
             min-height: 100vh;
             background-color: #f5f5f5;
             font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 20px;
+            margin: 0 auto;
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            gap: 30px;
+            padding: 40px 20px;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
         }
 
         .flip-card {
@@ -26,7 +52,9 @@
             width: 320px;
             height: 480px;
             perspective: 1500px;
-            margin: 40px;
+            flex: 0 0 auto;
+            scroll-snap-align: center;
+            position: relative;
         }
 
         .flip-card-inner {
@@ -67,6 +95,19 @@
             transform: rotateY(180deg);
         }
 
+        /* Different card colors */
+        .flip-card:nth-child(2) .flip-card-front { background-color: #003566; }
+        .flip-card:nth-child(2) .flip-card-back { background-color: #9D4EDD; }
+        
+        .flip-card:nth-child(3) .flip-card-front { background-color: #FF9F1C; }
+        .flip-card:nth-child(3) .flip-card-back { background-color: #2EC4B6; }
+        
+        .flip-card:nth-child(4) .flip-card-front { background-color: #5F0F40; }
+        .flip-card:nth-child(4) .flip-card-back { background-color: #0077B6; }
+        
+        .flip-card:nth-child(5) .flip-card-front { background-color: #7209B7; }
+        .flip-card:nth-child(5) .flip-card-back { background-color: #4CC9F0; }
+
         .card-image {
             width: 100%;
             height: 240px;
@@ -97,22 +138,105 @@
             margin-bottom: 20px;
         }
 
-        /* Animation enhancements */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        /* Navigation buttons */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            color: #333;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            transition: all 0.3s ease;
         }
 
-        .flip-card {
-            animation: float 6s ease-in-out infinite;
+        .nav-btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-btn.prev {
+            left: 10px;
+        }
+
+        .nav-btn.next {
+            right: 10px;
+        }
+
+        /* Dots navigation */
+        .dots-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #333;
+            transform: scale(1.2);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .carousel {
+                padding: 20px 10px;
+                gap: 15px;
+            }
+
+            .flip-card {
+                width: 280px;
+                height: 420px;
+            }
+
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carousel-container {
+                padding: 0 10px;
+            }
+
+            .flip-card {
+                width: 260px;
+                height: 400px;
+            }
+
+            .card-image {
+                height: 200px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 14px;
+            }
         }
 
         /* Hover effects */
-        .flip-card:hover {
-            animation-play-state: paused;
-        }
-
         .flip-card::after {
             content: "";
             position: absolute;
@@ -131,29 +255,269 @@
         .flip-card:hover::after {
             opacity: 1;
         }
+
+        /* Subtle animation for cards */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .flip-card {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .flip-card:hover {
+            animation-play-state: paused;
+        }
+
+        /* Staggered animation timing */
+        .flip-card:nth-child(2) { animation-delay: 0.5s; }
+        .flip-card:nth-child(3) { animation-delay: 1s; }
+        .flip-card:nth-child(4) { animation-delay: 1.5s; }
+        .flip-card:nth-child(5) { animation-delay: 2s; }
     </style>
 </head>
 <body>
-    <div class="flip-card">
-        <div class="flip-card-inner">
-            <!-- Front (Problem) -->
-            <div class="flip-card-front">
-                <img src="assets/images/problem2.png" alt="Pain Point Illustration" class="card-image">
-                <div class="card-content">
-                    <h3>Pain Point</h3>
-                    <p>Customers keep leaving because no one takes their order.</p>
+    <div class="carousel-container">
+        <button class="nav-btn prev" aria-label="Previous card"><i class="fas fa-chevron-left"></i></button>
+        <div class="carousel">
+            <!-- Card 1 -->
+            <div class="flip-card" data-index="0">
+                <div class="flip-card-inner">
+                    <!-- Front (Problem) -->
+                    <div class="flip-card-front">
+                        <img src="assets/images/problem2.png" alt="Pain Point Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Pain Point</h3>
+                            <p>Customers keep leaving because no one takes their order.</p>
+                        </div>
+                    </div>
+
+                    <!-- Back (Solution) -->
+                    <div class="flip-card-back">
+                        <img src="assets/images/solution2.png" alt="Solution Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Solution</h3>
+                            <p>An AI chatbot takes their order immediately via WhatsApp.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Back (Solution) -->
-            <div class="flip-card-back">
-                <img src="assets/images/solution2.png" alt="Solution Illustration" class="card-image">
-                <div class="card-content">
-                    <h3>Solution</h3>
-                    <p>An AI chatbot takes their order immediately via WhatsApp.</p>
+            <!-- Card 2 -->
+            <div class="flip-card" data-index="1">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="assets/images/problem2.png" alt="Pain Point Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Pain Point</h3>
+                            <p>Tracking inventory manually leads to stockouts and overstocking.</p>
+                        </div>
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="assets/images/solution2.png" alt="Solution Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Solution</h3>
+                            <p>Automated inventory management with predictive ordering.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="flip-card" data-index="2">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="assets/images/problem2.png" alt="Pain Point Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Pain Point</h3>
+                            <p>Staff scheduling conflicts cause understaffing during peak hours.</p>
+                        </div>
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="assets/images/solution2.png" alt="Solution Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Solution</h3>
+                            <p>AI-powered scheduling that predicts busy periods and optimizes staffing.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="flip-card" data-index="3">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="assets/images/problem2.png" alt="Pain Point Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Pain Point</h3>
+                            <p>Customer feedback is rarely collected or acted upon.</p>
+                        </div>
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="assets/images/solution2.png" alt="Solution Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Solution</h3>
+                            <p>Automated feedback collection with sentiment analysis dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="flip-card" data-index="4">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="assets/images/problem2.png" alt="Pain Point Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Pain Point</h3>
+                            <p>Slow payment processing creates long checkout lines.</p>
+                        </div>
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="assets/images/solution2.png" alt="Solution Illustration" class="card-image">
+                        <div class="card-content">
+                            <h3>Solution</h3>
+                            <p>Contactless payment system with mobile ordering capabilities.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <button class="nav-btn next" aria-label="Next card"><i class="fas fa-chevron-right"></i></button>
+        
+        <div class="dots-container">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+            <span class="dot" data-index="3"></span>
+            <span class="dot" data-index="4"></span>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.carousel');
+            const cards = document.querySelectorAll('.flip-card');
+            const prevBtn = document.querySelector('.nav-btn.prev');
+            const nextBtn = document.querySelector('.nav-btn.next');
+            const dots = document.querySelectorAll('.dot');
+            
+            let currentIndex = 0;
+            const cardWidth = cards[0].offsetWidth;
+            const cardGap = 30; // Same as the gap in CSS
+            
+            // Initialize
+            updateDots(currentIndex);
+            
+            // Next button click
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < cards.length - 1) {
+                    currentIndex++;
+                    scrollToCard(currentIndex);
+                    updateDots(currentIndex);
+                }
+            });
+            
+            // Previous button click
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    scrollToCard(currentIndex);
+                    updateDots(currentIndex);
+                }
+            });
+            
+            // Dot navigation
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const index = parseInt(dot.getAttribute('data-index'));
+                    currentIndex = index;
+                    scrollToCard(currentIndex);
+                    updateDots(currentIndex);
+                });
+            });
+            
+            // Scroll event to update dots
+            carousel.addEventListener('scroll', () => {
+                const scrollPosition = carousel.scrollLeft;
+                const newIndex = Math.round(scrollPosition / (cardWidth + cardGap));
+                
+                if (newIndex !== currentIndex) {
+                    currentIndex = newIndex;
+                    updateDots(currentIndex);
+                }
+            });
+            
+            // Touch swipe functionality
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            carousel.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            carousel.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    // Swipe left - go to next
+                    if (currentIndex < cards.length - 1) {
+                        currentIndex++;
+                        scrollToCard(currentIndex);
+                        updateDots(currentIndex);
+                    }
+                } else if (touchEndX > touchStartX + swipeThreshold) {
+                    // Swipe right - go to previous
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        scrollToCard(currentIndex);
+                        updateDots(currentIndex);
+                    }
+                }
+            }
+            
+            // Helper functions
+            function scrollToCard(index) {
+                const scrollPosition = index * (cardWidth + cardGap);
+                carousel.scrollTo({
+                    left: scrollPosition,
+                    behavior: 'smooth'
+                });
+            }
+            
+            function updateDots(index) {
+                dots.forEach((dot, i) => {
+                    if (i === index) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    if (currentIndex < cards.length - 1) {
+                        currentIndex++;
+                        scrollToCard(currentIndex);
+                        updateDots(currentIndex);
+                    }
+                } else if (e.key === 'ArrowLeft') {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        scrollToCard(currentIndex);
+                        updateDots(currentIndex);
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
