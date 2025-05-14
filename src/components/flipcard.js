@@ -4,11 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.querySelector('.nav-btn.prev');
     const nextBtn = document.querySelector('.nav-btn.next');
     const dots = document.querySelectorAll('.dot');
+    const carouselContainer = document.querySelector('.carousel-container');
     
     let currentIndex = 0;
-    let isDesktopView = window.innerWidth >= 1200;
+    let isDesktopView = false; // Will be determined dynamically
     const cardWidth = cards[0].offsetWidth;
     const cardGap = parseInt(window.getComputedStyle(carousel).gap) || 30;
+    
+    // Check if all cards fit in the viewport
+    checkCardsVisibility();
     
     // Initialize
     updateNavigation();
@@ -17,13 +21,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if we're in desktop or mobile view on resize
     window.addEventListener('resize', () => {
         const wasDesktopView = isDesktopView;
-        isDesktopView = window.innerWidth >= 1200;
+        
+        // Dynamically check if all cards fit
+        checkCardsVisibility();
         
         // If view type changed, update the UI
         if (wasDesktopView !== isDesktopView) {
             updateNavigation();
         }
     });
+    
+    // Function to check if all cards fit in the viewport
+    function checkCardsVisibility() {
+        const containerWidth = carouselContainer.clientWidth;
+        const totalCardsWidth = (cardWidth * cards.length) + (cardGap * (cards.length - 1));
+        
+        // If all cards fit with some margin, we're in desktop view
+        isDesktopView = totalCardsWidth <= containerWidth - 40; // 40px buffer
+    }
     
     // Next button click
     nextBtn.addEventListener('click', () => {
@@ -199,6 +214,9 @@ document.addEventListener('DOMContentLoaded', function() {
             prevBtn.style.display = 'none';
             nextBtn.style.display = 'none';
             document.querySelector('.dots-container').style.display = 'none';
+            
+            // Make sure carousel is reset to show all cards
+            carousel.scrollLeft = 0;
             return;
         } else {
             // Show navigation in mobile view

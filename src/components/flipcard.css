@@ -185,7 +185,7 @@ p {
 }
 
 /* Desktop view - show all cards */
-@media (min-width: 1200px) {
+@media (min-width: 1400px) {
     .carousel-container {
         width: 90vw;
         max-width: 1800px;
@@ -208,7 +208,7 @@ p {
 }
 
 /* Responsive design */
-@media (max-width: 1199px) {
+@media (max-width: 1399px) {
     .carousel {
         padding: 20px 10px;
         gap: 15px;
