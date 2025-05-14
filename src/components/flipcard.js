@@ -8,8 +8,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let currentIndex = 0;
     let isDesktopView = false; // Will be determined dynamically
-    const cardWidth = cards[0].offsetWidth;
+    let cardWidth = 0; // Will be calculated dynamically
     const cardGap = parseInt(window.getComputedStyle(carousel).gap) || 30;
+    
+    // Function to update card dimensions
+    function updateCardDimensions() {
+        // Get the current width of the first card
+        cardWidth = cards[0].offsetWidth;
+    }
+    
+    // Initial calculation of card dimensions
+    updateCardDimensions();
     
     // Check if all cards fit in the viewport
     checkCardsVisibility();
@@ -22,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', () => {
         const wasDesktopView = isDesktopView;
         
+        // Update card dimensions on resize
+        updateCardDimensions();
+        
         // Dynamically check if all cards fit
         checkCardsVisibility();
         
@@ -29,11 +41,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (wasDesktopView !== isDesktopView) {
             updateNavigation();
         }
+        
+        // Re-scroll to maintain position after resize
+        if (!isDesktopView) {
+            scrollToCard(currentIndex, false);
+        }
     });
     
     // Function to check if all cards fit in the viewport
     function checkCardsVisibility() {
         const containerWidth = carouselContainer.clientWidth;
+        // Re-calculate card width in case it changed
+        updateCardDimensions();
         const totalCardsWidth = (cardWidth * cards.length) + (cardGap * (cards.length - 1));
         
         // If all cards fit with some margin, we're in desktop view
@@ -186,13 +205,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Helper functions
-    function scrollToCard(index) {
+    function scrollToCard(index, smooth = true) {
         if (isDesktopView) return; // No need to scroll in desktop view
         
+        // Re-calculate card width in case it changed
+        updateCardDimensions();
         const scrollPosition = index * (cardWidth + cardGap);
         carousel.scrollTo({
             left: scrollPosition,
-            behavior: 'smooth'
+            behavior: smooth ? 'smooth' : 'auto'
         });
     }
     
