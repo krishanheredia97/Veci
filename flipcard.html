@@ -29,6 +29,7 @@
             max-width: 1400px;
             padding: 0 20px;
             margin: 0 auto;
+            overflow: hidden; /* Prevent the shadow line below */
         }
 
         .carousel {
@@ -41,6 +42,7 @@
             padding: 40px 20px;
             scrollbar-width: none; /* Firefox */
             -ms-overflow-style: none; /* IE and Edge */
+            overflow-y: visible; /* Prevent vertical scrolling within carousel */
         }
 
         .carousel::-webkit-scrollbar {
@@ -68,7 +70,8 @@
             border-radius: 24px;
         }
 
-        .flip-card:hover .flip-card-inner {
+        /* Card flipping now handled by JavaScript for touch control */
+        .flip-card.flipped .flip-card-inner {
             transform: rotateY(180deg);
         }
 
@@ -95,18 +98,8 @@
             transform: rotateY(180deg);
         }
 
-        /* Different card colors */
-        .flip-card:nth-child(2) .flip-card-front { background-color: #003566; }
-        .flip-card:nth-child(2) .flip-card-back { background-color: #9D4EDD; }
-        
-        .flip-card:nth-child(3) .flip-card-front { background-color: #FF9F1C; }
-        .flip-card:nth-child(3) .flip-card-back { background-color: #2EC4B6; }
-        
-        .flip-card:nth-child(4) .flip-card-front { background-color: #5F0F40; }
-        .flip-card:nth-child(4) .flip-card-back { background-color: #0077B6; }
-        
-        .flip-card:nth-child(5) .flip-card-front { background-color: #7209B7; }
-        .flip-card:nth-child(5) .flip-card-back { background-color: #4CC9F0; }
+        /* Standardized card colors for all cards */
+        /* Removed nth-child color variations as requested */
 
         .card-image {
             width: 100%;
@@ -194,11 +187,35 @@
             transform: scale(1.2);
         }
 
+        /* Desktop view - show all cards */
+        @media (min-width: 1200px) {
+            .carousel-container {
+                width: 90vw;
+                max-width: 1800px;
+            }
+            
+            .carousel {
+                justify-content: center;
+                flex-wrap: nowrap;
+                overflow-x: visible;
+            }
+            
+            .flip-card {
+                flex: 0 1 auto;
+            }
+            
+            /* Hide navigation in desktop view */
+            .nav-btn, .dots-container {
+                display: none;
+            }
+        }
+        
         /* Responsive design */
-        @media (max-width: 768px) {
+        @media (max-width: 1199px) {
             .carousel {
                 padding: 20px 10px;
                 gap: 15px;
+                justify-content: flex-start;
             }
 
             .flip-card {
@@ -405,18 +422,33 @@
             const dots = document.querySelectorAll('.dot');
             
             let currentIndex = 0;
+            let isDesktopView = window.innerWidth >= 1200;
             const cardWidth = cards[0].offsetWidth;
-            const cardGap = 30; // Same as the gap in CSS
+            const cardGap = parseInt(window.getComputedStyle(carousel).gap) || 30;
             
             // Initialize
+            updateNavigation();
             updateDots(currentIndex);
+            
+            // Check if we're in desktop or mobile view on resize
+            window.addEventListener('resize', () => {
+                const wasDesktopView = isDesktopView;
+                isDesktopView = window.innerWidth >= 1200;
+                
+                // If view type changed, update the UI
+                if (wasDesktopView !== isDesktopView) {
+                    updateNavigation();
+                }
+            });
             
             // Next button click
             nextBtn.addEventListener('click', () => {
                 if (currentIndex < cards.length - 1) {
                     currentIndex++;
                     scrollToCard(currentIndex);
+                    updateNavigation();
                     updateDots(currentIndex);
+                    unflipAllCardsExcept(currentIndex);
                 }
             });
             
@@ -425,7 +457,9 @@
                 if (currentIndex > 0) {
                     currentIndex--;
                     scrollToCard(currentIndex);
+                    updateNavigation();
                     updateDots(currentIndex);
+                    unflipAllCardsExcept(currentIndex);
                 }
             });
             
@@ -435,33 +469,77 @@
                     const index = parseInt(dot.getAttribute('data-index'));
                     currentIndex = index;
                     scrollToCard(currentIndex);
+                    updateNavigation();
                     updateDots(currentIndex);
+                    unflipAllCardsExcept(currentIndex);
                 });
             });
             
-            // Scroll event to update dots
+            // Card click/touch functionality for flipping
+            cards.forEach((card, index) => {
+                card.addEventListener('click', (e) => {
+                    // Only flip the card if it's the current card in mobile view
+                    // or if we're in desktop view (all cards can be flipped)
+                    if (isDesktopView || index === currentIndex) {
+                        card.classList.toggle('flipped');
+                        
+                        // In mobile view, ensure only one card is flipped at a time
+                        if (!isDesktopView && card.classList.contains('flipped')) {
+                            unflipAllCardsExcept(index);
+                        }
+                    } else if (!isDesktopView && (index === currentIndex - 1 || index === currentIndex + 1)) {
+                        // If clicking on a partially visible card, navigate to it instead of flipping
+                        currentIndex = index;
+                        scrollToCard(currentIndex);
+                        updateNavigation();
+                        updateDots(currentIndex);
+                        unflipAllCardsExcept(currentIndex);
+                    }
+                });
+            });
+            
+            // Scroll event to update dots and navigation
             carousel.addEventListener('scroll', () => {
+                if (isDesktopView) return; // No need to handle this in desktop view
+                
                 const scrollPosition = carousel.scrollLeft;
                 const newIndex = Math.round(scrollPosition / (cardWidth + cardGap));
                 
-                if (newIndex !== currentIndex) {
+                if (newIndex !== currentIndex && newIndex >= 0 && newIndex < cards.length) {
                     currentIndex = newIndex;
+                    updateNavigation();
                     updateDots(currentIndex);
+                    unflipAllCardsExcept(currentIndex);
                 }
             });
             
             // Touch swipe functionality
             let touchStartX = 0;
             let touchEndX = 0;
+            let isSwiping = false;
             
             carousel.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
-            }, false);
+                isSwiping = false; // Reset swiping flag
+            }, { passive: true });
+            
+            carousel.addEventListener('touchmove', (e) => {
+                // If horizontal movement is detected, mark as swiping
+                if (Math.abs(e.changedTouches[0].screenX - touchStartX) > 10) {
+                    isSwiping = true;
+                }
+            }, { passive: true });
             
             carousel.addEventListener('touchend', (e) => {
+                if (isDesktopView) return; // No need to handle this in desktop view
+                
                 touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, false);
+                
+                // Only handle swipe if we detected swiping motion
+                if (isSwiping) {
+                    handleSwipe();
+                }
+            }, { passive: true });
             
             function handleSwipe() {
                 const swipeThreshold = 50;
@@ -470,20 +548,26 @@
                     if (currentIndex < cards.length - 1) {
                         currentIndex++;
                         scrollToCard(currentIndex);
+                        updateNavigation();
                         updateDots(currentIndex);
+                        unflipAllCardsExcept(currentIndex);
                     }
                 } else if (touchEndX > touchStartX + swipeThreshold) {
                     // Swipe right - go to previous
                     if (currentIndex > 0) {
                         currentIndex--;
                         scrollToCard(currentIndex);
+                        updateNavigation();
                         updateDots(currentIndex);
+                        unflipAllCardsExcept(currentIndex);
                     }
                 }
             }
             
             // Helper functions
             function scrollToCard(index) {
+                if (isDesktopView) return; // No need to scroll in desktop view
+                
                 const scrollPosition = index * (cardWidth + cardGap);
                 carousel.scrollTo({
                     left: scrollPosition,
@@ -492,6 +576,8 @@
             }
             
             function updateDots(index) {
+                if (isDesktopView) return; // No need to update dots in desktop view
+                
                 dots.forEach((dot, i) => {
                     if (i === index) {
                         dot.classList.add('active');
@@ -501,19 +587,50 @@
                 });
             }
             
+            function updateNavigation() {
+                if (isDesktopView) {
+                    // Hide navigation in desktop view
+                    prevBtn.style.display = 'none';
+                    nextBtn.style.display = 'none';
+                    document.querySelector('.dots-container').style.display = 'none';
+                    return;
+                } else {
+                    // Show navigation in mobile view
+                    document.querySelector('.dots-container').style.display = 'flex';
+                    
+                    // Show/hide prev/next buttons based on position
+                    prevBtn.style.display = currentIndex === 0 ? 'none' : 'flex';
+                    nextBtn.style.display = currentIndex === cards.length - 1 ? 'none' : 'flex';
+                }
+            }
+            
+            function unflipAllCardsExcept(activeIndex) {
+                cards.forEach((card, index) => {
+                    if (index !== activeIndex) {
+                        card.classList.remove('flipped');
+                    }
+                });
+            }
+            
             // Keyboard navigation
             document.addEventListener('keydown', (e) => {
+                if (isDesktopView) return; // No need to handle this in desktop view
+                
                 if (e.key === 'ArrowRight') {
                     if (currentIndex < cards.length - 1) {
                         currentIndex++;
                         scrollToCard(currentIndex);
+                        updateNavigation();
                         updateDots(currentIndex);
+                        unflipAllCardsExcept(currentIndex);
                     }
                 } else if (e.key === 'ArrowLeft') {
                     if (currentIndex > 0) {
                         currentIndex--;
                         scrollToCard(currentIndex);
+                        updateNavigation();
                         updateDots(currentIndex);
+                        unflipAllCardsExcept(currentIndex);
                     }
                 }
             });
