@@ -52,6 +52,24 @@ body {
     mask-image: linear-gradient(to bottom, black 99%, transparent 100%);
 }
 
+/* Grid layout for desktop */
+@media (min-width: 768px) and (orientation: landscape) {
+    .carousel {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-gap: var(--card-gap);
+        overflow-x: visible;
+        overflow-y: visible;
+        scroll-snap-type: none;
+        justify-items: center;
+        align-items: center;
+        padding: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+
 .carousel::-webkit-scrollbar {
     display: none; /* Chrome, Safari and Opera */
 }
@@ -68,6 +86,17 @@ body {
     position: relative;
     animation: float 6s ease-in-out infinite;
     flex-shrink: 0;
+}
+
+/* Grid layout for cards in desktop view */
+@media (min-width: 768px) and (orientation: landscape) {
+    .flip-card {
+        width: 100%;
+        max-width: 350px;
+        aspect-ratio: 2/3;
+        justify-self: center;
+        align-self: center;
+    }
 }
 
 .flip-card-inner {

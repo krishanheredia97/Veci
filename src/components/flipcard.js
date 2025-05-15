@@ -46,15 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Function to check if all cards fit in the viewport
+    // Function to check if we're in desktop or mobile view
     function checkCardsVisibility() {
-        const containerWidth = carouselContainer.clientWidth;
-        // cardWidth and cardGap are assumed to be up-to-date by prior calls in init/resize paths.
-        const totalCardsWidth = (cardWidth * cards.length) + (cardGap * (cards.length - 1));
-        
-        // isDesktopView is true if all cards fit within the container's visible width.
-        // Adding a small buffer (e.g., 1px) can prevent issues with subpixel rendering.
-        isDesktopView = totalCardsWidth <= containerWidth + 1;
+        // Check if we're in landscape mode and minimum width for desktop view
+        isDesktopView = window.matchMedia('(min-width: 768px) and (orientation: landscape)').matches;
     }
     
     // Next button click
