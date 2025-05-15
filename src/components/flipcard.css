@@ -30,7 +30,7 @@ body {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     gap: 30px;
-    padding: 40px 20px 20px; /* Reduced bottom padding */
+    padding: 40px 0 20px 0;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
     overflow-y: visible; /* Prevent vertical scrolling within carousel */
@@ -49,9 +49,10 @@ body {
     max-width: 320px;
     perspective: 1500px;
     flex: 0 0 auto;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
     position: relative;
     animation: float 6s ease-in-out infinite;
+    flex-shrink: 0;
 }
 
 .flip-card-inner {

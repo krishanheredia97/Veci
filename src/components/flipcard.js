@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
         card.addEventListener('click', (e) => {
             // Only flip the card if it's the current card in mobile view
             // or if we're in desktop view (all cards can be flipped)
+            // Ensure card flipping does not by itself cause navigation or dot changes.
             if (isDesktopView || index === currentIndex) {
                 card.classList.toggle('flipped');
                 
@@ -105,30 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!isDesktopView && card.classList.contains('flipped')) {
                     unflipAllCardsExcept(index);
                 }
-            } else if (!isDesktopView && (index === currentIndex - 1 || index === currentIndex + 1)) {
-                // If clicking on a partially visible card, navigate to it instead of flipping
-                currentIndex = index;
-                scrollToCard(currentIndex);
-                updateNavigation();
-                updateDots(currentIndex);
-                unflipAllCardsExcept(currentIndex);
             }
         });
-    });
-    
-    // Scroll event to update dots and navigation
-    carousel.addEventListener('scroll', () => {
-        if (isDesktopView) return; // No need to handle this in desktop view
-        
-        const scrollPosition = carousel.scrollLeft;
-        const newIndex = Math.round(scrollPosition / (cardWidth + cardGap));
-        
-        if (newIndex !== currentIndex && newIndex >= 0 && newIndex < cards.length) {
-            currentIndex = newIndex;
-            updateNavigation();
-            updateDots(currentIndex);
-            unflipAllCardsExcept(currentIndex);
-        }
     });
     
     // Touch swipe functionality
@@ -165,44 +144,24 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Only handle swipe if we detected swiping motion
         if (isSwiping) {
-            handleSwipe();
+            // Allow swipe to scroll and snap visually, but do not update currentIndex or dots.
+            // The active state (currentIndex, dots) is only changed by buttons/dots.
+            const scrollPosition = carousel.scrollLeft;
+            // Calculate which card index the current scroll position is closest to
+            const nearestVisualIndex = Math.round(scrollPosition / (cardWidth + cardGap));
+            
+            // Snap to that card visually. Check if already snapped to avoid redundant scroll.
+            const targetScrollPosition = nearestVisualIndex * (cardWidth + cardGap);
+            if(Math.abs(carousel.scrollLeft - targetScrollPosition) > 1) { // Small tolerance
+                carousel.scrollTo({
+                    left: targetScrollPosition,
+                    behavior: 'smooth'
+                });
+            }
+            // NOTE: currentIndex, updateNavigation(), updateDots() are NOT called here.
         }
+        // isSwiping is reset in 'touchstart'
     }, { passive: true });
-    
-    function handleSwipe() {
-        // Calculate the current card based on scroll position
-        const scrollPosition = carousel.scrollLeft;
-        const exactIndex = scrollPosition / (cardWidth + cardGap);
-        
-        // Determine direction of swipe
-        const swipeDirection = touchStartX > touchEndX ? 'left' : 'right';
-        
-        // Calculate the target index based on current position and swipe direction
-        let targetIndex;
-        if (swipeDirection === 'left' && currentIndex < cards.length - 1) {
-            targetIndex = Math.ceil(exactIndex);
-        } else if (swipeDirection === 'right' && currentIndex > 0) {
-            targetIndex = Math.floor(exactIndex);
-        } else {
-            // If we can't move in the desired direction, snap to nearest card
-            targetIndex = Math.round(exactIndex);
-        }
-        
-        // Ensure target index is within bounds
-        targetIndex = Math.max(0, Math.min(cards.length - 1, targetIndex));
-        
-        // Only update if we're changing position
-        if (targetIndex !== currentIndex) {
-            currentIndex = targetIndex;
-            scrollToCard(currentIndex);
-            updateNavigation();
-            updateDots(currentIndex);
-            unflipAllCardsExcept(currentIndex);
-        } else {
-            // If we're not changing cards, ensure we snap back to the current card
-            scrollToCard(currentIndex);
-        }
-    }
     
     // Helper functions
     function scrollToCard(index, smooth = true) {
