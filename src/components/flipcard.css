@@ -4,6 +4,15 @@
     box-sizing: border-box;
 }
 
+:root {
+    --card-base-width: 300px;
+    --card-min-width: 280px;
+    --card-max-width: 320px;
+    --heading-font-size: 24px;
+    --body-font-size: 16px;
+    --card-gap: 30px;
+}
+
 body {
     display: flex;
     justify-content: center;
@@ -18,9 +27,14 @@ body {
     position: relative;
     width: 100%;
     max-width: 1400px;
-    padding: 0 20px;
+    padding: 0;
     margin: 0 auto;
     overflow: visible; /* Allow dots to be fully visible */
+}
+
+/* Add padding only when carousel view is active (controlled by JS) */
+.carousel-container.carousel-active {
+    padding: 0 20px;
 }
 
 .carousel {
@@ -29,7 +43,7 @@ body {
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    gap: 30px;
+    gap: var(--card-gap);
     padding: 40px 0 20px 0;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
@@ -44,9 +58,10 @@ body {
 
 .flip-card {
     background-color: transparent;
-    width: 100%;
+    width: var(--card-base-width);
+    min-width: var(--card-min-width);
+    max-width: var(--card-max-width);
     aspect-ratio: 2/3;
-    max-width: 320px;
     perspective: 1500px;
     flex: 0 0 auto;
     scroll-snap-align: start;
@@ -109,7 +124,7 @@ body {
 h3 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    font-size: 24px;
+    font-size: var(--heading-font-size);
     margin-bottom: 16px;
     white-space: nowrap;
     overflow: hidden;
@@ -119,7 +134,7 @@ h3 {
 
 p {
     font-family: 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: var(--body-font-size);
     line-height: 1.6;
     margin-bottom: 20px;
 }
@@ -186,8 +201,8 @@ p {
     transform: scale(1.2);
 }
 
-/* Desktop view - show all cards */
-@media (min-width: 1400px) {
+/* Desktop view - controlled by JS */
+@media (min-width: 1800px) {
     .carousel-container {
         width: 90vw;
         max-width: 1800px;
@@ -198,21 +213,28 @@ p {
         flex-wrap: nowrap;
         overflow-x: visible;
     }
-    
-    .flip-card {
-        flex: 0 1 auto;
-        max-width: 320px;
-        width: 22%;
+
+    /* Only at very large screens we can safely display all cards at full size */
+    :root {
+        --card-base-width: 320px;
+        --heading-font-size: 24px;
+        --body-font-size: 16px;
     }
     
-    /* Hide navigation in desktop view */
-    .nav-btn, .dots-container {
-        display: none;
-    }
+    /* .flip-card width is determined by --card-base-width (320px at this breakpoint)
+       and its flex behavior by the base .flip-card style (flex: 0 0 auto). */
+    
+    /* Navigation visibility is controlled by JavaScript (updateNavigation function) */
 }
 
 /* Responsive design */
-@media (max-width: 1399px) {
+@media (min-width: 1200px) and (max-width: 1799px) {
+    :root {
+        --card-base-width: 310px;
+        --heading-font-size: 23px;
+        --body-font-size: 16px;
+    }
+
     .carousel {
         padding: 20px 10px;
         gap: 15px;
@@ -220,7 +242,7 @@ p {
     }
 
     .flip-card {
-        max-width: 280px;
+        max-width: 310px;
         width: 80%;
     }
 
@@ -231,7 +253,38 @@ p {
     }
 }
 
-@media (max-width: 480px) {
+@media (min-width: 768px) and (max-width: 1199px) {
+    :root {
+        --card-base-width: 290px;
+        --heading-font-size: 22px;
+        --body-font-size: 15px;
+    }
+
+    .carousel {
+        padding: 20px 10px;
+        gap: 15px;
+        justify-content: flex-start;
+    }
+
+    .flip-card {
+        max-width: 290px;
+        width: 80%;
+    }
+
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 767px) {
+    :root {
+        --card-base-width: 280px;
+        --heading-font-size: 22px;
+        --body-font-size: 14px;
+    }
+
     .carousel-container {
         padding: 0 10px;
     }

@@ -9,7 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentIndex = 0;
     let isDesktopView = false; // Will be determined dynamically
     let cardWidth = 0; // Will be calculated dynamically
-    const cardGap = parseInt(window.getComputedStyle(carousel).gap) || 30;
+    let cardGap = 30; // Default, will be updated from CSS
+
+    function updateCardGap() {
+        const carouselStyle = window.getComputedStyle(carousel);
+        cardGap = parseFloat(carouselStyle.getPropertyValue('--card-gap')) || parseFloat(carouselStyle.gap) || 30;
+    }
     
     // Function to update card dimensions
     function updateCardDimensions() {
@@ -17,33 +22,26 @@ document.addEventListener('DOMContentLoaded', function() {
         cardWidth = cards[0].offsetWidth;
     }
     
-    // Initial calculation of card dimensions
+    // Initial setup
+    updateCardGap();
     updateCardDimensions();
-    
-    // Check if all cards fit in the viewport
-    checkCardsVisibility();
-    
-    // Initialize
-    updateNavigation();
-    updateDots(currentIndex);
+    checkCardsVisibility(); 
+    updateNavigation();     // This will determine if dots need to be updated and call updateDots internally
+    if (!isDesktopView && !(carousel.scrollWidth <= carousel.clientWidth + 1)) {
+        scrollToCard(currentIndex, false); // Ensure initial card is correctly positioned if in carousel mode
+    }
     
     // Check if we're in desktop or mobile view on resize
     window.addEventListener('resize', () => {
-        const wasDesktopView = isDesktopView;
+        // const wasDesktopView = isDesktopView; // Keep this if specific actions are needed on view *change*
         
-        // Update card dimensions on resize
+        updateCardGap();
         updateCardDimensions();
+        checkCardsVisibility(); 
+        updateNavigation(); // Always update navigation to reflect new state
         
-        // Dynamically check if all cards fit
-        checkCardsVisibility();
-        
-        // If view type changed, update the UI
-        if (wasDesktopView !== isDesktopView) {
-            updateNavigation();
-        }
-        
-        // Re-scroll to maintain position after resize
-        if (!isDesktopView) {
+        // Re-scroll to maintain position after resize if in carousel mode and scrollable
+        if (!isDesktopView && (carousel.scrollWidth > carousel.clientWidth + 1)) {
             scrollToCard(currentIndex, false);
         }
     });
@@ -51,12 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to check if all cards fit in the viewport
     function checkCardsVisibility() {
         const containerWidth = carouselContainer.clientWidth;
-        // Re-calculate card width in case it changed
-        updateCardDimensions();
+        // cardWidth and cardGap are assumed to be up-to-date by prior calls in init/resize paths.
         const totalCardsWidth = (cardWidth * cards.length) + (cardGap * (cards.length - 1));
         
-        // If all cards fit with some margin, we're in desktop view
-        isDesktopView = totalCardsWidth <= containerWidth - 40; // 40px buffer
+        // isDesktopView is true if all cards fit within the container's visible width.
+        // Adding a small buffer (e.g., 1px) can prevent issues with subpixel rendering.
+        isDesktopView = totalCardsWidth <= containerWidth + 1;
     }
     
     // Next button click
@@ -177,8 +175,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function updateDots(index) {
-        if (isDesktopView) return; // No need to update dots in desktop view
-        
+        // This function assumes the dots-container visibility is handled by updateNavigation.
+        // It only focuses on setting the active class.
         dots.forEach((dot, i) => {
             if (i === index) {
                 dot.classList.add('active');
@@ -187,27 +185,50 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     function updateNavigation() {
-        if (isDesktopView) {
-            // Hide navigation in desktop view
+        const dotsContainer = document.querySelector('.dots-container');
+
+        if (isDesktopView) { 
+            // Case 1: All cards fit in the main carousel-container (true desktop view)
             prevBtn.style.display = 'none';
             nextBtn.style.display = 'none';
-            document.querySelector('.dots-container').style.display = 'none';
-            
-            // Make sure carousel is reset to show all cards
-            carousel.scrollLeft = 0;
+            if (dotsContainer) dotsContainer.style.display = 'none';
+            carousel.scrollLeft = 0; // Ensure it's at the start
+            carouselContainer.classList.remove('carousel-active'); // Remove padding in desktop view
             return;
+        }
+        
+        // Add carousel-active class when in carousel mode
+        carouselContainer.classList.add('carousel-active');
+
+        // Case 2: Not isDesktopView. Check if the .carousel element itself is scrollable.
+        const isCarouselActuallyScrollable = carousel.scrollWidth > carousel.clientWidth + 1; // +1 for subpixel buffer
+
+        if (isCarouselActuallyScrollable) {
+            // Carousel is scrollable, so show nav and manage state
+            prevBtn.style.display = 'flex';
+            nextBtn.style.display = 'flex';
+            if (dotsContainer) dotsContainer.style.display = 'flex';
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = cards.length === 0 || currentIndex >= cards.length - 1;
+
+            if (cards.length <= 1) { // Handles 0 or 1 card
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+            }
+            updateDots(currentIndex); // Call simplified updateDots
         } else {
-            // Show navigation in mobile view
-            document.querySelector('.dots-container').style.display = 'flex';
-            
-            // Show/hide prev/next buttons based on position
-            prevBtn.style.display = currentIndex === 0 ? 'none' : 'flex';
-            nextBtn.style.display = currentIndex === cards.length - 1 ? 'none' : 'flex';
+            // Carousel is NOT scrollable (all its content fits within its own viewport)
+            // This means even in 'carousel mode', no navigation is needed.
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            if (dotsContainer) dotsContainer.style.display = 'none';
+            carousel.scrollLeft = 0; // Ensure it's at the start
         }
     }
-    
+
     function unflipAllCardsExcept(activeIndex) {
         cards.forEach((card, index) => {
             if (index !== activeIndex) {
