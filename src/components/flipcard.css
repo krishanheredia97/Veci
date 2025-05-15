@@ -62,6 +62,8 @@ body {
         overflow-x: visible;
         overflow-y: visible;
         scroll-snap-type: none;
+        /* Adding padding to ensure cards have enough space */
+        padding: 20px;
         justify-items: center;
         align-items: center; 
         /* Max width calculation: (2 cards * 600px) + gap (30px) */
@@ -81,12 +83,15 @@ body {
     min-width: var(--card-min-width);
     max-width: var(--card-max-width);
     aspect-ratio: 2/3;
-    perspective: 1500px;
+    perspective: 2000px;
     flex: 0 0 auto;
     scroll-snap-align: start;
     position: relative;
-    animation: float 6s ease-in-out infinite;
+    /* Removing floating animation as requested */
+    /* animation: float 6s ease-in-out infinite; */
     flex-shrink: 0;
+    /* Adding padding to ensure content doesn't get clipped during animation */
+    padding: 10px;
 }
 
 /* Grid layout for cards in desktop view */
@@ -113,6 +118,8 @@ body {
     transform-style: preserve-3d;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08), 0 5px 10px rgba(0,0,0,0.05);
     border-radius: 24px;
+    /* Ensure content is fully contained within the card */
+    overflow: visible;
 }
 
 /* Card flipping now handled by JavaScript for touch control */
@@ -124,6 +131,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
+    -webkit-backface-visibility: hidden; /* Added webkit prefix for better browser support */
     backface-visibility: hidden;
     display: flex;
     flex-direction: column; /* Default for mobile (vertical cards) */
@@ -399,11 +407,7 @@ p {
 }
 
 /* Subtle animation for cards */
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0px); }
-}
+/* Removed float animation as requested */
 
 .flip-card:hover {
     animation-play-state: paused;
