@@ -30,26 +30,39 @@ body {
     padding: 0;
     margin: 0 auto;
     overflow: visible; /* Allow dots to be fully visible */
+    padding-bottom: 50px; /* Add space for dots below */
 }
 
 /* Add padding only when carousel view is active (controlled by JS) */
 .carousel-container.carousel-active {
-    padding: 0 20px;
+    padding: 0 20px 50px 20px; /* Added bottom padding for dots */
+    /* Center the active card between nav buttons */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative; /* Ensure proper positioning context for absolute elements */
+    min-height: 400px; /* Ensure container has enough height for positioning */
 }
 
 .carousel {
     display: flex;
-    overflow-x: auto;
+    overflow-x: hidden; /* Changed from auto to hidden to prevent scrolling */
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     gap: var(--card-gap);
-    padding: 40px 0 20px 0;
+    padding: 20px 0;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
     overflow-y: visible; /* Prevent vertical scrolling within carousel */
     -webkit-mask-image: linear-gradient(to bottom, black 99%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 99%, transparent 100%);
+    /* Center the carousel in mobile view */
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Grid layout for desktop */
@@ -85,13 +98,15 @@ body {
     aspect-ratio: 2/3;
     perspective: 2000px;
     flex: 0 0 auto;
-    scroll-snap-align: start;
+    scroll-snap-align: center; /* Changed from start to center for better centering */
     position: relative;
     /* Removing floating animation as requested */
     /* animation: float 6s ease-in-out infinite; */
     flex-shrink: 0;
     /* Adding padding to ensure content doesn't get clipped during animation */
     padding: 10px;
+    /* Hide all cards by default in mobile view */
+    display: none;
 }
 
 /* Grid layout for cards in desktop view */
@@ -250,6 +265,12 @@ p {
     left: 10px;
 }
 
+@media (max-width: 767px) {
+    .nav-btn {
+        top: 40%;
+    }
+}
+
 .nav-btn.next {
     right: 10px;
 }
@@ -258,11 +279,15 @@ p {
 .dots-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 0;
     gap: 10px;
-    padding-bottom: 20px; /* Add padding to ensure dots are fully visible */
-    position: relative;
+    padding-bottom: 10px; /* Add padding to ensure dots are fully visible */
+    position: absolute;
     z-index: 5;
+    width: 100%;
+    bottom: 10px;
+    left: 0;
+    right: 0;
 }
 
 .dot {
@@ -358,6 +383,11 @@ p {
 }
 
 @media (max-width: 767px) {
+    /* Show only the active card in mobile view */
+    .flip-card.active {
+        display: block;
+        margin: 0 auto;
+    }
     :root {
         --card-base-width: 280px;
         --heading-font-size: 22px;

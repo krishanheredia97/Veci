@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCardGap();
     updateCardDimensions();
     checkCardsVisibility(); 
+    updateActiveCard(currentIndex); // Set initial active card
     updateNavigation();     // This will determine if dots need to be updated and call updateDots internally
     if (!isDesktopView && !(carousel.scrollWidth <= carousel.clientWidth + 1)) {
         scrollToCard(currentIndex, false); // Ensure initial card is correctly positioned if in carousel mode
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCardGap();
         updateCardDimensions();
         checkCardsVisibility(); 
+        updateActiveCard(currentIndex); // Update active card on resize
         updateNavigation(); // Always update navigation to reflect new state
         
         // Re-scroll to maintain position after resize if in carousel mode and scrollable
@@ -56,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     nextBtn.addEventListener('click', () => {
         if (currentIndex < cards.length - 1) {
             currentIndex++;
+            updateActiveCard(currentIndex);
             scrollToCard(currentIndex);
             updateNavigation();
             updateDots(currentIndex);
@@ -67,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     prevBtn.addEventListener('click', () => {
         if (currentIndex > 0) {
             currentIndex--;
+            updateActiveCard(currentIndex);
             scrollToCard(currentIndex);
             updateNavigation();
             updateDots(currentIndex);
@@ -79,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
         dot.addEventListener('click', () => {
             const index = parseInt(dot.getAttribute('data-index'));
             currentIndex = index;
+            updateActiveCard(currentIndex);
             scrollToCard(currentIndex);
             updateNavigation();
             updateDots(currentIndex);
@@ -160,13 +165,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function scrollToCard(index, smooth = true) {
         if (isDesktopView) return; // No need to scroll in desktop view
         
-        // Re-calculate card width in case it changed
-        updateCardDimensions();
-        const scrollPosition = index * (cardWidth + cardGap);
-        carousel.scrollTo({
-            left: scrollPosition,
-            behavior: smooth ? 'smooth' : 'auto'
-        });
+        // In mobile view with only one visible card, no need to scroll
+        // The active card is controlled by CSS display property
     }
     
     function updateDots(index) {
@@ -177,6 +177,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 dot.classList.add('active');
             } else {
                 dot.classList.remove('active');
+            }
+        });
+    }
+
+    // Function to update which card is active (visible) in mobile view
+    function updateActiveCard(index) {
+        if (isDesktopView) {
+            // In desktop view, all cards are visible
+            cards.forEach(card => {
+                card.style.display = 'block';
+                card.classList.remove('active');
+            });
+            return;
+        }
+        
+        // In mobile view, only show the active card
+        cards.forEach((card, i) => {
+            if (i === index) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
             }
         });
     }
