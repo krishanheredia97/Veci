@@ -56,17 +56,18 @@ body {
 @media (min-width: 768px) and (orientation: landscape) {
     .carousel {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        grid-gap: var(--card-gap);
+        grid-template-columns: repeat(2, 600px); /* Fixed width columns for horizontal cards */
+        grid-template-rows: repeat(2, auto); /* Auto height for rows */
+        grid-gap: var(--card-gap, 30px);
         overflow-x: visible;
         overflow-y: visible;
         scroll-snap-type: none;
         justify-items: center;
-        align-items: center;
-        padding: 40px;
-        max-width: 1200px;
-        margin: 0 auto;
+        align-items: center; 
+        /* Max width calculation: (2 cards * 600px) + gap (30px) */
+        max-width: calc(2 * 600px + var(--card-gap, 30px));
+        margin: 40px auto; /* Added top/bottom margin for spacing, auto for horizontal centering */
+        padding: 0; /* Remove padding from carousel itself, manage spacing with margin or container padding */
     }
 }
 
@@ -91,11 +92,15 @@ body {
 /* Grid layout for cards in desktop view */
 @media (min-width: 768px) and (orientation: landscape) {
     .flip-card {
-        width: 100%;
-        max-width: 350px;
-        aspect-ratio: 2/3;
+        width: 600px; /* Horizontal card width */
+        height: 250px; /* Horizontal card height */
+        max-width: 600px; /* Override base max-width */
+        min-width: 600px; /* Override base min-width */
+        aspect-ratio: unset; /* Remove mobile aspect ratio */
         justify-self: center;
         align-self: center;
+        /* flex-shrink: 0; is already on the base .flip-card style */
+        /* animation: float 6s ease-in-out infinite; is already on the base .flip-card style */
     }
 }
 
@@ -121,12 +126,21 @@ body {
     height: 100%;
     backface-visibility: hidden;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Default for mobile (vertical cards) */
     justify-content: flex-start;
     align-items: center;
     color: white;
     border-radius: 24px;
     overflow: hidden;
+}
+
+@media (min-width: 768px) and (orientation: landscape) {
+    .flip-card-front, .flip-card-back {
+        flex-direction: row; /* Horizontal layout for desktop */
+        justify-content: flex-start;
+        align-items: stretch; /* Stretch items to fill card height */
+        text-align: left;
+    }
 }
 
 .flip-card-front {
@@ -139,15 +153,43 @@ body {
 }
 
 .card-image {
-    width: 100%;
-    height: 50%;
+    width: 100%; /* Default for mobile (full width image) */
+    height: 50%;   /* Default for mobile (half height image) */
     object-fit: cover;
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Default for mobile */
+}
+
+@media (min-width: 768px) and (orientation: landscape) {
+    .card-image {
+        width: 40%;    /* 40% width for desktop horizontal card image */
+        height: 100%;  /* Full height for desktop horizontal card image */
+        margin-bottom: 0; /* No margin for desktop */
+    }
 }
 
 .card-content {
-    padding: 20px 24px;
-    width: 100%;
+    padding: 20px 24px; /* Default for mobile */
+    width: 100%;        /* Default for mobile */
+}
+
+@media (min-width: 768px) and (orientation: landscape) {
+    .card-content {
+        width: 60%;     /* 60% width for desktop horizontal card content */
+        height: 100%;   /* Full height to allow vertical centering */
+        padding: 30px;  /* Padding for desktop */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Vertically center content */
+    }
+
+    .card-content h3 {
+        font-size: 28px; /* Larger font for desktop, from proposal */
+        white-space: normal; /* Allow text wrapping */
+    }
+
+    .card-content p {
+        font-size: 18px; /* Larger font for desktop, from proposal */
+    }
 }
 
 h3 {
