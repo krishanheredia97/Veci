@@ -48,8 +48,7 @@ body {
 
 .carousel {
     display: flex;
-    overflow-x: hidden; /* Changed from auto to hidden to prevent scrolling */
-    scroll-snap-type: x mandatory;
+    overflow-x: hidden; /* Hide scrollbar but allow JS-controlled scrolling */
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     gap: var(--card-gap);
@@ -57,12 +56,11 @@ body {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
     overflow-y: visible; /* Prevent vertical scrolling within carousel */
-    -webkit-mask-image: linear-gradient(to bottom, black 99%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 99%, transparent 100%);
     /* Center the carousel in mobile view */
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start; /* Changed to flex-start for proper card positioning */
     align-items: center;
+    touch-action: pan-y; /* Disable browser's horizontal touch actions to avoid conflicts */
 }
 
 /* Grid layout for desktop */
@@ -98,15 +96,16 @@ body {
     aspect-ratio: 2/3;
     perspective: 2000px;
     flex: 0 0 auto;
-    scroll-snap-align: center; /* Changed from start to center for better centering */
     position: relative;
     /* Removing floating animation as requested */
     /* animation: float 6s ease-in-out infinite; */
     flex-shrink: 0;
     /* Adding padding to ensure content doesn't get clipped during animation */
     padding: 10px;
-    /* Hide all cards by default in mobile view */
-    display: none;
+    /* Show all cards by default for swiping */
+    display: block;
+    /* Ensure consistent sizing */
+    box-sizing: border-box;
 }
 
 /* Grid layout for cards in desktop view */

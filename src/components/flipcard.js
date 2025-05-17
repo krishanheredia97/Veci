@@ -28,13 +28,18 @@ document.addEventListener('DOMContentLoaded', function() {
     checkCardsVisibility(); 
     updateActiveCard(currentIndex); // Set initial active card
     updateNavigation();     // This will determine if dots need to be updated and call updateDots internally
-    if (!isDesktopView && !(carousel.scrollWidth <= carousel.clientWidth + 1)) {
-        scrollToCard(currentIndex, false); // Ensure initial card is correctly positioned if in carousel mode
+    
+    // Always ensure proper initial positioning on mobile
+    if (!isDesktopView) {
+        // Small delay to ensure DOM is fully rendered
+        setTimeout(() => {
+            scrollToCard(currentIndex, false);
+        }, 100);
     }
     
     // Check if we're in desktop or mobile view on resize
     window.addEventListener('resize', () => {
-        // const wasDesktopView = isDesktopView; // Keep this if specific actions are needed on view *change*
+        const wasDesktopView = isDesktopView;
         
         updateCardGap();
         updateCardDimensions();
@@ -42,9 +47,12 @@ document.addEventListener('DOMContentLoaded', function() {
         updateActiveCard(currentIndex); // Update active card on resize
         updateNavigation(); // Always update navigation to reflect new state
         
-        // Re-scroll to maintain position after resize if in carousel mode and scrollable
-        if (!isDesktopView && (carousel.scrollWidth > carousel.clientWidth + 1)) {
-            scrollToCard(currentIndex, false);
+        // If view mode changed or we're in mobile view, ensure proper positioning
+        if (wasDesktopView !== isDesktopView || !isDesktopView) {
+            // Small delay to ensure DOM is updated
+            setTimeout(() => {
+                scrollToCard(currentIndex, false);
+            }, 100);
         }
     });
     
@@ -52,6 +60,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkCardsVisibility() {
         // Check if we're in landscape mode and minimum width for desktop view
         isDesktopView = window.matchMedia('(min-width: 768px) and (orientation: landscape)').matches;
+        
+        // If we're in mobile view, make sure all cards are displayed for swiping
+        if (!isDesktopView) {
+            cards.forEach(card => {
+                card.style.display = 'block';
+                // Reset any transforms that might affect positioning
+                card.style.transform = '';
+            });
+            
+            // Reset carousel scroll position if needed
+            if (carousel.scrollLeft > 0 && currentIndex === 0) {
+                carousel.scrollLeft = 0;
+            }
+        }
     }
     
     // Next button click
@@ -108,65 +130,60 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Touch swipe functionality
+    // Simplified touch swipe functionality
     let touchStartX = 0;
     let touchEndX = 0;
-    let isSwiping = false;
-    let startScrollPosition = 0;
     
     carousel.addEventListener('touchstart', (e) => {
+        if (isDesktopView) return; // No need to handle this in desktop view
         touchStartX = e.changedTouches[0].screenX;
-        startScrollPosition = carousel.scrollLeft;
-        isSwiping = false; // Reset swiping flag
     }, { passive: true });
-    
-    carousel.addEventListener('touchmove', (e) => {
-        // If horizontal movement is detected, mark as swiping
-        if (Math.abs(e.changedTouches[0].screenX - touchStartX) > 10) {
-            isSwiping = true;
-            
-            // Prevent default scrolling behavior for smoother swipes
-            if (!isDesktopView) {
-                // Calculate how far we've moved
-                const moveX = touchStartX - e.changedTouches[0].screenX;
-                // Apply the scroll directly for smoother movement
-                carousel.scrollLeft = startScrollPosition + moveX;
-            }
-        }
-    }, { passive: false });
     
     carousel.addEventListener('touchend', (e) => {
         if (isDesktopView) return; // No need to handle this in desktop view
         
         touchEndX = e.changedTouches[0].screenX;
+        const swipeDistance = touchEndX - touchStartX;
+        const threshold = window.innerWidth * 0.15; // 15% of screen width as threshold
         
-        // Only handle swipe if we detected swiping motion
-        if (isSwiping) {
-            // Allow swipe to scroll and snap visually, but do not update currentIndex or dots.
-            // The active state (currentIndex, dots) is only changed by buttons/dots.
-            const scrollPosition = carousel.scrollLeft;
-            // Calculate which card index the current scroll position is closest to
-            const nearestVisualIndex = Math.round(scrollPosition / (cardWidth + cardGap));
-            
-            // Snap to that card visually. Check if already snapped to avoid redundant scroll.
-            const targetScrollPosition = nearestVisualIndex * (cardWidth + cardGap);
-            if(Math.abs(carousel.scrollLeft - targetScrollPosition) > 1) { // Small tolerance
-                carousel.scrollTo({
-                    left: targetScrollPosition,
-                    behavior: 'smooth'
-                });
+        // Only register swipe if it's significant enough (prevent accidental swipes)
+        if (Math.abs(swipeDistance) > threshold) {
+            // Swipe right (previous)
+            if (swipeDistance > 0 && currentIndex > 0) {
+                currentIndex--;
             }
-            // NOTE: currentIndex, updateNavigation(), updateDots() are NOT called here.
+            // Swipe left (next)
+            else if (swipeDistance < 0 && currentIndex < cards.length - 1) {
+                currentIndex++;
+            }
+            
+            // Update UI - order matters here
+            updateDots(currentIndex);
+            updateNavigation();
+            scrollToCard(currentIndex); // This will also call updateActiveCard
+            unflipAllCardsExcept(currentIndex);
+        } else {
+            // If swipe wasn't significant, make sure we're still properly positioned
+            scrollToCard(currentIndex, true);
         }
-        // isSwiping is reset in 'touchstart'
     }, { passive: true });
     
     // Helper functions
     function scrollToCard(index, smooth = true) {
         if (isDesktopView) return; // No need to scroll in desktop view
         
-        // In mobile view with only one visible card, no need to scroll
-        // The active card is controlled by CSS display property
+        // Use a simpler, more reliable approach for mobile
+        // Calculate position based on card index, width and gap
+        const scrollPosition = index * (cardWidth + cardGap);
+        
+        // Apply the scroll
+        carousel.scrollTo({
+            left: scrollPosition,
+            behavior: smooth ? 'smooth' : 'auto'
+        });
+        
+        // Force update active card
+        updateActiveCard(index);
     }
     
     function updateDots(index) {
@@ -192,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // In mobile view, only show the active card
+        // In mobile view, all cards are visible for swiping, but only one is active
         cards.forEach((card, i) => {
             if (i === index) {
                 card.classList.add('active');
