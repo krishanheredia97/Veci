@@ -114,6 +114,9 @@ body {
     display: block;
     /* Ensure consistent sizing */
     box-sizing: border-box;
+    /* Add smooth transitions for all animatable properties */
+    transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out, transform 0.4s ease-in-out, scale 0.4s ease-in-out, z-index 0s;
+    will-change: transform, opacity; /* Optimize for animations */
 }
 
 /* Grid layout for cards in desktop view */

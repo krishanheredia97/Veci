@@ -232,26 +232,65 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.style.position = 'relative';
                 card.style.zIndex = '1';
                 card.classList.remove('active');
+                // Reset any transforms
+                card.style.transform = '';
             });
             return;
         }
         
-        // In mobile view, only show one card at a time
+        // In mobile view, create a smoother transition between cards
         cards.forEach((card, i) => {
-            // All cards need to be in the flow for proper sizing and positioning
+            // Keep all cards in the flow for proper sizing and positioning
             card.style.display = 'block';
             card.style.position = 'relative';
             
+            // Calculate the position relative to the active card
+            const positionDiff = i - index;
+            
             if (i === index) {
+                // Active card
                 card.classList.add('active');
                 card.style.opacity = '1';
                 card.style.visibility = 'visible';
                 card.style.zIndex = '2';
+                card.style.transform = 'scale(1)';
+            } else if (i === index - 1) {
+                // Card to the left (previous)
+                card.classList.remove('active');
+                card.style.opacity = '0.5'; // Semi-visible during transition
+                card.style.visibility = 'visible';
+                card.style.zIndex = '1';
+                card.style.transform = 'translateX(-50%) scale(0.95)';
+                
+                // Fade it out completely after transition completes
+                setTimeout(() => {
+                    if (i !== currentIndex && i !== currentIndex - 1 && i !== currentIndex + 1) {
+                        card.style.opacity = '0';
+                        card.style.visibility = 'hidden';
+                    }
+                }, 400); // Match transition duration in CSS
+            } else if (i === index + 1) {
+                // Card to the right (next)
+                card.classList.remove('active');
+                card.style.opacity = '0.5'; // Semi-visible during transition
+                card.style.visibility = 'visible';
+                card.style.zIndex = '1';
+                card.style.transform = 'translateX(50%) scale(0.95)';
+                
+                // Fade it out completely after transition completes
+                setTimeout(() => {
+                    if (i !== currentIndex && i !== currentIndex - 1 && i !== currentIndex + 1) {
+                        card.style.opacity = '0';
+                        card.style.visibility = 'hidden';
+                    }
+                }, 400); // Match transition duration in CSS
             } else {
+                // Cards further away
                 card.classList.remove('active');
                 card.style.opacity = '0';
                 card.style.visibility = 'hidden';
-                card.style.zIndex = '1';
+                card.style.zIndex = '0';
+                card.style.transform = positionDiff < 0 ? 'translateX(-100%)' : 'translateX(100%)';
             }
         });
     }
