@@ -259,7 +259,7 @@ p {
     cursor: pointer;
     z-index: 10;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
     /* Position buttons outside the card */
     margin: 0 10px;
 }
@@ -274,12 +274,12 @@ p {
 }
 
 @media (max-width: 767px) {
-    .nav-btn.prev {
-        left: -50px;
-    }
-    
+    .nav-btn.prev,
     .nav-btn.next {
-        right: -50px;
+        display: none !important;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
 }
 
