@@ -122,10 +122,10 @@ body {
 /* Grid layout for cards in desktop view */
 @media (min-width: 768px) and (orientation: landscape) {
     .flip-card {
-        width: 600px; /* Horizontal card width */
-        height: 250px; /* Horizontal card height */
-        max-width: 600px; /* Override base max-width */
-        min-width: 600px; /* Override base min-width */
+        width: 30vw; /* Horizontal card width */
+        height: 30vh; /* Horizontal card height */
+        max-width: 30vw; /* Override base max-width */
+        min-width: 30vw; /* Override base min-width */
         aspect-ratio: unset; /* Remove mobile aspect ratio */
         justify-self: center;
         align-self: center;
