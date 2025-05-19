@@ -74,21 +74,18 @@ body {
 /* Grid layout for desktop */
 @media (min-width: 768px) and (orientation: landscape) {
     .carousel {
-        display: grid;
-        grid-template-columns: repeat(2, 600px); /* Fixed width columns for horizontal cards */
-        grid-template-rows: repeat(2, auto); /* Auto height for rows */
-        grid-gap: var(--card-gap, 30px);
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: var(--card-gap, 30px);
         overflow-x: visible;
         overflow-y: visible;
         scroll-snap-type: none;
-        /* Adding padding to ensure cards have enough space */
+        width: 100%;
+        max-width: 1400px;
+        margin: 40px auto;
         padding: 20px;
-        justify-items: center;
-        align-items: center; 
-        /* Max width calculation: (2 cards * 600px) + gap (30px) */
-        max-width: calc(2 * 600px + var(--card-gap, 30px));
-        margin: 40px auto; /* Added top/bottom margin for spacing, auto for horizontal centering */
-        padding: 0; /* Remove padding from carousel itself, manage spacing with margin or container padding */
     }
 }
 
@@ -122,15 +119,11 @@ body {
 /* Grid layout for cards in desktop view */
 @media (min-width: 768px) and (orientation: landscape) {
     .flip-card {
-        width: 30vw; /* Horizontal card width */
-        height: 30vh; /* Horizontal card height */
-        max-width: 30vw; /* Override base max-width */
-        min-width: 30vw; /* Override base min-width */
-        aspect-ratio: unset; /* Remove mobile aspect ratio */
-        justify-self: center;
-        align-self: center;
-        /* flex-shrink: 0; is already on the base .flip-card style */
-        /* animation: float 6s ease-in-out infinite; is already on the base .flip-card style */
+        width: var(--card-base-width); /* Use standard card width */
+        max-width: var(--card-max-width); /* Use standard max width */
+        min-width: var(--card-min-width); /* Use standard min width */
+        aspect-ratio: 2/3; /* Keep vertical card aspect ratio */
+        flex: 0 0 auto;
     }
 }
 
@@ -169,10 +162,10 @@ body {
 
 @media (min-width: 768px) and (orientation: landscape) {
     .flip-card-front, .flip-card-back {
-        flex-direction: row; /* Horizontal layout for desktop */
+        flex-direction: column; /* Keep vertical layout for desktop */
         justify-content: flex-start;
-        align-items: stretch; /* Stretch items to fill card height */
-        text-align: left;
+        align-items: center;
+        text-align: center;
     }
 }
 
@@ -194,9 +187,9 @@ body {
 
 @media (min-width: 768px) and (orientation: landscape) {
     .card-image {
-        width: 40%;    /* 40% width for desktop horizontal card image */
-        height: 100%;  /* Full height for desktop horizontal card image */
-        margin-bottom: 0; /* No margin for desktop */
+        width: 100%;    /* Full width for desktop vertical card image */
+        height: 50%;    /* Half height for desktop vertical card image */
+        margin-bottom: 20px; /* Keep margin for desktop vertical cards */
     }
 }
 
@@ -207,21 +200,21 @@ body {
 
 @media (min-width: 768px) and (orientation: landscape) {
     .card-content {
-        width: 60%;     /* 60% width for desktop horizontal card content */
-        height: 100%;   /* Full height to allow vertical centering */
-        padding: 30px;  /* Padding for desktop */
+        width: 100%;    /* Full width for desktop vertical card content */
+        height: auto;   /* Auto height based on content */
+        padding: 20px 24px; /* Consistent padding */
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Vertically center content */
+        justify-content: flex-start; /* Start from top */
     }
 
     .card-content h3 {
-        font-size: 28px; /* Larger font for desktop, from proposal */
+        font-size: 24px; /* Consistent font size */
         white-space: normal; /* Allow text wrapping */
     }
 
     .card-content p {
-        font-size: 18px; /* Larger font for desktop, from proposal */
+        font-size: 16px; /* Consistent font size */
     }
 }
 
@@ -298,6 +291,13 @@ p {
     right: 0;
 }
 
+/* Hide dots in desktop view */
+@media (min-width: 768px) and (orientation: landscape) {
+    .dots-container {
+        display: none;
+    }
+}
+
 .dot {
     width: 12px;
     height: 12px;
@@ -313,7 +313,7 @@ p {
     transform: scale(1.2);
 }
 
-/* Desktop view - controlled by JS */
+/* Desktop view - tweaks for larger screens */
 @media (min-width: 1800px) {
     .carousel-container {
         width: 90vw;

@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isDesktopView = window.matchMedia('(min-width: 768px) and (orientation: landscape)').matches;
         
         if (isDesktopView) {
-            // In desktop view, reset all cards to be visible in grid layout
+            // In desktop view, show all cards in a single row
             cards.forEach(card => {
                 card.style.display = 'block';
                 card.style.opacity = '1';
@@ -72,6 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Reset any transforms that might affect positioning
                 card.style.transform = '';
             });
+            
+            // Add class to container for desktop styling
+            carouselContainer.classList.remove('carousel-active');
         } else {
             // In mobile view, prepare all cards for proper visibility handling
             cards.forEach((card, i) => {
@@ -91,6 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     card.style.zIndex = '1';
                 }
             });
+            
+            // Add class to container for mobile carousel styling
+            carouselContainer.classList.add('carousel-active');
             
             // Reset carousel scroll position if needed
             if (carousel.scrollLeft > 0 && currentIndex === 0) {
