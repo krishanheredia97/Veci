@@ -5,12 +5,22 @@
 }
 
 :root {
-    --card-base-width: 300px;
-    --card-min-width: 280px;
-    --card-max-width: 320px;
-    --heading-font-size: 24px;
-    --body-font-size: 16px;
-    --card-gap: 30px;
+    /* Fluid card sizing using clamp */
+    --card-width: clamp(280px, 85vw, 320px);
+    --card-aspect-ratio: 2/3;
+    
+    /* Fluid typography */
+    --heading-font-size: clamp(20px, 5vw, 24px);
+    --body-font-size: clamp(14px, 3vw, 16px);
+    
+    /* Fluid spacing */
+    --card-gap: clamp(15px, 3vw, 30px);
+    
+    /* Breakpoints as custom properties for reference */
+    --mobile-breakpoint: 480px;
+    --tablet-breakpoint: 768px;
+    --desktop-breakpoint: 1024px;
+    --large-desktop-breakpoint: 1200px;
 }
 
 body {
@@ -27,70 +37,69 @@ body {
 
 .carousel-container {
     position: relative;
-    width: 100%;
-    max-width: 1400px;
+    width: min(100%, 1400px);
     min-height: 100vh;
-    padding: 0;
     margin: 0 auto;
+    padding: 0 max(1rem, 5%);
     overflow: visible; /* Allow dots to be fully visible */
-    padding-bottom: 50px; /* Add space for dots below */
-    /* Ensure proper positioning of navigation buttons */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Center vertically */
-}
-
-/* Add padding only when carousel view is active (controlled by JS) */
-.carousel-container.carousel-active {
-    padding: 0 20px 50px 20px; /* Increased side padding to prevent cards from being cut off */
-    /* Center the active card between nav buttons */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
+}
+
+/* Add padding only when carousel view is active (controlled by JS) */
+.carousel-container.carousel-active {
+    padding-bottom: 50px; /* Add space for dots below */
     position: relative; /* Ensure proper positioning context for absolute elements */
-    min-height: 400px; /* Ensure container has enough height for positioning */
 }
 
 .carousel {
-    display: flex;
-    overflow-x: hidden; /* Hide scrollbar but allow JS-controlled scrolling */
+    /* Use CSS Grid for intrinsic layout */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-width)), 1fr));
+    gap: var(--card-gap);
+    width: 100%;
+    padding: clamp(1rem, 3vh, 2rem) 0;
+    position: relative;
+    margin: 0 auto;
+    
+    /* Mobile carousel styles - will be overridden by grid on larger screens */
+    overflow-x: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    gap: var(--card-gap);
-    padding: 20px 0;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
-    overflow-y: visible; /* Prevent vertical scrolling within carousel */
-    /* Limit width to show only one card */
-    width: var(--card-base-width);
-    max-width: var(--card-max-width);
-    justify-content: flex-start;
-    align-items: center;
     touch-action: pan-y; /* Disable browser's horizontal touch actions to avoid conflicts */
-    position: relative;
-    margin: 0 auto; /* Center the carousel */
-    min-height: 450px; /* Ensure carousel has enough height for cards */
 }
 
-/* Grid layout for desktop */
-@media (min-width: 1375px) and (orientation: landscape) {
+/* Hide scrollbar */
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+/* Mobile view: single card with carousel */
+@media (max-width: 767px), (orientation: portrait) {
     .carousel {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: var(--card-gap, 30px);
-        overflow-x: visible;
-        overflow-y: visible;
-        scroll-snap-type: none;
-        width: 100%;
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
-        flex-wrap: nowrap;
+        display: flex; /* Override grid for mobile */
+        width: var(--card-width);
+        justify-content: flex-start;
+    }
+}
+
+/* Tablet view: 2x2 grid */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
+    .carousel {
+        grid-template-columns: repeat(2, 1fr);
+        width: min(100%, 700px);
+    }
+}
+
+/* Desktop view: row of 4 cards */
+@media (min-width: 1024px) and (orientation: landscape) {
+    .carousel {
+        grid-template-columns: repeat(4, 1fr);
+        width: min(100%, 1400px);
     }
 }
 
@@ -100,35 +109,24 @@ body {
 
 .flip-card {
     background-color: transparent;
-    width: var(--card-base-width);
-    min-width: var(--card-min-width);
-    max-width: var(--card-max-width);
-    aspect-ratio: 2/3;
+    width: 100%; /* Take full width of grid cell or flex item */
+    aspect-ratio: var(--card-aspect-ratio);
     perspective: 2000px;
-    flex: 0 0 auto;
     position: relative;
-    /* Removing floating animation as requested */
-    /* animation: float 6s ease-in-out infinite; */
-    flex-shrink: 0;
-    /* Adding padding to ensure content doesn't get clipped during animation */
     padding: 10px;
-    /* Show all cards by default for swiping */
     display: block;
-    /* Ensure consistent sizing */
     box-sizing: border-box;
-    /* Add smooth transitions for all animatable properties */
-    transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out, transform 0.4s ease-in-out, scale 0.4s ease-in-out, z-index 0s;
+    transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out, transform 0.4s ease-in-out;
     will-change: transform, opacity; /* Optimize for animations */
+    margin: 0 auto; /* Center card in its container */
+    max-width: var(--card-width); /* Limit maximum width */
 }
 
-/* Grid layout for cards in desktop view */
-@media (min-width: 768px) and (orientation: landscape) {
+/* Mobile view adjustments */
+@media (max-width: 767px), (orientation: portrait) {
     .flip-card {
-        width: var(--card-base-width); /* Use standard card width */
-        max-width: var(--card-max-width); /* Use standard max width */
-        min-width: var(--card-min-width); /* Use standard min width */
-        aspect-ratio: 2/3; /* Keep vertical card aspect ratio */
-        flex: 0 0 auto;
+        flex: 0 0 auto; /* For carousel */
+        width: 100%;
     }
 }
 
@@ -140,8 +138,7 @@ body {
     transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08), 0 5px 10px rgba(0,0,0,0.05);
-    border-radius: 24px;
-    /* Ensure content is fully contained within the card */
+    border-radius: clamp(16px, 5%, 24px);
     overflow: visible;
 }
 
@@ -184,61 +181,47 @@ body {
 }
 
 .card-image {
-    width: 100%; /* Default for mobile (full width image) */
-    height: 50%;   /* Default for mobile (half height image) */
+    width: 100%;
+    height: 50%; /* Maintain the image ratio as half of the card */
     object-fit: cover;
-    margin-bottom: 20px; /* Default for mobile */
-}
-
-@media (min-width: 768px) and (orientation: landscape) {
-    .card-image {
-        width: 100%;    /* Full width for desktop vertical card image */
-        height: 50%;    /* Half height for desktop vertical card image */
-        margin-bottom: 20px; /* Keep margin for desktop vertical cards */
-    }
+    margin-bottom: clamp(10px, 5%, 20px);
 }
 
 .card-content {
-    padding: 20px 24px; /* Default for mobile */
-    width: 100%;        /* Default for mobile */
-}
-
-@media (min-width: 768px) and (orientation: landscape) {
-    .card-content {
-        width: 100%;    /* Full width for desktop vertical card content */
-        height: auto;   /* Auto height based on content */
-        padding: 20px 24px; /* Consistent padding */
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start; /* Start from top */
-    }
-
-    .card-content h3 {
-        font-size: 24px; /* Consistent font size */
-        white-space: normal; /* Allow text wrapping */
-    }
-
-    .card-content p {
-        font-size: 16px; /* Consistent font size */
-    }
+    padding: clamp(10px, 5%, 24px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
 }
 
 h3 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: var(--heading-font-size);
-    margin-bottom: 16px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin-bottom: clamp(8px, 4%, 16px);
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    /* Improved text handling */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 100%;
 }
 
 p {
     font-family: 'Inter', sans-serif;
     font-size: var(--body-font-size);
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: clamp(10px, 5%, 20px);
+    /* Improved text handling */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 100%;
 }
 
 /* Navigation buttons */
@@ -249,8 +232,8 @@ p {
     background-color: rgba(255, 255, 255, 0.8);
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: clamp(32px, 10vw, 40px);
+    height: clamp(32px, 10vw, 40px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -258,8 +241,7 @@ p {
     z-index: 10;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: all 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
-    /* Position buttons outside the card */
-    margin: 0 10px;
+    margin: 0 clamp(5px, 2%, 10px);
 }
 
 .nav-btn:hover {
@@ -268,12 +250,16 @@ p {
 }
 
 .nav-btn.prev {
-    left: 10px;
+    left: 0;
 }
 
-@media (max-width: 767px) {
-    .nav-btn.prev,
-    .nav-btn.next {
+.nav-btn.next {
+    right: 0;
+}
+
+/* Hide navigation buttons on mobile or when all cards are visible */
+@media (max-width: 767px), (orientation: portrait) {
+    .nav-btn {
         display: none !important;
         opacity: 0;
         visibility: hidden;
@@ -281,13 +267,19 @@ p {
     }
 }
 
+/* Also hide navigation when we're in grid view */
+@media (min-width: 768px) and (orientation: landscape) {
+    .nav-btn {
+        display: none !important;
+    }
+}
+
 /* Dots navigation */
 .dots-container {
     display: flex;
     justify-content: center;
-    margin-top: 0;
-    gap: 10px;
-    padding-bottom: 10px; /* Add padding to ensure dots are fully visible */
+    gap: clamp(6px, 2vw, 10px);
+    padding-bottom: clamp(5px, 3vh, 10px);
     position: absolute;
     z-index: 5;
     width: 100%;
@@ -296,7 +288,7 @@ p {
     right: 0;
 }
 
-/* Hide dots in desktop view */
+/* Hide dots when not in mobile view */
 @media (min-width: 768px) and (orientation: landscape) {
     .dots-container {
         display: none;
@@ -304,8 +296,8 @@ p {
 }
 
 .dot {
-    width: 12px;
-    height: 12px;
+    width: clamp(8px, 2vw, 12px);
+    height: clamp(8px, 2vw, 12px);
     border-radius: 50%;
     background-color: #ddd;
     cursor: pointer;
@@ -318,114 +310,39 @@ p {
     transform: scale(1.2);
 }
 
-/* Desktop view - tweaks for larger screens */
-@media (min-width: 1800px) {
+/* Container query support for future-proofing */
+@supports (container-type: inline-size) {
     .carousel-container {
-        width: 90vw;
-        max-width: 1800px;
+        container-type: inline-size;
     }
     
-    .carousel {
-        justify-content: center;
-        flex-wrap: nowrap;
-        overflow-x: visible;
-    }
-
-    /* Only at very large screens we can safely display all cards at full size */
-    :root {
-        --card-base-width: 320px;
-        --heading-font-size: 24px;
-        --body-font-size: 16px;
+    @container (min-width: 768px) {
+        .carousel {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
     
-    /* .flip-card width is determined by --card-base-width (320px at this breakpoint)
-       and its flex behavior by the base .flip-card style (flex: 0 0 auto). */
-    
-    /* Navigation visibility is controlled by JavaScript (updateNavigation function) */
-}
-
-/* Responsive design */
-@media (min-width: 1200px) and (max-width: 1799px) {
-    :root {
-        --card-base-width: 310px;
-        --heading-font-size: 23px;
-        --body-font-size: 16px;
-    }
-
-    .carousel {
-        padding: 20px 10px;
-        gap: 15px;
-        justify-content: flex-start;
-    }
-
-    .flip-card {
-        max-width: 310px;
-        width: 80%;
-    }
-
-    .nav-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
+    @container (min-width: 1024px) {
+        .carousel {
+            grid-template-columns: repeat(4, 1fr);
+        }
     }
 }
 
-@media (min-width: 768px) and (max-width: 1199px) {
-    :root {
-        --card-base-width: 290px;
-        --heading-font-size: 22px;
-        --body-font-size: 15px;
-    }
-
-    .carousel {
-        padding: 20px 10px;
-        gap: 15px;
-        justify-content: flex-start;
-    }
-
-    .flip-card {
-        max-width: 290px;
-        width: 80%;
-    }
-
-    .nav-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
+/* Hover effects only on devices that support hover */
+@media (hover: hover) {
+    .flip-card:hover {
+        transform: translateY(-5px);
     }
 }
 
-@media (max-width: 767px) {
-    /* Show only the active card in mobile view */
-    .flip-card.active {
-        display: block;
-        margin: 0 auto;
-    }
-    :root {
-        --card-base-width: 280px;
-        --heading-font-size: 22px;
-        --body-font-size: 14px;
-    }
-
-    .carousel-container {
-        padding: 0 10px;
-    }
-
-    .flip-card {
-        max-width: 260px;
-        width: 85%;
-    }
-
-    .card-image {
-        height: 45%;
-    }
-
-    h3 {
-        font-size: 20px;
-    }
-
-    p {
-        font-size: 14px;
+/* Prefers-reduced-motion support */
+@media (prefers-reduced-motion: reduce) {
+    .flip-card,
+    .flip-card-inner,
+    .nav-btn,
+    .dot {
+        transition: none !important;
     }
 }
 
@@ -445,19 +362,27 @@ p {
     transition: opacity 0.5s ease;
 }
 
-.flip-card:hover::after {
-    opacity: 1;
+@media (hover: hover) {
+    .flip-card:hover::after {
+        opacity: 1;
+    }
 }
 
-/* Subtle animation for cards */
-/* Removed float animation as requested */
-
-.flip-card:hover {
-    animation-play-state: paused;
+/* Print styles for better accessibility */
+@media print {
+    .carousel {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .nav-btn,
+    .dots-container {
+        display: none !important;
+    }
+    
+    .flip-card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
 }
-
-/* Staggered animation timing */
-.flip-card:nth-child(2) { animation-delay: 0.5s; }
-.flip-card:nth-child(3) { animation-delay: 1s; }
-.flip-card:nth-child(4) { animation-delay: 1.5s; }
-.flip-card:nth-child(5) { animation-delay: 2s; }
