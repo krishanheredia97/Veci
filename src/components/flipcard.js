@@ -146,13 +146,12 @@ document.addEventListener('DOMContentLoaded', function() {
     cards.forEach((card, index) => {
         card.addEventListener('click', (e) => {
             // Only flip the card if it's the current card in mobile view
-            // or if we're in desktop view (all cards can be flipped)
-            // Ensure card flipping does not by itself cause navigation or dot changes.
-            if (isDesktopView || index === currentIndex) {
+            // In desktop view, flipping is handled by CSS hover
+            if (!isDesktopView && index === currentIndex) {
                 card.classList.toggle('flipped');
                 
                 // In mobile view, ensure only one card is flipped at a time
-                if (!isDesktopView && card.classList.contains('flipped')) {
+                if (card.classList.contains('flipped')) {
                     unflipAllCardsExcept(index);
                 }
             }
@@ -163,14 +162,15 @@ document.addEventListener('DOMContentLoaded', function() {
             // Prevent this touchend from triggering a click event
             e.preventDefault();
             
-            // Only flip if this is the current card in mobile view or we're in desktop view
-            if (isDesktopView || index === currentIndex) {
+            // Only flip if this is the current card in mobile view
+            // In desktop view, flipping is handled by CSS hover
+            if (!isDesktopView && index === currentIndex) {
                 // Check if this is a tap (not a swipe)
                 if (Math.abs(e.changedTouches[0].screenX - touchStartX) < 10) {
                     card.classList.toggle('flipped');
                     
                     // In mobile view, ensure only one card is flipped at a time
-                    if (!isDesktopView && card.classList.contains('flipped')) {
+                    if (card.classList.contains('flipped')) {
                         unflipAllCardsExcept(index);
                     }
                 }
