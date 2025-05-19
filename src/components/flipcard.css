@@ -216,12 +216,12 @@ body {
     }
 
     .card-content h3 {
-        font-size: 28px; /* Larger font for desktop, from proposal */
+        font-size: 1.5vw; /* Larger font for desktop, from proposal */
         white-space: normal; /* Allow text wrapping */
     }
 
     .card-content p {
-        font-size: 18px; /* Larger font for desktop, from proposal */
+        font-size: 0.9vw; /* Larger font for desktop, from proposal */
     }
 }
 
