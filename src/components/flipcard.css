@@ -39,7 +39,7 @@ body {
 
 /* Add padding only when carousel view is active (controlled by JS) */
 .carousel-container.carousel-active {
-    padding: 0 20px 50px 20px; /* Added bottom padding for dots */
+    padding: 0 20px 50px 20px; /* Increased side padding to prevent cards from being cut off */
     /* Center the active card between nav buttons */
     display: flex;
     flex-direction: column;

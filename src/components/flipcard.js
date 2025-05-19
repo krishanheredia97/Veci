@@ -151,6 +151,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+        
+        // Add touchend handler directly to each card for more responsive flipping on mobile
+        card.addEventListener('touchend', (e) => {
+            // Prevent this touchend from triggering a click event
+            e.preventDefault();
+            
+            // Only flip if this is the current card in mobile view or we're in desktop view
+            if (isDesktopView || index === currentIndex) {
+                // Check if this is a tap (not a swipe)
+                if (Math.abs(e.changedTouches[0].screenX - touchStartX) < 10) {
+                    card.classList.toggle('flipped');
+                    
+                    // In mobile view, ensure only one card is flipped at a time
+                    if (!isDesktopView && card.classList.contains('flipped')) {
+                        unflipAllCardsExcept(index);
+                    }
+                }
+            }
+        });
     });
     
     // Simplified touch swipe functionality
@@ -189,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // If swipe wasn't significant, make sure we're still properly positioned
             scrollToCard(currentIndex, true);
         }
-    }, { passive: true });
+    }, { passive: false }); // Changed to non-passive to allow preventDefault in some cases
     
     // Helper functions
     function scrollToCard(index, smooth = true) {
