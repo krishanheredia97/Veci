@@ -61,12 +61,35 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if we're in landscape mode and minimum width for desktop view
         isDesktopView = window.matchMedia('(min-width: 768px) and (orientation: landscape)').matches;
         
-        // If we're in mobile view, make sure all cards are displayed for swiping
-        if (!isDesktopView) {
+        if (isDesktopView) {
+            // In desktop view, reset all cards to be visible in grid layout
             cards.forEach(card => {
                 card.style.display = 'block';
+                card.style.opacity = '1';
+                card.style.visibility = 'visible';
+                card.style.position = 'relative';
+                card.style.zIndex = '1';
                 // Reset any transforms that might affect positioning
                 card.style.transform = '';
+            });
+        } else {
+            // In mobile view, prepare all cards for proper visibility handling
+            cards.forEach((card, i) => {
+                // All cards need to be in the flow for proper sizing and positioning
+                card.style.display = 'block';
+                card.style.position = 'relative'; // All cards need to be relative positioned
+                card.style.transform = ''; // Reset any transforms
+                
+                // Only the current card should be visible
+                if (i === currentIndex) {
+                    card.style.opacity = '1';
+                    card.style.visibility = 'visible';
+                    card.style.zIndex = '2';
+                } else {
+                    card.style.opacity = '0';
+                    card.style.visibility = 'hidden';
+                    card.style.zIndex = '1';
+                }
             });
             
             // Reset carousel scroll position if needed
@@ -201,20 +224,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to update which card is active (visible) in mobile view
     function updateActiveCard(index) {
         if (isDesktopView) {
-            // In desktop view, all cards are visible
+            // In desktop view, all cards are visible in grid layout
             cards.forEach(card => {
                 card.style.display = 'block';
+                card.style.opacity = '1';
+                card.style.visibility = 'visible';
+                card.style.position = 'relative';
+                card.style.zIndex = '1';
                 card.classList.remove('active');
             });
             return;
         }
         
-        // In mobile view, all cards are visible for swiping, but only one is active
+        // In mobile view, only show one card at a time
         cards.forEach((card, i) => {
+            // All cards need to be in the flow for proper sizing and positioning
+            card.style.display = 'block';
+            card.style.position = 'relative';
+            
             if (i === index) {
                 card.classList.add('active');
+                card.style.opacity = '1';
+                card.style.visibility = 'visible';
+                card.style.zIndex = '2';
             } else {
                 card.classList.remove('active');
+                card.style.opacity = '0';
+                card.style.visibility = 'hidden';
+                card.style.zIndex = '1';
             }
         });
     }
