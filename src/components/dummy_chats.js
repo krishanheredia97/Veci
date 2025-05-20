@@ -6,10 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Predefined conversation for demonstration
     const demoConversation = [
-        { sender: 'bot', text: 'Hi there! How can I help you today?' },
-        { sender: 'user', text: 'I need information about your services' },
-        { sender: 'bot', text: 'We offer AI-powered solutions for businesses of all sizes. Would you like to schedule a demo?' },
-        { sender: 'user', text: 'Yes, that would be great!' }
+        { sender: 'bot', text: '¿Qué más, Veci? 😊 ¿Qué se le antoja? 🍔🔥' },  
+        { sender: 'user', text: '¡Sí! ¿Qué me recomiendas?' },  
+        { sender: 'bot', text: '¡Nuestra Hamburguesa Picante de Pollo es LA favorita! 🔥 ¿Quieres probarla con unas papas crujientes? 🍟✨' },  
+        { sender: 'user', text: '¡Suena perfecto! Añade un refresco también.' },  
+        { sender: 'bot', text: '¡Excelente elección! 📝✔️ Una Hamburguesa Picante, papas 🍟 y un refresco 🥤. ¿Algo más o confirmamos el pedido? 😊' },  
+        { sender: 'user', text: '¡Confirmar, por favor!' },  
+        { sender: 'bot', text: '¡Listo! 🎉 Tu pedido estará listo en 15 minutos. ¡Gracias por elegirnos! ❤️ ¡Que lo disfrutes! 😋' }  
     ];
 
     // Create typing indicator element
