@@ -50,8 +50,12 @@ body {
 
 /* Add padding only when carousel view is active (controlled by JS) */
 .carousel-container.carousel-active {
-    padding-bottom: 50px; /* Add space for dots below */
+    padding-bottom: 60px; /* Add space for dots below */
     position: relative; /* Ensure proper positioning context for absolute elements */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: auto;
 }
 
 .carousel {
@@ -84,6 +88,19 @@ body {
         display: flex; /* Override grid for mobile */
         width: var(--card-width);
         justify-content: flex-start;
+    }
+    
+    .carousel-container {
+        min-height: auto;
+        height: auto;
+        padding-bottom: 20px;
+    }
+    
+    .dots-container {
+        display: flex;
+        position: relative;
+        margin-top: 20px;
+        bottom: auto;
     }
 }
 
@@ -286,13 +303,12 @@ p {
     display: flex;
     justify-content: center;
     gap: clamp(6px, 2vw, 10px);
-    padding-bottom: clamp(5px, 3vh, 10px);
-    position: absolute;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: relative;
     z-index: 5;
     width: 100%;
-    bottom: 10px;
-    left: 0;
-    right: 0;
+    margin-top: 10px;
 }
 
 /* Hide dots when not in mobile view */
@@ -350,6 +366,7 @@ p {
     .nav-btn,
     .dot {
         transition: none !important;
+        animation: none !important;
     }
 }
 
@@ -367,6 +384,34 @@ p {
     z-index: 1;
     opacity: 0;
     transition: opacity 0.5s ease;
+}
+
+/* Fake flip animation */
+@keyframes fakeFlip {
+    0% {
+        transform: rotateY(0deg);
+    }
+    40% {
+        transform: rotateY(40deg);
+    }
+    60% {
+        transform: rotateY(40deg);
+    }
+    100% {
+        transform: rotateY(0deg);
+    }
+}
+
+/* Class for the fake flip animation */
+.fake-flip .flip-card-inner {
+    animation: fakeFlip 2s ease-in-out infinite;
+    animation-play-state: running;
+}
+
+/* Pause animation when card is actually flipped or hovered */
+.flip-card.flipped .flip-card-inner,
+.flip-card:hover .flip-card-inner {
+    animation-play-state: paused;
 }
 
 @media (hover: hover) {
