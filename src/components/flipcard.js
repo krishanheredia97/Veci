@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 clearInterval(demonstrationInterval);
                 demonstrationInterval = null;
             }
-        }, 12000); // 12 seconds
+        }, 12000); // 12 seconds 
     }
     
     // Add mouse enter event listeners for desktop hover detection
@@ -267,6 +267,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Check if this is a tap (not a swipe)
                 if (Math.abs(e.changedTouches[0].screenX - touchStartX) < 10) {
                     card.classList.toggle('flipped');
+                    
+                    // Mark that user has manually flipped a card
+                    hasUserFlippedCard = true;
+                    
+                    // Clear the demonstration interval if it exists
+                    if (demonstrationInterval) {
+                        clearInterval(demonstrationInterval);
+                        demonstrationInterval = null;
+                    }
                     
                     // In mobile view, ensure only one card is flipped at a time
                     if (card.classList.contains('flipped')) {
