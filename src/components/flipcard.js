@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let isDesktopView = false; // Will be determined dynamically
     let cardWidth = 0; // Will be calculated dynamically
     let cardGap = 30; // Default, will be updated from CSS
-    let hasShownDemonstration = false; // Track if we've shown the demonstration
+    let hasUserFlippedCard = false; // Track if user has manually flipped a card
+    let demonstrationInterval = null; // Interval for repeating demonstration
 
     function updateCardGap() {
         const carouselStyle = window.getComputedStyle(carousel);
@@ -23,15 +24,15 @@ document.addEventListener('DOMContentLoaded', function() {
         cardWidth = cards[0].offsetWidth;
     }
     
-    // Function to demonstrate the flip functionality on first visit
+    // Function to demonstrate the flip functionality and repeat every 12 seconds
     function demonstrateFlip() {
-        // Check if we've already shown the demonstration in this session
-        if (hasShownDemonstration) return;
+        // Don't demonstrate if user has manually flipped a card
+        if (hasUserFlippedCard) return;
         
-        // Check if this is first visit using localStorage
-        if (!localStorage.getItem('flipDemonstrated')) {
-            // Wait for page to load fully
-            setTimeout(() => {
+        // Wait for page to load fully for the first demonstration
+        setTimeout(() => {
+            // Only proceed if user hasn't manually flipped a card
+            if (!hasUserFlippedCard) {
                 // Get the first visible card
                 const firstCard = isDesktopView ? cards[0] : cards[currentIndex];
                 
@@ -41,15 +42,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Flip back after 1.5 seconds
                 setTimeout(() => {
                     firstCard.classList.remove('flipped');
-                    // Set flag in localStorage
-                    localStorage.setItem('flipDemonstrated', 'true');
-                    hasShownDemonstration = true;
                 }, 1500);
-            }, 1000);
-        } else {
-            hasShownDemonstration = true;
+            }
+        }, 1000);
+        
+        // Set up interval to repeat demonstration every 12 seconds
+        // Clear any existing interval first
+        if (demonstrationInterval) {
+            clearInterval(demonstrationInterval);
         }
+        
+        demonstrationInterval = setInterval(() => {
+            // Only demonstrate if user hasn't manually flipped a card
+            if (!hasUserFlippedCard) {
+                const firstCard = isDesktopView ? cards[0] : cards[currentIndex];
+                firstCard.classList.add('flipped');
+                
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                }, 1500);
+            } else {
+                // If user has flipped a card, stop the interval
+                clearInterval(demonstrationInterval);
+                demonstrationInterval = null;
+            }
+        }, 12000); // 12 seconds
     }
+    
+    // Add mouse enter event listeners for desktop hover detection
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            // Only consider it a manual flip in desktop/landscape mode
+            if (isDesktopView) {
+                hasUserFlippedCard = true;
+                
+                // Clear the demonstration interval if it exists
+                if (demonstrationInterval) {
+                    clearInterval(demonstrationInterval);
+                    demonstrationInterval = null;
+                }
+            }
+        });
+    });
     
     // Initial setup
     updateCardGap();
@@ -57,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
     checkCardsVisibility(); 
     updateActiveCard(currentIndex); // Set initial active card
     updateNavigation();     // This will determine if dots need to be updated and call updateDots internally
-    demonstrateFlip(); // Show flip demonstration on first visit
+    demonstrateFlip(); // Show flip demonstration and set up repeating interval
     
     // Always ensure proper initial positioning on mobile
     if (!isDesktopView) {
@@ -86,8 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // If view mode changed, we might want to re-demonstrate the flip
-        // but only if it hasn't been shown yet in this session
-        if (wasDesktopView !== isDesktopView && !hasShownDemonstration) {
+        // but only if user hasn't manually flipped a card
+        if (wasDesktopView !== isDesktopView && !hasUserFlippedCard) {
             demonstrateFlip();
         }
     });
@@ -195,6 +229,15 @@ document.addEventListener('DOMContentLoaded', function() {
             // In desktop view, flipping is handled by CSS hover
             if (!isDesktopView && index === currentIndex) {
                 card.classList.toggle('flipped');
+                
+                // Mark that user has manually flipped a card
+                hasUserFlippedCard = true;
+                
+                // Clear the demonstration interval if it exists
+                if (demonstrationInterval) {
+                    clearInterval(demonstrationInterval);
+                    demonstrationInterval = null;
+                }
                 
                 // In mobile view, ensure only one card is flipped at a time
                 if (card.classList.contains('flipped')) {
