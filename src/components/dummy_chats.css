@@ -2,38 +2,40 @@
 
 /* Card styling */
 .card {
-    max-width: 500px;
-    margin: 40px auto;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border-radius: 16px;
+    max-width: min(500px, 90%);
+    width: clamp(280px, 90%, 500px);
+    margin: 2em auto;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.1);
+    border-radius: 1em;
     overflow: hidden;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
+    padding: 0.5em;
 }
 
 .card-content {
-    padding: 20px;
+    padding: clamp(0.75em, 5%, 1.5em);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0.75em;
 }
 
 /* Chat container */
 .chat-container {
-    height: 320px;
+    height: clamp(250px, 50vh, 400px);
     overflow-y: auto;
     background-color: var(--color-background);
-    padding: 16px;
-    border-radius: 12px;
+    padding: clamp(0.75em, 4%, 1.25em);
+    border-radius: 0.75em;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0.75em;
     scrollbar-width: thin;
     scrollbar-color: var(--color-muted) transparent;
 }
 
 .chat-container::-webkit-scrollbar {
-    width: 6px;
+    width: 0.375em;
 }
 
 .chat-container::-webkit-scrollbar-track {
@@ -42,19 +44,19 @@
 
 .chat-container::-webkit-scrollbar-thumb {
     background-color: var(--color-muted);
-    border-radius: 6px;
+    border-radius: 0.375em;
 }
 
 /* Message styling */
 .message {
-    padding: 10px 16px;
-    border-radius: 16px;
-    max-width: 80%;
+    padding: 0.625em 1em;
+    border-radius: 1em;
+    max-width: min(80%, 350px);
     word-wrap: break-word;
     font-family: var(--font-body);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-normal);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.05);
     transform-origin: bottom;
     animation: message-pop-in 0.3s ease-out forwards;
     opacity: 0;
@@ -63,7 +65,7 @@
 @keyframes message-pop-in {
     0% {
         opacity: 0;
-        transform: translateY(10px) scale(0.95);
+        transform: translateY(0.625em) scale(0.95);
     }
     100% {
         opacity: 1;
@@ -75,7 +77,7 @@
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     align-self: flex-start;
-    border-bottom-left-radius: 4px;
+    border-bottom-left-radius: 0.25em;
     animation-delay: 0.1s;
 }
 
@@ -83,7 +85,7 @@
     background-color: var(--color-primary);
     color: white;
     align-self: flex-end;
-    border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 0.25em;
 }
 
 /* Typing indicator */
@@ -91,21 +93,21 @@
     display: inline-flex;
     align-items: center;
     background-color: var(--color-surface);
-    padding: 8px 16px;
-    border-radius: 16px;
-    border-bottom-left-radius: 4px;
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    border-bottom-left-radius: 0.25em;
     border: 1px solid var(--color-border);
     align-self: flex-start;
-    margin-top: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-top: 0.25em;
+    box-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.05);
 }
 
 .typing-dot {
-    width: 8px;
-    height: 8px;
+    width: 0.5em;
+    height: 0.5em;
     background-color: var(--color-muted);
     border-radius: 50%;
-    margin: 0 2px;
+    margin: 0 0.125em;
     display: inline-block;
     animation: typing-bounce 1.4s infinite ease-in-out;
 }
@@ -127,23 +129,23 @@
         transform: translateY(0);
     }
     40% {
-        transform: translateY(-6px);
+        transform: translateY(-0.375em);
     }
 }
 
 /* Input area */
 .input-container {
     display: flex;
-    gap: 10px;
-    margin-top: 12px;
+    gap: 0.625em;
+    margin-top: 0.75em;
     position: relative;
 }
 
 .message-input {
     flex: 1;
-    padding: 12px 16px;
+    padding: 0.75em 1em;
     border: 1px solid var(--color-border);
-    border-radius: 24px;
+    border-radius: 1.5em;
     outline: none;
     font-family: var(--font-body);
     font-size: var(--font-size-sm);
@@ -153,15 +155,15 @@
 
 .message-input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+    box-shadow: 0 0 0 0.125em rgba(255, 107, 53, 0.2);
 }
 
 .send-button {
-    padding: 12px 20px;
+    padding: 0.75em 1.25em;
     background-color: var(--color-primary);
     color: white;
     border: none;
-    border-radius: 24px;
+    border-radius: 1.5em;
     cursor: pointer;
     font-family: var(--font-body);
     font-weight: var(--font-weight-medium);
