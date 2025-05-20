@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let isDesktopView = false; // Will be determined dynamically
     let cardWidth = 0; // Will be calculated dynamically
     let cardGap = 30; // Default, will be updated from CSS
-    let fakeFlipInterval = null; // For controlling the fake flip animation interval
+    let hasShownDemonstration = false; // Track if we've shown the demonstration
 
     function updateCardGap() {
         const carouselStyle = window.getComputedStyle(carousel);
@@ -23,41 +23,32 @@ document.addEventListener('DOMContentLoaded', function() {
         cardWidth = cards[0].offsetWidth;
     }
     
-    // Function to start the fake flip animation on the first card
-    function startFakeFlipAnimation() {
-        // Clear any existing interval
-        if (fakeFlipInterval) {
-            clearInterval(fakeFlipInterval);
-            fakeFlipInterval = null;
+    // Function to demonstrate the flip functionality on first visit
+    function demonstrateFlip() {
+        // Check if we've already shown the demonstration in this session
+        if (hasShownDemonstration) return;
+        
+        // Check if this is first visit using localStorage
+        if (!localStorage.getItem('flipDemonstrated')) {
+            // Wait for page to load fully
+            setTimeout(() => {
+                // Get the first visible card
+                const firstCard = isDesktopView ? cards[0] : cards[currentIndex];
+                
+                // Flip the card
+                firstCard.classList.add('flipped');
+                
+                // Flip back after 1.5 seconds
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                    // Set flag in localStorage
+                    localStorage.setItem('flipDemonstrated', 'true');
+                    hasShownDemonstration = true;
+                }, 1500);
+            }, 1000);
+        } else {
+            hasShownDemonstration = true;
         }
-        
-        // Get the first card (index 0)
-        const firstCard = cards[0];
-        
-        // Add the fake-flip class to start the animation
-        firstCard.classList.add('fake-flip');
-        
-        // Set up an event listener to pause animation when the card is actually flipped
-        firstCard.addEventListener('mouseenter', function() {
-            firstCard.classList.remove('fake-flip');
-        });
-        
-        firstCard.addEventListener('mouseleave', function() {
-            // Only restart if not flipped
-            if (!firstCard.classList.contains('flipped')) {
-                firstCard.classList.add('fake-flip');
-            }
-        });
-        
-        // For touch devices, pause animation when card is flipped
-        firstCard.addEventListener('click', function() {
-            if (firstCard.classList.contains('flipped')) {
-                firstCard.classList.remove('fake-flip');
-            } else if (!isDesktopView && currentIndex === 0) {
-                // Only add back if it's the current card in mobile view and not flipped
-                firstCard.classList.add('fake-flip');
-            }
-        });
     }
     
     // Initial setup
@@ -66,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     checkCardsVisibility(); 
     updateActiveCard(currentIndex); // Set initial active card
     updateNavigation();     // This will determine if dots need to be updated and call updateDots internally
-    startFakeFlipAnimation(); // Start the fake flip animation on the first card
+    demonstrateFlip(); // Show flip demonstration on first visit
     
     // Always ensure proper initial positioning on mobile
     if (!isDesktopView) {
@@ -94,16 +85,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         }
         
-        // Update fake flip animation on the first card when view changes
-        const firstCard = cards[0];
-        if (currentIndex === 0 || isDesktopView) {
-            // Re-add fake flip class if it's the first card in mobile view or any card in desktop view
-            if (!firstCard.classList.contains('flipped')) {
-                firstCard.classList.add('fake-flip');
-            }
-        } else if (!isDesktopView) {
-            // Remove fake flip class if it's not the first card in mobile view
-            firstCard.classList.remove('fake-flip');
+        // If view mode changed, we might want to re-demonstrate the flip
+        // but only if it hasn't been shown yet in this session
+        if (wasDesktopView !== isDesktopView && !hasShownDemonstration) {
+            demonstrateFlip();
         }
     });
     
@@ -156,27 +141,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Function to update fake flip animation based on current index
-    function updateFakeFlipAnimation() {
-        const firstCard = cards[0];
-        
-        if (!isDesktopView) {
-            // In mobile view, only show animation on the first card when it's visible
-            if (currentIndex === 0) {
-                // Only add the animation if the card is not flipped
-                if (!firstCard.classList.contains('flipped')) {
-                    firstCard.classList.add('fake-flip');
-                }
-            } else {
-                // Remove animation when not on the first card
-                firstCard.classList.remove('fake-flip');
-            }
-        } else {
-            // In desktop view, always show animation on the first card if not flipped
-            if (!firstCard.classList.contains('flipped')) {
-                firstCard.classList.add('fake-flip');
-            }
-        }
+    // Function to re-demonstrate flip functionality when changing cards
+    // This is optional - only if you want to demonstrate on each new card
+    function checkForDemonstration() {
+        // We could re-demonstrate on new cards, but for now we'll just use the first visit demo
+        // This function is kept as a placeholder in case you want to expand this behavior later
     }
     
     // Next button click
@@ -188,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNavigation();
             updateDots(currentIndex);
             unflipAllCardsExcept(currentIndex);
-            updateFakeFlipAnimation();
+            checkForDemonstration();
         }
     });
     
@@ -201,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNavigation();
             updateDots(currentIndex);
             unflipAllCardsExcept(currentIndex);
-            updateFakeFlipAnimation();
+            checkForDemonstration();
         }
     });
     
@@ -215,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNavigation();
             updateDots(currentIndex);
             unflipAllCardsExcept(currentIndex);
-            updateFakeFlipAnimation();
+            checkForDemonstration();
         });
     });
     
