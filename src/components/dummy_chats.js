@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatContainer = document.getElementById('chatContainer');
     const messageInput = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
+    const cartToggleButton = document.getElementById('cartToggleButton');
+    const cartContainer = document.getElementById('cartContainer');
 
     // Predefined conversation for demonstration
     const demoConversation = [
@@ -96,4 +98,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Set up the loop to repeat the demo every 9 seconds
     setInterval(runDemoConversation, 9000);
+    
+    // Cart toggle functionality
+    let isCartExpanded = false;
+    
+    cartToggleButton.addEventListener('click', () => {
+        isCartExpanded = !isCartExpanded;
+        
+        if (isCartExpanded) {
+            // Expand cart
+            cartContainer.classList.add('expanded');
+            chatContainer.classList.add('cart-expanded');
+        } else {
+            // Collapse cart
+            cartContainer.classList.remove('expanded');
+            chatContainer.classList.remove('cart-expanded');
+        }
+    });
 });

@@ -20,6 +20,31 @@
     gap: 0.75em;
 }
 
+/* Card header */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.75em;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 0.5em;
+}
+
+.logo {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 900;
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
+    letter-spacing: 0.05em;
+}
+
+.restaurant-name {
+    font-family: var(--font-body);
+    color: var(--color-text);
+    font-size: var(--font-size-md);
+    font-weight: 500;
+}
+
 /* Chat container */
 .chat-container {
     height: clamp(250px, 50vh, 400px);
@@ -136,6 +161,7 @@
 /* Input area */
 .input-container {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.625em;
     margin-top: 0.75em;
     position: relative;
@@ -159,18 +185,18 @@
 }
 
 .send-button {
-    padding: 0.75em 1.25em;
+    min-width: 2.5em;
+    height: 2.5em;
+    padding: 0.5em;
     background-color: var(--color-primary);
     color: white;
     border: none;
-    border-radius: 1.5em;
+    border-radius: 50%;
     cursor: pointer;
-    font-family: var(--font-body);
-    font-weight: var(--font-weight-medium);
-    transition: background-color 0.2s, transform 0.1s;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
 .send-button:hover {
@@ -179,4 +205,112 @@
 
 .send-button:active {
     transform: scale(0.97);
+}
+
+/* Cart section styling */
+.cart-toggle-button {
+    min-width: 2.5em;
+    height: 2.5em;
+    padding: 0.5em;
+    background-color: var(--color-secondary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.cart-toggle-button:hover {
+    background-color: var(--color-secondary);
+}
+
+.cart-toggle-button:active {
+    transform: scale(0.97);
+}
+
+.cart-container {
+    background-color: var(--color-secondary);
+    border-radius: 0.75em;
+    margin-top: 0.5em;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
+    opacity: 0;
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+}
+
+.cart-container.expanded {
+    max-height: min(200px, 30vh);
+    opacity: 1;
+    transition: max-height 0.3s ease-in, opacity 0.2s ease-in;
+}
+
+.cart-header {
+    padding: 0.75em 1em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart-header h3 {
+    margin: 0;
+    color: white;
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    font-family: var(--font-heading);
+}
+
+.cart-item-count {
+    color: white;
+    font-size: var(--font-size-xs);
+    font-family: var(--font-body);
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.25em 0.75em;
+    border-radius: 1em;
+}
+
+.cart-content {
+    padding: 0.75em 1em;
+    color: white;
+    font-size: var(--font-size-sm);
+    font-family: var(--font-body);
+}
+
+.cart-empty-message {
+    text-align: center;
+    opacity: 0.9;
+    margin: 0.75em 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+}
+
+/* Adjust chat container height when cart is expanded */
+.chat-container.cart-expanded {
+    height: clamp(150px, 35vh, 300px);
+    transition: height 0.3s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 400px) {
+    .input-container {
+        gap: 0.5em;
+    }
+    
+    .message-input {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    
+    .send-button, .cart-toggle-button {
+        flex: 0 0 auto;
+    }
+    
+    .cart-toggle-button {
+        min-width: 2.25em;
+        height: 2.25em;
+    }
 }
