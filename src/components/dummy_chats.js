@@ -4,9 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
 
-    // Initial messages
-    const messages = [
-        { sender: 'bot', text: 'Hi there! What would you like to order today?' }
+    // Predefined conversation for demonstration
+    const demoConversation = [
+        { sender: 'bot', text: 'Hi there! How can I help you today?' },
+        { sender: 'user', text: 'I need information about your services' },
+        { sender: 'bot', text: 'We offer AI-powered solutions for businesses of all sizes. Would you like to schedule a demo?' },
+        { sender: 'user', text: 'Yes, that would be great!' }
     ];
 
     // Create typing indicator element
@@ -23,108 +26,71 @@ document.addEventListener('DOMContentLoaded', () => {
         return typingIndicator;
     };
 
-    // Function to render messages with animation
-    const renderMessages = (newMessage = false) => {
-        // If it's a new message, only append that message
-        if (newMessage) {
-            const msg = messages[messages.length - 1];
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            messageElement.classList.add(msg.sender === 'user' ? 'user-message' : 'bot-message');
-            messageElement.textContent = msg.text;
-            
-            // Add a slight delay for the animation to be visible
-            setTimeout(() => {
-                chatContainer.appendChild(messageElement);
-                // Scroll to bottom of chat
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 10);
-        } else {
-            // Initial render of all messages
-            chatContainer.innerHTML = '';
-            messages.forEach((msg, index) => {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message');
-                messageElement.classList.add(msg.sender === 'user' ? 'user-message' : 'bot-message');
-                messageElement.textContent = msg.text;
-                messageElement.style.animationDelay = `${index * 0.1}s`;
-                chatContainer.appendChild(messageElement);
-            });
-            
-            // Scroll to bottom of chat
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
+    // Function to add a message to the chat container
+    const addMessage = (message) => {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.classList.add(message.sender === 'user' ? 'user-message' : 'bot-message');
+        messageElement.textContent = message.text;
+        
+        chatContainer.appendChild(messageElement);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
     };
 
-    // Function to get bot reply based on user input
-    const getBotReply = (userInput) => {
-        if (userInput.toLowerCase().includes('burger')) {
-            return 'Great choice! Would you like fries with that?';
-        }
-        if (userInput.toLowerCase().includes('pizza')) {
-            return 'Our pizzas are amazing! What toppings would you like?';
-        }
-        if (userInput.toLowerCase().includes('yes')) {
-            return 'Awesome! Anything else?';
-        }
-        if (userInput.toLowerCase().includes('no')) {
-            return 'Got it. Your order will be ready soon!';
-        }
-        return 'Sounds good! Do you want anything to drink?';
+    // Function to clear the chat container
+    const clearChat = () => {
+        chatContainer.innerHTML = '';
     };
 
-    // Function to handle sending a message
-    const handleSend = () => {
-        const text = messageInput.value.trim();
-        if (!text) return;
-        
-        // Disable input while processing
-        messageInput.disabled = true;
-        sendButton.disabled = true;
-        
-        // Add user message
-        messages.push({ sender: 'user', text });
-        renderMessages(true);
-        messageInput.value = '';
+    // Function to show typing indicator
+    const showTypingIndicator = () => {
+        const typingIndicator = createTypingIndicator();
+        chatContainer.appendChild(typingIndicator);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        return typingIndicator;
+    };
 
-        // Show typing indicator
+    // Function to run the demo conversation
+    const runDemoConversation = () => {
+        // Clear the chat to start fresh
+        clearChat();
+        
+        // Timeline for the demo conversation (total ~9 seconds)
         setTimeout(() => {
-            const typingIndicator = createTypingIndicator();
-            chatContainer.appendChild(typingIndicator);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-            
-            // Simulate bot thinking and typing
-            setTimeout(() => {
-                // Remove typing indicator
-                chatContainer.removeChild(typingIndicator);
-                
-                // Add bot reply
-                const reply = getBotReply(text);
-                messages.push({ sender: 'bot', text: reply });
-                renderMessages(true);
-                
-                // Re-enable input
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                messageInput.focus();
-            }, 1500);
+            // First bot message
+            addMessage(demoConversation[0]);
         }, 500);
+
+        setTimeout(() => {
+            // First user message
+            addMessage(demoConversation[1]);
+        }, 2000);
+
+        setTimeout(() => {
+            // Show typing indicator for second bot message
+            const typingIndicator = showTypingIndicator();
+            
+            setTimeout(() => {
+                // Remove typing indicator and show second bot message
+                chatContainer.removeChild(typingIndicator);
+                addMessage(demoConversation[2]);
+            }, 1500);
+        }, 3500);
+
+        setTimeout(() => {
+            // Second user message
+            addMessage(demoConversation[3]);
+        }, 7000);
     };
 
-    // Event listeners
-    sendButton.addEventListener('click', handleSend);
-    messageInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            handleSend();
-        }
-    });
+    // Disable the input field and button since this is just a demo
+    messageInput.disabled = true;
+    sendButton.disabled = true;
+    messageInput.placeholder = "Demo mode - conversation plays automatically";
 
-    // Add send icon to button
-    sendButton.innerHTML = 'Send';
-
-    // Initial render
-    renderMessages();
+    // Run the demo conversation immediately
+    runDemoConversation();
     
-    // Focus input on load
-    messageInput.focus();
+    // Set up the loop to repeat the demo every 9 seconds
+    setInterval(runDemoConversation, 9000);
 });
