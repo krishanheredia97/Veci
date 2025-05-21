@@ -1,12 +1,36 @@
 // Food Card Component JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
-    // For future functionality of the food card
-    // Currently no functionality is implemented as per requirements
+    // Get the food card elements
+    const foodCards = document.querySelectorAll('.food-card');
     
-    // This file is a placeholder for future functionality:
-    // 1. Add to cart functionality for the + button
-    // 2. 'Leer más' button functionality
+    foodCards.forEach(card => {
+        // Create the description element
+        const descriptionElement = document.createElement('p');
+        descriptionElement.className = 'food-card-description';
+        descriptionElement.textContent = 'Auténtica Bandeja Paisa, una generosa combinación de arroz blanco, frijoles rojos, carne molida, chicharrón, huevo frito, plátano maduro, aguacate y arepa. Todo acompañado de una deliciosa hogao y, si lo deseas, una morcilla para completar la experiencia.';
+        
+        // Get the card content and button elements
+        const cardContent = card.querySelector('.food-card-content');
+        const cardInfo = card.querySelector('.food-card-info');
+        const cardButton = card.querySelector('.food-card-button');
+        
+        // Insert the description after the card info
+        cardInfo.after(descriptionElement);
+        
+        // Add click event listener to the button
+        cardButton.addEventListener('click', function() {
+            // Toggle the expanded class on the card
+            card.classList.toggle('expanded');
+            
+            // Update the button text based on the expanded state
+            if (card.classList.contains('expanded')) {
+                cardButton.textContent = 'Leer menos';
+            } else {
+                cardButton.textContent = 'Leer más';
+            }
+        });
+    });
     
     console.log('Food card component loaded successfully');
 });

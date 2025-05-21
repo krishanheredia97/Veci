@@ -68,6 +68,7 @@
 
 .food-card-content {
     padding: 16px;
+    transition: all 0.9s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .food-card-info {
@@ -109,6 +110,24 @@
 
 .food-card-button:hover {
     background-color: #e6a619; /* Slightly darker shade of CTA color */
+}
+
+.food-card-description {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary, #666);
+    line-height: 1.5;
+    transition: max-height 0.7s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s ease, margin 0.5s ease;
+    overflow: hidden;
+}
+
+.food-card.expanded .food-card-description {
+    max-height: 300px; /* Set a value that's definitely larger than needed */
+    opacity: 1;
+    margin-bottom: 16px;
 }
 
 /* Responsive adjustments */
