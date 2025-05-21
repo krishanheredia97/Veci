@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
         { sender: 'bot', text: '¿Qué más, Veci? 😊 ¿Qué se le antoja? 🍔🔥' },  
         { sender: 'user', text: '¡Sí! ¿Qué me recomiendas?' },  
         { sender: 'bot', text: '¡Nuestra Hamburguesa Picante de Pollo es LA favorita! 🔥 ¿Quieres probarla con unas papas crujientes? 🍟✨' },  
+        { sender: 'bot', type: 'image', content: {
+            title: 'Bandeja Paisa',
+            price: '16.500',
+            image: 'assets/images/food_example_1.png'
+        }},
         { sender: 'user', text: '¡Suena perfecto! Añade un refresco también.' },  
         { sender: 'bot', text: '¡Excelente elección! 📝✔️ Una Hamburguesa Picante, papas 🍟 y un refresco 🥤. ¿Algo más o confirmamos el pedido? 😊' },  
         { sender: 'user', text: '¡Confirmar, por favor!' },  
@@ -36,7 +41,70 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message');
         messageElement.classList.add(message.sender === 'user' ? 'user-message' : 'bot-message');
-        messageElement.textContent = message.text;
+        
+        if (message.type === 'image') {
+            // Create food card for image type message
+            const foodCard = document.createElement('div');
+            foodCard.classList.add('food-card');
+            foodCard.innerHTML = `
+                <div class="food-card-image-container">
+                    <img src="${message.content.image}" alt="${message.content.title}" class="food-card-image">
+                    <button class="add-to-cart-btn" aria-label="Add to cart">
+                        <span class="plus-icon">+</span>
+                    </button>
+                </div>
+                <div class="food-card-content">
+                    <div class="food-card-info">
+                        <h3 class="food-card-title">${message.content.title}</h3>
+                        <p class="food-card-price">${message.content.price}</p>
+                    </div>
+                    <button class="food-card-button">Leer más</button>
+                </div>
+            `;
+            
+            // Add click event for the add-to-cart button
+            const addToCartBtn = foodCard.querySelector('.add-to-cart-btn');
+            const plusIcon = foodCard.querySelector('.plus-icon');
+            
+            if (addToCartBtn) {
+                addToCartBtn.addEventListener('click', function() {
+                    addToCartBtn.classList.toggle('added');
+                    if (addToCartBtn.classList.contains('added')) {
+                        plusIcon.textContent = '-';
+                    } else {
+                        plusIcon.textContent = '+';
+                    }
+                });
+            }
+            
+            // Add click event for the read more button
+            const cardButton = foodCard.querySelector('.food-card-button');
+            
+            if (cardButton) {
+                // Create description element
+                const descriptionElement = document.createElement('p');
+                descriptionElement.className = 'food-card-description';
+                descriptionElement.textContent = 'Deliciosa hamburguesa de pollo con salsa picante casera, lechuga fresca, tomate, cebolla caramelizada y queso derretido. Servida en pan artesanal tostado con mayonesa de chipotle.';
+                
+                // Insert description after card info
+                const cardInfo = foodCard.querySelector('.food-card-info');
+                cardInfo.after(descriptionElement);
+                
+                cardButton.addEventListener('click', function() {
+                    foodCard.classList.toggle('expanded');
+                    if (foodCard.classList.contains('expanded')) {
+                        cardButton.textContent = 'Leer menos';
+                    } else {
+                        cardButton.textContent = 'Leer más';
+                    }
+                });
+            }
+            
+            messageElement.appendChild(foodCard);
+        } else {
+            // Regular text message
+            messageElement.textContent = message.text;
+        }
         
         chatContainer.appendChild(messageElement);
         chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -79,12 +147,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Remove typing indicator and show second bot message
                 chatContainer.removeChild(typingIndicator);
                 addMessage(demoConversation[2]);
+                
+                // Show food card image after a short delay
+                setTimeout(() => {
+                    addMessage(demoConversation[3]);
+                }, 800);
             }, 1500);
         }, 3500);
 
         setTimeout(() => {
-            // Second user message
-            addMessage(demoConversation[3]);
+            // Second user message (now at index 4 due to added food card)
+            addMessage(demoConversation[4]);
         }, 7000);
         
         setTimeout(() => {
@@ -94,13 +167,13 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 // Remove typing indicator and show third bot message
                 chatContainer.removeChild(typingIndicator);
-                addMessage(demoConversation[4]);
+                addMessage(demoConversation[5]);
             }, 1500);
         }, 9000);
         
         setTimeout(() => {
             // Third user message
-            addMessage(demoConversation[5]);
+            addMessage(demoConversation[6]);
         }, 12000);
         
         setTimeout(() => {
@@ -110,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 // Remove typing indicator and show final bot message
                 chatContainer.removeChild(typingIndicator);
-                addMessage(demoConversation[6]);
+                addMessage(demoConversation[7]);
             }, 1500);
         }, 14000);
     };
