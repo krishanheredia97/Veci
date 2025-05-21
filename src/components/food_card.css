@@ -87,6 +87,12 @@
     transition: transform 0.3s ease;
 }
 
+/* Specific styling for the minus sign to ensure proper vertical alignment */
+.add-to-cart-btn.added .plus-icon {
+    line-height: 0.85; /* Adjust line height to center the minus sign vertically */
+    padding-bottom: 8px; /* Add some padding to the bottom to visually center it */
+}
+
 .food-card-content {
     padding: 16px;
     transition: all 0.9s cubic-bezier(0.19, 1, 0.22, 1);
