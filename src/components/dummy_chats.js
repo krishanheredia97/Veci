@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear the chat to start fresh
         clearChat();
         
-        // Timeline for the demo conversation (total ~9 seconds)
+        // Timeline for the demo conversation (total ~15 seconds)
         setTimeout(() => {
             // First bot message
             addMessage(demoConversation[0]);
@@ -86,6 +86,33 @@ document.addEventListener('DOMContentLoaded', () => {
             // Second user message
             addMessage(demoConversation[3]);
         }, 7000);
+        
+        setTimeout(() => {
+            // Show typing indicator for third bot message
+            const typingIndicator = showTypingIndicator();
+            
+            setTimeout(() => {
+                // Remove typing indicator and show third bot message
+                chatContainer.removeChild(typingIndicator);
+                addMessage(demoConversation[4]);
+            }, 1500);
+        }, 9000);
+        
+        setTimeout(() => {
+            // Third user message
+            addMessage(demoConversation[5]);
+        }, 12000);
+        
+        setTimeout(() => {
+            // Show typing indicator for final bot message
+            const typingIndicator = showTypingIndicator();
+            
+            setTimeout(() => {
+                // Remove typing indicator and show final bot message
+                chatContainer.removeChild(typingIndicator);
+                addMessage(demoConversation[6]);
+            }, 1500);
+        }, 14000);
     };
 
     // Disable the input field and button since this is just a demo
@@ -96,8 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Run the demo conversation immediately
     runDemoConversation();
     
-    // Set up the loop to repeat the demo every 9 seconds
-    setInterval(runDemoConversation, 9000);
+    // Set up the loop to repeat the demo every 18 seconds (adjusted for longer conversation)
+    setInterval(runDemoConversation, 18000);
     
     // Cart toggle functionality
     let isCartExpanded = false;
