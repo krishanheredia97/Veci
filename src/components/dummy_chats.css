@@ -57,6 +57,7 @@
     gap: 0.75em;
     scrollbar-width: thin;
     scrollbar-color: var(--color-muted) transparent;
+    transition: height 0.3s ease-in-out; /* Added for smooth height changes */
 }
 
 .chat-container::-webkit-scrollbar {
@@ -295,7 +296,7 @@
 /* Adjust chat container height when cart is expanded */
 .chat-container.cart-expanded {
     height: clamp(150px, 35vh, 300px);
-    transition: height 0.3s ease-out;
+    /* The transition is now handled by the base .chat-container style */
 }
 
 /* Responsive adjustments */
