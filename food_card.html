@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Card</title>
+    <link rel="stylesheet" href="src/components/design_system.css">
+    <link rel="stylesheet" href="src/components/food_card.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="food-card">
+            <div class="food-card-image-container">
+                <img src="assets/images/food_example_1.png" alt="Bandeja Paisa" class="food-card-image">
+                <button class="add-to-cart-btn" aria-label="Add to cart">
+                    <span class="plus-icon">+</span>
+                </button>
+            </div>
+            <div class="food-card-content">
+                <div class="food-card-info">
+                    <h3 class="food-card-title">Bandeja Paisa</h3>
+                    <p class="food-card-price">18.000</p>
+                </div>
+                <button class="food-card-button">Leer más</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="src/components/food_card.js"></script>
+</body>
+</html>

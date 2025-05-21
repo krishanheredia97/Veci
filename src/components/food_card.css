@@ -1,0 +1,117 @@
+/* Food Card Component */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--color-background);
+    min-height: 100vh;
+}
+
+.food-card {
+    width: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.food-card-image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+    overflow: hidden;
+}
+
+.food-card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.add-to-cart-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.2s ease;
+    z-index: 2;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #2d8e44; /* Slightly darker shade of accent color */
+}
+
+.plus-icon {
+    font-size: 28px;
+    font-weight: var(--font-weight-medium);
+    line-height: 0.9;
+}
+
+.food-card-content {
+    padding: 16px;
+}
+
+.food-card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.food-card-title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-md);
+    color: var(--color-text);
+}
+
+.food-card-price {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-md);
+    color: var(--color-primary);
+}
+
+.food-card-button {
+    width: 100%;
+    padding: 10px 0;
+    background-color: var(--color-cta);
+    color: var(--color-text);
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.food-card-button:hover {
+    background-color: #e6a619; /* Slightly darker shade of CTA color */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .food-card {
+        width: 280px;
+    }
+}
