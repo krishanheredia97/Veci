@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const cardContent = card.querySelector('.food-card-content');
         const cardInfo = card.querySelector('.food-card-info');
         const cardButton = card.querySelector('.food-card-button');
+        const addToCartBtn = card.querySelector('.add-to-cart-btn');
+        const plusIcon = card.querySelector('.plus-icon');
         
         // Insert the description after the card info
         cardInfo.after(descriptionElement);
@@ -30,6 +32,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 cardButton.textContent = 'Leer más';
             }
         });
+        
+        // Add click event listener to the add-to-cart button
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', function() {
+                // Toggle the 'added' class on the button
+                addToCartBtn.classList.toggle('added');
+                
+                // Update the icon based on the added state
+                if (addToCartBtn.classList.contains('added')) {
+                    plusIcon.textContent = '-';
+                } else {
+                    plusIcon.textContent = '+';
+                }
+            });
+        }
     });
     
     console.log('Food card component loaded successfully');

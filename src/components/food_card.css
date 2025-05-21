@@ -52,18 +52,39 @@
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    transition: background-color 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     z-index: 2;
+    overflow: hidden;
 }
 
 .add-to-cart-btn:hover {
     background-color: #2d8e44; /* Slightly darker shade of accent color */
 }
 
+.add-to-cart-btn.added {
+    background-color: #e74c3c; /* Red color for added to cart state */
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-to-cart-btn.added:hover {
+    background-color: #c0392b; /* Slightly darker shade of red */
+}
+
+.add-to-cart-btn.added .plus-icon {
+    transform: rotate(180deg);
+}
+
 .plus-icon {
     font-size: 58px;
     font-weight: var(--font-weight-medium);
-    line-height: 0.9;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
 }
 
 .food-card-content {
