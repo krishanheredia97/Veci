@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veci - Precios</title>
+    <link rel="stylesheet" href="src/components/design_system.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: var(--line-height-normal);
+        }
+
+        .pricing-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .pricing-header h2 {
+            font: var(--text-h2);
+            margin-bottom: 1rem;
+            color: var(--color-text);
+        }
+
+        .pricing-header p {
+            font: var(--text-body-lg);
+            max-width: 36rem;
+            margin: 0 auto;
+            color: var(--color-text);
+        }
+
+        .pricing-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .pricing-card {
+            flex: 1 1 20rem;
+            max-width: 30rem;
+            background-color: var(--color-surface);
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--color-primary);
+        }
+
+        .limited-badge {
+            position: absolute;
+            top: -0.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            white-space: nowrap;
+        }
+
+        .pricing-card-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card-header h3 {
+            font: var(--text-h4);
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card-header p {
+            font: var(--text-body);
+            color: var(--color-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card-price {
+            font: var(--text-h3);
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card-features {
+            flex-grow: 1;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font: var(--text-body);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .feature-item.inactive {
+            color: var(--color-muted);
+        }
+
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.75rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .feature-icon.active {
+            background-color: var(--color-success);
+            color: white;
+        }
+
+        .feature-icon.inactive {
+            background-color: var(--color-disabled);
+            color: var(--color-muted);
+        }
+
+        .pricing-card-cta {
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: var(--font-weight-medium);
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: var(--font-size-base);
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #e55a24;
+        }
+
+        .btn-secondary {
+            background-color: var(--color-cta);
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e6a70a;
+        }
+
+        .disclaimer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: var(--font-size-xs);
+            color: var(--color-muted);
+        }
+
+        /* SVG Icons */
+        .check-icon {
+            width: 1rem;
+            height: 1rem;
+            fill: currentColor;
+        }
+
+        @media (min-width: 48em) {
+            .pricing-cards {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="pricing-section">
+        <div class="pricing-header">
+            <h2>Planes de Precios</h2>
+            <p>Elige el plan que mejor se adapte a las necesidades de tu restaurante</p>
+        </div>
+
+        <div class="pricing-cards">
+            <!-- Lista de espera Card -->
+            <div class="pricing-card">
+                <div class="pricing-card-header">
+                    <h3>Lista de espera</h3>
+                    <p>Ideal si quieres probar cuando esté 100% listo</p>
+                </div>
+                <div class="pricing-card-price">Gratis</div>
+                <div class="pricing-card-features">
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Notificación prioritaria del lanzamiento
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Acceso el primer día disponible
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Precio de lanzamiento especial
+                    </div>
+                    <div class="feature-item inactive">
+                        <span class="feature-icon inactive">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                            </svg>
+                        </span>
+                        Acceso exclusivo por 3 meses
+                    </div>
+                    <div class="feature-item inactive">
+                        <span class="feature-icon inactive">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                            </svg>
+                        </span>
+                        Influyes directamente el producto final
+                    </div>
+                    <div class="feature-item inactive">
+                        <span class="feature-icon inactive">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                            </svg>
+                        </span>
+                        Tu logo como 'Socio Fundador'
+                    </div>
+                    <div class="feature-item inactive">
+                        <span class="feature-icon inactive">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                            </svg>
+                        </span>
+                        Precio preferencial de por vida
+                    </div>
+                </div>
+                <div class="pricing-card-cta">
+                    <a href="#" class="btn btn-primary">Unirme gratis</a>
+                </div>
+            </div>
+
+            <!-- Socio Fundador Card -->
+            <div class="pricing-card featured">
+                <div class="limited-badge">Solo 10 cupos disponibles</div>
+                <div class="pricing-card-header">
+                    <h3>Socio Fundador</h3>
+                    <p>Para restaurantes listos para liderar el cambio</p>
+                </div>
+                <div class="pricing-card-price">200.000/pago único</div>
+                <div class="pricing-card-features">
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Notificación prioritaria del lanzamiento
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Acceso el primer día disponible
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Precio de lanzamiento especial
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Acceso exclusivo por 3 meses
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Influyes directamente el producto final
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Tu logo como 'Socio Fundador'
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Precio preferencial de por vida
+                    </div>
+                </div>
+                <div class="pricing-card-cta">
+                    <a href="#" class="btn btn-secondary">Contact Us</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            * Los precios no incluyen IVA. La lista de espera no garantiza acceso inmediato al lanzamiento.
+            <br>
+            ** El pago único de Socio Fundador incluye 12 meses de servicio premium y soporte prioritario.
+        </div>
+    </section>
+</body>
+</html>
