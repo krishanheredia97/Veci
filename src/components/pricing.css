@@ -198,3 +198,14 @@ body {
         margin-inline: 0;
     }
 }
+
+/* Add more space for the featured card with badge on mobile */
+@media (max-width: 48em) {
+    .pricing-card.featured {
+        padding-top: clamp(2rem, 5vw, 3rem);
+    }
+    
+    .limited-badge {
+        top: -0.75rem;
+    }
+}
