@@ -6,6 +6,7 @@
     <title>Veci - Precios</title>
     <link rel="stylesheet" href="src/components/design_system.css">
     <link rel="stylesheet" href="src/components/pricing.css">
+    <link rel="stylesheet" href="src/components/tooltip.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -93,7 +94,10 @@
                     <h3>VISIONARIO</h3>
                     <p>Para restaurantes listos para liderar el cambio</p>
                 </div>
-                <div class="pricing-card-price">300.000/pago único*</div>
+                <div class="pricing-card-price">300.000<span class="tooltip-container">
+                        <span class="tooltip-trigger">?</span>
+                        <span class="tooltip-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                    </span></div>
                 <div class="pricing-card-features">
                     <div class="feature-item">
                         <span class="feature-icon active">
@@ -165,5 +169,6 @@
         </div>
     </section>
     <script src="src/components/pricing.js"></script>
+    <script src="src/components/tooltip.js"></script>
 </body>
 </html>

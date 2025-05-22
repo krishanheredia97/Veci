@@ -1,0 +1,77 @@
+/* Tooltip container */
+.tooltip-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Tooltip trigger icon */
+.tooltip-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.tooltip-trigger:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Tooltip content */
+.tooltip-content {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    margin-bottom: 10px;
+}
+
+/* Show tooltip on hover/focus */
+.tooltip-container:hover .tooltip-content,
+.tooltip-container:focus .tooltip-content,
+.tooltip-container:focus-within .tooltip-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Arrow for tooltip */
+.tooltip-content::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+    .tooltip-content {
+        width: 150px;
+        font-size: 11px;
+    }
+}
