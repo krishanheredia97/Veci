@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fecha de lanzamiento - Countdown</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inconsolata:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/components/design_system.css">
+  <link rel="stylesheet" href="src/components/button.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-body);
+      background-color: var(--color-background);
+      color: var(--color-text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .countdown-container {
+      width: min(90%, 50rem);
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      border-radius: 1em;
+      padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 3vw, 2rem);
+      box-shadow: 0 0.625em 1.875em rgba(255, 107, 53, 0.2);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 60%);
+      pointer-events: none;
+    }
+
+    .countdown-title {
+      font-family: var(--font-heading);
+      font-weight: var(--font-weight-bold);
+      font-size: clamp(var(--font-size-xl), 5vw, var(--font-size-3xl));
+      color: var(--color-surface);
+      margin-bottom: clamp(1rem, 4vw, 2rem);
+      text-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.1);
+    }
+
+    .countdown-timer {
+      display: flex;
+      justify-content: center;
+      gap: clamp(0.5rem, 2vw, 1rem);
+      margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
+      flex-wrap: wrap;
+    }
+
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .countdown-value {
+      background-color: var(--color-surface);
+      color: var(--color-text);
+      font-family: var(--font-heading);
+      font-weight: var(--font-weight-bold);
+      font-size: clamp(1.5rem, 4vw, var(--font-size-3xl));
+      width: clamp(4em, 20vw, 5em);
+      height: clamp(3em, 15vw, 4em);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0.75em;
+      box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .countdown-label {
+      font-family: var(--font-body);
+      font-weight: var(--font-weight-medium);
+      font-size: clamp(var(--font-size-xs), 3vw, var(--font-size-sm));
+      color: var(--color-surface);
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing-wider);
+      margin-top: clamp(0.5rem, 2vw, 0.75rem);
+    }
+
+    /* Button styling override */
+    .countdown-container .cta-button {
+      background-color: var(--color-primary);
+      color: var(--color-surface);
+      font-weight: var(--font-weight-semibold);
+      margin: 0 auto;
+      display: block;
+      font-size: clamp(var(--font-size-sm), 3vw, var(--font-size-base));
+      padding: clamp(0.5em, 2vw, 0.75em) clamp(1em, 4vw, 1.5em);
+    }
+    
+    .countdown-container .cta-button:hover {
+      background-color: var(--color-secondary);
+    }
+
+    /* Animation for the countdown */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Only apply pulse animation to days */
+    #days.pulse {
+      animation: pulse 1s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="countdown-container">
+    <h1 class="countdown-title">Fecha de lanzamiento</h1>
+    <div class="countdown-timer">
+      <div class="countdown-item">
+        <div class="countdown-value" id="days">00</div>
+        <div class="countdown-label">Días</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-value" id="hours">00</div>
+        <div class="countdown-label">Horas</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-value" id="minutes">00</div>
+        <div class="countdown-label">Minutos</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-value" id="seconds">00</div>
+        <div class="countdown-label">Segundos</div>
+      </div>
+    </div>
+    <button class="cta-button" id="waitlist-btn">Entrar a la lista de espera</button>
+  </div>
+
+  <script src="src/components/button.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set the countdown date - July 15, 2025
+      const countdownDate = new Date('July 15, 2025 00:00:00').getTime();
+      
+      // Elements
+      const daysEl = document.getElementById('days');
+      const hoursEl = document.getElementById('hours');
+      const minutesEl = document.getElementById('minutes');
+      const secondsEl = document.getElementById('seconds');
+      const waitlistBtn = document.getElementById('waitlist-btn');
+      
+      // Previous values for animation
+      let prevDays, prevHours, prevMinutes, prevSeconds;
+      
+      // Update countdown every second
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+        
+        // Time calculations
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        // Add leading zeros
+        const formattedDays = String(days).padStart(2, '0');
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+        
+        // Update HTML
+        daysEl.textContent = formattedDays;
+        hoursEl.textContent = formattedHours;
+        minutesEl.textContent = formattedMinutes;
+        secondsEl.textContent = formattedSeconds;
+        
+        // Only add animation to days when it changes
+        if (prevDays !== formattedDays) {
+          addPulseAnimation(daysEl);
+          prevDays = formattedDays;
+        }
+        
+        // Just update the values without animation
+        if (prevHours !== formattedHours) {
+          prevHours = formattedHours;
+        }
+        
+        if (prevMinutes !== formattedMinutes) {
+          prevMinutes = formattedMinutes;
+        }
+        
+        if (prevSeconds !== formattedSeconds) {
+          prevSeconds = formattedSeconds;
+        }
+        
+        // If countdown is over
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          daysEl.textContent = '00';
+          hoursEl.textContent = '00';
+          minutesEl.textContent = '00';
+          secondsEl.textContent = '00';
+          
+          // Change the title to indicate launch
+          document.querySelector('.countdown-title').textContent = '¡Ya lanzamos!';
+        }
+      }
+      
+      // Add pulse animation
+      function addPulseAnimation(element) {
+        element.classList.remove('pulse');
+        void element.offsetWidth; // Trigger reflow
+        element.classList.add('pulse');
+      }
+      
+      // Initial call
+      updateCountdown();
+      
+      // Update every second
+      const countdownInterval = setInterval(updateCountdown, 1000);
+      
+      // No click handler for the waitlist button as requested
+      // You'll add that functionality later
+    });
+  </script>
+</body>
+</html>
