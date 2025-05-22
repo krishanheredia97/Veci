@@ -197,8 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     runDemoConversation();
     
     // Set up the loop to repeat the demo every 18 seconds (adjusted for longer conversation)
-    setInterval(runDemoConversation, 18000);
-    
+    // setInterval(runDemoConversation, 18000);    
     // Cart toggle functionality
     let isCartExpanded = false;
     
