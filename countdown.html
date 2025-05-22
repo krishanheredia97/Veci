@@ -52,11 +52,19 @@
     }
 
     .countdown-timer {
-      display: flex;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: clamp(0.5rem, 2vw, 1rem);
       margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
-      flex-wrap: wrap;
+      width: min(100%, 30rem);
+      margin-inline: auto;
+    }
+
+    @media (min-width: 40em) {
+      .countdown-timer {
+        grid-template-columns: repeat(4, 1fr);
+        width: 100%;
+      }
     }
 
     .countdown-item {
