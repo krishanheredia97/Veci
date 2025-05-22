@@ -112,8 +112,14 @@
       font-weight: var(--font-weight-semibold);
       margin: 0 auto;
       display: block;
-      font-size: clamp(var(--font-size-sm), 3vw, var(--font-size-base));
-      padding: clamp(0.5em, 2vw, 0.75em) clamp(1em, 4vw, 1.5em);
+      font-size: var(--font-size-sm);
+      padding: 0.75em 1.5em;
+    }
+
+    @media (min-width: 40em) {
+      .countdown-container .cta-button {
+        font-size: var(--font-size-xl);
+      }
     }
     
     .countdown-container .cta-button:hover {
