@@ -5,6 +5,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('sendButton');
     const cartToggleButton = document.getElementById('cartToggleButton');
     const cartContainer = document.getElementById('cartContainer');
+    const cartContent = cartContainer.querySelector('.cart-content');
+    const cartItemCountSpan = cartContainer.querySelector('.cart-item-count');
+    const cartEmptyMessage = cartContainer.querySelector('.cart-empty-message');
+
+    // Simple cart state (only Bandeja Paisa for this demo)
+    let cartItems = [];
+
+    const updateCartUI = () => {
+        // Update item count text
+        cartItemCountSpan.textContent = `${cartItems.length} artículos`;
+
+        // Remove any existing rendered items
+        const existing = cartContent.querySelectorAll('.cart-item');
+        existing.forEach(el => el.remove());
+
+        if (cartItems.length === 0) {
+            cartEmptyMessage.style.display = 'block';
+        } else {
+            cartEmptyMessage.style.display = 'none';
+
+            cartItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `\n                    <span class="cart-item-title">${item.title}</span>\n                    <button class=\"remove-from-cart-btn\" aria-label=\"Remove item\">-</button>\n                `;
+
+                const removeBtn = itemDiv.querySelector('.remove-from-cart-btn');
+                removeBtn.addEventListener('click', () => {
+                    removeItemFromCart(item.id);
+                });
+
+                cartContent.appendChild(itemDiv);
+            });
+        }
+    };
+
+    const addItemToCart = (item) => {
+        if (!cartItems.some(i => i.id === item.id)) {
+            cartItems.push(item);
+            updateCartUI();
+        }
+    };
+
+    const removeItemFromCart = (itemId) => {
+        cartItems = cartItems.filter(i => i.id !== itemId);
+        updateCartUI();
+
+        // Reset corresponding plus buttons in chat
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            if (btn.classList.contains('added')) {
+                btn.classList.remove('added');
+                const icon = btn.querySelector('.plus-icon');
+                if (icon) icon.textContent = '+';
+            }
+        });
+    };
+
+    // Initialize cart UI in empty state
+    updateCartUI();
 
     // Predefined conversation for demonstration
     const demoConversation = [
@@ -68,11 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (addToCartBtn) {
                 addToCartBtn.addEventListener('click', function() {
-                    addToCartBtn.classList.toggle('added');
-                    if (addToCartBtn.classList.contains('added')) {
+                    if (!addToCartBtn.classList.contains('added')) {
+                        // Add to cart
+                        addToCartBtn.classList.add('added');
                         plusIcon.textContent = '-';
+                        addItemToCart({ id: 'bandeja-paisa', title: message.content.title, price: message.content.price });
                     } else {
+                        // Remove from cart
+                        addToCartBtn.classList.remove('added');
                         plusIcon.textContent = '+';
+                        removeItemFromCart('bandeja-paisa');
                     }
                 });
             }
@@ -191,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Disable the input field and button since this is just a demo
     messageInput.disabled = true;
     sendButton.disabled = true;
-    messageInput.placeholder = "Demo mode - conversation plays automatically";
+    messageInput.placeholder = "Conversación de prueba";
 
     // Run the demo conversation immediately
     runDemoConversation();
