@@ -51,13 +51,20 @@
     margin-bottom: 10px;
 }
 
-/* Show tooltip on hover/focus (desktop) and on active class (mobile) */
-.tooltip-container:hover .tooltip-content,
-.tooltip-container:focus .tooltip-content,
-.tooltip-container:focus-within .tooltip-content,
+/* Show tooltip when active (used by mobile JS toggle) */
 .tooltip-container.active .tooltip-content {
     opacity: 1;
     visibility: visible;
+}
+
+/* Show tooltip on hover/focus *only* on devices that support hover (desktop) */
+@media (hover: hover) and (pointer: fine) {
+    .tooltip-container:hover .tooltip-content,
+    .tooltip-container:focus .tooltip-content,
+    .tooltip-container:focus-within .tooltip-content {
+        opacity: 1;
+        visibility: visible;
+    }
 }
 
 /* Arrow for tooltip */
