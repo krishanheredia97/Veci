@@ -30,6 +30,9 @@ function setupMobileTooltips() {
         const content = container.querySelector('.tooltip-content');
         
         if (trigger && content) {
+            // Track if the click was on the trigger
+            let clickedOnTrigger = false;
+            
             // Toggle tooltip visibility on tap
             trigger.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -51,11 +54,27 @@ function setupMobileTooltips() {
                 } else {
                     container.classList.add('active');
                 }
+                
+                // Set flag to indicate click was on trigger
+                // This needs to be AFTER the toggle logic to prevent interference
+                clickedOnTrigger = true;
+            });
+            
+            // Allow clicking on the tooltip content without closing it
+            content.addEventListener('click', (e) => {
+                e.stopPropagation();
             });
             
             // Close tooltip when clicking outside
             document.addEventListener('click', () => {
-                container.classList.remove('active');
+                // Only close if the click wasn't on the trigger
+                if (!clickedOnTrigger) {
+                    container.classList.remove('active');
+                }
+                // Reset the flag for the next click
+                setTimeout(() => {
+                    clickedOnTrigger = false;
+                }, 0);
             });
         }
     });

@@ -51,10 +51,11 @@
     margin-bottom: 10px;
 }
 
-/* Show tooltip on hover/focus */
+/* Show tooltip on hover/focus (desktop) and on active class (mobile) */
 .tooltip-container:hover .tooltip-content,
 .tooltip-container:focus .tooltip-content,
-.tooltip-container:focus-within .tooltip-content {
+.tooltip-container:focus-within .tooltip-content,
+.tooltip-container.active .tooltip-content {
     opacity: 1;
     visibility: visible;
 }
