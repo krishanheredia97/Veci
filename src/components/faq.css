@@ -69,10 +69,21 @@
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text);
+  box-sizing: border-box;
 }
 
 .faq-question .icon {
+  font-size: 14px;
+  color: var(--color-text);
+  margin-left: 12px;
   transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Answer */
@@ -91,8 +102,9 @@
   max-height: 40rem; /* large enough to fit content */
 }
 
+/* We're using different icons instead of rotation */
 .faq-item.expanded .faq-question .icon {
-  transform: rotate(180deg);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 /* Mobile layout: stack intro on top */
