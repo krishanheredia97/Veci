@@ -10,6 +10,8 @@
     <!-- Chat-demo assets -->
     <link rel="stylesheet" href="src/components/dummy_chats.css">
     <link rel="stylesheet" href="src/components/food_card.css">
+    <!-- Button styles -->
+    <link rel="stylesheet" href="src/components/button.css">
 
     <!-- Icons (for the feature checkmark) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -166,6 +168,22 @@
             box-shadow: 0 0 16px rgba(58, 165, 83, 0.7);
         }
 
+        /* CTA wrapper and subtext styles */
+        .cta-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .cta-subtext {
+            font-size: 0.875rem;
+            color: var(--color-text, #33322E);
+            margin: 0;
+            opacity: 0.8;
+        }
+
         /* =====  Chat demo column  ===== */
         /* Ensure the chat card is never wider than its column */
         .chat-demo .card {
@@ -198,6 +216,11 @@
                     <span class="feature-text">Memoriza tu menú</span>
                     <span class="feature-text">No comete errores</span>
                 </div>
+            </div>
+            
+            <div class="cta-wrapper">
+                <button class="cta-button">Reserva tu lugar</button>
+                <p class="cta-subtext">Reserva gratis, sin compromiso</p>
             </div>
         </section>
 
@@ -267,5 +290,7 @@
     </script>
     <!-- Chat demo behaviour -->
     <script src="src/components/dummy_chats.js"></script>
+    <!-- Button functionality -->
+    <script src="src/components/button.js"></script>
 </body>
 </html>
