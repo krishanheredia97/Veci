@@ -215,6 +215,32 @@
         }
 
         /* =====  Chat demo column  ===== */
+        /* Chat demo section title styling */
+        .chat-demo-title {
+            font-family: var(--font-heading, "Roboto Slab", serif);
+            font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+            font-weight: 900;
+            color: var(--color-text);
+            margin: 0 0 1.5rem 0;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        
+        .chat-demo-title.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Hide the title on desktop layouts */
+        @media (min-width: 50em) {
+            .chat-demo-title {
+                display: none;
+            }
+        }
+        
         /* Ensure the chat card is never wider than its column */
         .chat-demo .card {
             width: 100%;
@@ -256,6 +282,7 @@
 
         <!-- ❷  Chat demo column -->
         <section class="chat-demo">
+            <h2 class="chat-demo-title">Mira a Veci en acción</h2>
             <!-- The complete chat card markup copied from dummy_chats.html -->
             <div class="card">
                 <div class="card-content">
@@ -322,5 +349,39 @@
     <script src="src/components/dummy_chats.js"></script>
     <!-- Button functionality -->
     <script src="src/components/button.js"></script>
+    
+    <!-- Scroll animation for chat demo title -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatDemoTitle = document.querySelector('.chat-demo-title');
+            const chatDemoSection = document.querySelector('.chat-demo');
+            
+            // Function to check if an element is in the viewport
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+                    rect.bottom >= 0
+                );
+            }
+            
+            // Function to handle scroll events
+            function handleScroll() {
+                if (window.innerWidth < 800) { // Only apply on responsive layouts
+                    if (isElementInViewport(chatDemoSection)) {
+                        chatDemoTitle.classList.add('visible');
+                    } else {
+                        chatDemoTitle.classList.remove('visible');
+                    }
+                }
+            }
+            
+            // Add scroll event listener
+            window.addEventListener('scroll', handleScroll);
+            
+            // Initial check on page load
+            handleScroll();
+        });
+    </script>
 </body>
 </html>
