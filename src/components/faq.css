@@ -1,0 +1,96 @@
+/* FAQ Section Styles */
+
+.faq-section {
+  /* Center section and constrain width with intrinsic sizing techniques */
+  width: min(95%, 75rem);
+  margin-inline: auto;
+  padding: clamp(2rem, 6vw, 4rem) 0;
+
+  /* 2-column intrinsic grid that collapses automatically */
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: clamp(1.5rem, 5vw, 4rem);
+}
+
+/* Force single column when there is not enough space */
+@container style(max-width:45em) or (max-width:45em) {
+  .faq-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Intro (left) column */
+.faq-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 25rem;
+}
+
+.faq-title {
+  font: var(--text-h2);
+  color: var(--color-text);
+}
+
+.faq-description {
+  font: var(--text-body);
+  color: var(--color-muted);
+}
+
+/* Accordion */
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.faq-item {
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background-color: var(--color-surface);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.faq-item:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Question button */
+.faq-question {
+  all: unset;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  padding: clamp(1rem, 3vw, 1.25rem) 1.25rem;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.faq-question .icon {
+  transition: transform 0.3s ease;
+}
+
+/* Answer */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 1.25rem;
+  font: var(--text-body);
+  color: var(--color-text);
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+/* Expanded state */
+.faq-item.expanded .faq-answer {
+  padding: 1rem 1.25rem 1.25rem;
+  max-height: 40rem; /* large enough to fit content */
+}
+
+.faq-item.expanded .faq-question .icon {
+  transform: rotate(180deg);
+}
