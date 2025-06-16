@@ -346,6 +346,81 @@
     }
 }
 
+/* Fix for chat demo when embedded in index.html */
+/* Reset any inherited styles that might be causing issues */
+.chat-demo {
+    text-align: initial;
+}
+
+/* Fix for card-header alignment */
+.chat-demo .card-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    text-align: left !important;
+    flex-direction: row !important;
+    width: 100% !important;
+}
+
+/* Fix for chat container background color */
+.chat-demo .chat-container {
+    background-color: #fff9eb !important;
+}
+
+/* Ensure logo is properly aligned and styled */
+.chat-demo .logo {
+    text-align: left !important;
+    margin-right: 0 !important;
+    flex: 0 0 auto !important;
+    font-family: 'Roboto Slab', serif !important;
+    font-weight: 900 !important;
+    color: var(--color-primary) !important;
+}
+
+/* Ensure restaurant name is properly aligned */
+.chat-demo .restaurant-name {
+    text-align: center !important;
+    flex: 1 1 auto !important;
+    margin: 0 !important;
+}
+
+/* Ensure cart toggle button is properly positioned */
+.chat-demo .cart-toggle-button {
+    margin-left: 0 !important;
+    flex: 0 0 auto !important;
+}
+
+/* Fix any potential issues with the card itself */
+.chat-demo .card {
+    text-align: left !important;
+    margin: 0 auto !important;
+}
+
+/* Fix any potential issues with the card content */
+.chat-demo .card-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+}
+
+/* Fix any potential issues with the input container */
+.chat-demo .input-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+/* Fix any potential issues with the message input */
+.chat-demo .message-input {
+    flex: 1 1 auto !important;
+    text-align: left !important;
+}
+
+/* Fix any potential issues with the send button */
+.chat-demo .send-button {
+    flex: 0 0 auto !important;
+}
+
 @media (max-width: 400px) {
     .input-container {
         gap: 0.5em;
