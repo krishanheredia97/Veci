@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Flag to track if the demo has already played
+    let demoPlayed = false;
+    
+    // Check if we're on desktop or mobile
+    const isDesktop = window.innerWidth >= 800; // Same breakpoint as in CSS
     // DOM elements
     const chatContainer = document.getElementById('chatContainer');
     const messageInput = document.getElementById('messageInput');
@@ -256,11 +261,38 @@ document.addEventListener('DOMContentLoaded', () => {
     sendButton.disabled = true;
     messageInput.placeholder = "Conversación de prueba";
 
-    // Run the demo conversation immediately
-    runDemoConversation();
+    // Function to check if an element is fully visible in the viewport
+    const isElementFullyVisible = (el) => {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    };
     
-    // Set up the loop to repeat the demo every 18 seconds (adjusted for longer conversation)
-    // setInterval(runDemoConversation, 18000);    
+    // Function to handle scroll events for responsive view
+    const handleScroll = () => {
+        // Only check scroll if we're on mobile and demo hasn't played yet
+        if (!isDesktop && !demoPlayed && isElementFullyVisible(chatContainer)) {
+            runDemoConversation();
+            demoPlayed = true;
+            // Remove the scroll listener once demo has played
+            window.removeEventListener('scroll', handleScroll);
+        }
+    };
+    
+    // If on desktop, play demo immediately
+    if (isDesktop) {
+        runDemoConversation();
+    } else {
+        // On mobile, add scroll listener and check initial position
+        window.addEventListener('scroll', handleScroll);
+        // Check if already visible on load
+        setTimeout(() => handleScroll(), 300); // Small delay to ensure DOM is fully rendered
+    }
+    
     // Cart toggle functionality
     let isCartExpanded = false;
     
