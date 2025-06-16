@@ -1,43 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navbar Test</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500&family=Inconsolata&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="src/components/design_system.css">
-  <link rel="stylesheet" href="src/components/navbar.css">
-  <link rel="stylesheet" href="src/components/button.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero – Veci</title>
+
+    <!-- Core styles -->
+    <link rel="stylesheet" href="src/components/design_system.css">
+    <!-- Component styles -->
+    <link rel="stylesheet" href="src/components/button.css">
+    <link rel="stylesheet" href="src/components/dummy_chats.css">
+    <link rel="stylesheet" href="src/components/food_card.css">
+    <link rel="stylesheet" href="src/components/section-title.css">
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="src/components/hero.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&display=swap" rel="stylesheet">
+    
+    <!-- Icons (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar" id="main-navbar">
-    <div class="logo-container">
-      <i class="logo-icon fas fa-rocket"></i>
-      <span class="logo-text">Veci</span>
-    </div>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-    <button class="cta-button">Demo</button>
-    <button class="menu-toggle"><i class="fas fa-bars"></i></button>
-  </nav>
 
-  <!-- Sticky CTA -->
-  <div class="sticky-cta">Contact Us</div>
+    <main class="wrapper">
+        <!-- ❶  Text column -->
+        <section class="text-wrapper">
+            <div class="eyebrow">Para restaurantes inteligentes</div>
+            <h1><span class="title-line">TU MESERO</span><span class="title-line">AL INSTANTE</span></h1>
+            <p class="static-text">
+                ¿Tu equipo no da abasto? Automatiza la toma de pedidos y deja que tu personal se enfoque en despachar y cobrar.
+            </p>
+            <div class="feature-badge">
+                <div class="checkmark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                <div class="feature-container">
+                    <span class="feature-text active">Responde de inmediato</span>
+                    <span class="feature-text">Memoriza tu menú</span>
+                    <span class="feature-text">No comete errores</span>
+                </div>
+            </div>
+            
+            <div class="cta-wrapper">
+                <button class="cta-button">Reserva tu lugar</button>
+                <p class="cta-subtext">Reserva gratis, sin compromiso</p>
+            </div>
+        </section>
 
-  <div class="container">
-    <section class="content-section">
-      <h1>Welcome to Our Website</h1>
-      <p>This is a sample content section.</p>
-    </section>
-  </div>
+        <!-- ❷  Chat demo column -->
+        <section class="chat-demo">
+            <h2 class="section-title responsive-only">Mira a Veci en acción</h2>
+            <!-- The complete chat card markup copied from dummy_chats.html -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="logo">VECI</div>
+                        <div class="restaurant-name">Mamma Mia</div>
+                        <button id="cartToggleButton" class="cart-toggle-button" aria-label="Toggle cart">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="chat-container" id="chatContainer"></div>
+                    <div class="input-container">
+                        <input type="text" id="messageInput" placeholder="Type your message..." class="message-input">
+                        <button id="sendButton" class="send-button" aria-label="Send message">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="cart-container" id="cartContainer">
+                        <div class="cart-header">
+                            <h3>Carrito</h3>
+                            <span class="cart-item-count">0 artículos</span>
+                        </div>
+                        <div class="cart-content">
+                            <p class="cart-empty-message">Tu carrito está vacío</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-  <script src="src/components/navbar.js"></script>
-  <script src="src/components/button.js"></script>
+    <!-- =====  Behaviour scripts  ===== -->
+    <!-- Component scripts -->
+    <script src="src/components/button.js"></script>
+    <script src="src/components/dummy_chats.js"></script>
+    <script src="src/components/section-title.js"></script>
+    <!-- Page-specific scripts -->
+    <script src="src/components/hero.js"></script>
 </body>
 </html>
