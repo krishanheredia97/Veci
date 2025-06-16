@@ -32,6 +32,7 @@
             /* Mobile-first: single column */
             grid-template-columns: 1fr;
             gap: clamp(2rem, 5vw, 6rem);
+            justify-items: center;
             align-items: center;
             width: min(100%, 75rem); /* Clamp at ~1200px */
             margin-block: clamp(2rem, 6vh, 6rem);
@@ -44,12 +45,20 @@
             }
         }
 
+        @media (min-width: 50em) {
+            /* reset justify on wide view */
+            .wrapper { justify-items: stretch; }
+    .text-wrapper { align-items: flex-start; text-align: left; }
+        }
+
         /* =====  Text column  ===== */
         .text-wrapper {
+            margin-inline: auto;
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 1.5rem;
-            text-align: left;
+            text-align: center;
         }
 
         .text-wrapper h1 {
@@ -69,9 +78,12 @@
 
         /* Feature badge animation reused from the existing hero */
         .feature-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            /* gap overridden above */
             height: 1.5rem;
             overflow: hidden;
         }
@@ -98,6 +110,9 @@
         }
 
         .checkmark {
+            font-size: 1rem;
+            line-height: 1;
+
             color: var(--color-primary, #ff6b35);
             flex-shrink: 0;
         }
