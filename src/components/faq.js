@@ -6,21 +6,10 @@
   // Set initial state for already expanded items
   faqItems.forEach(item => {
     const answer = item.querySelector('.faq-answer');
-    const icon = item.querySelector('.icon');
     
     if (item.classList.contains('expanded')) {
       answer.style.maxHeight = answer.scrollHeight + 'px';
-      // Set up arrow for expanded items
-      if (icon) {
-        icon.classList.remove('fa-chevron-down');
-        icon.classList.add('fa-chevron-up');
-      }
-    } else {
-      // Set down arrow for collapsed items
-      if (icon) {
-        icon.classList.remove('fa-chevron-up');
-        icon.classList.add('fa-chevron-down');
-      }
+      // Icon rotation is handled by CSS
     }
   });
 
@@ -46,12 +35,7 @@
           otherItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
           otherItem.querySelector('.faq-answer').setAttribute('aria-hidden', 'true');
           
-          // Update arrow for collapsed items
-          const otherIcon = otherItem.querySelector('.icon');
-          if (otherIcon) {
-            otherIcon.classList.remove('fa-chevron-up');
-            otherIcon.classList.add('fa-chevron-down');
-          }
+          // Icon rotation is handled by CSS
         }
       });
 
@@ -60,14 +44,10 @@
       questionBtn.setAttribute('aria-expanded', isExpanded);
       answer.setAttribute('aria-hidden', !isExpanded);
 
-      // Update arrow based on state
+      // Update content height based on state
       if (isExpanded) {
-        icon.classList.remove('fa-chevron-down');
-        icon.classList.add('fa-chevron-up');
         answer.style.maxHeight = answer.scrollHeight + 'px';
       } else {
-        icon.classList.remove('fa-chevron-up');
-        icon.classList.add('fa-chevron-down');
         answer.style.maxHeight = null;
       }
     });

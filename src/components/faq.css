@@ -82,8 +82,6 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Answer */
@@ -102,9 +100,9 @@
   max-height: 40rem; /* large enough to fit content */
 }
 
-/* We're using different icons instead of rotation */
+/* Use rotation animation for the chevron */
 .faq-item.expanded .faq-question .icon {
-  background-color: rgba(0, 0, 0, 0.2);
+  transform: rotate(180deg);
 }
 
 /* Mobile layout: stack intro on top */
