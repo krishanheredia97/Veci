@@ -48,6 +48,12 @@ body {
     justify-content: center;
 }
 
+/* Fix for when used inside content containers */
+.content-container .carousel-container {
+    min-height: auto;
+    margin-top: 2rem;
+}
+
 /* Add padding only when carousel view is active (controlled by JS) */
 .carousel-container.carousel-active {
     padding-bottom: 60px; /* Add space for dots below */
@@ -117,6 +123,15 @@ body {
     .carousel {
         grid-template-columns: repeat(4, 1fr);
         width: min(100%, 1400px);
+    }
+    
+    .content-container .carousel-container {
+        padding-top: 0;
+        padding-bottom: 2rem;
+    }
+    
+    .content-container .carousel {
+        padding-top: 1rem;
     }
 }
 
