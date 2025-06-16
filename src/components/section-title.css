@@ -1,0 +1,25 @@
+/* Section title styling */
+.section-title {
+    font-family: var(--font-heading, "Roboto Slab", serif);
+    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+    font-weight: 900;
+    color: var(--color-text);
+    margin: 0 0 1.5rem 0;
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.section-title.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* A 'responsive-only' class can be added to the element if it should be hidden on desktop */
+@media (min-width: 50em) {
+    .section-title.responsive-only {
+        display: none;
+    }
+}

@@ -1,0 +1,208 @@
+/* =====  Layout wrapper  ===== */
+body {
+    margin: 0;
+    padding-inline: clamp(1rem, 4vw, 5rem);
+    font-family: var(--font-body, "Poppins", sans-serif);
+    background: var(--color-background, #faf6ec);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.wrapper {
+    display: grid;
+    /* Mobile-first: single column */
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 6rem);
+    justify-items: center;
+    align-items: center;
+    width: min(100%, 75rem); /* Clamp at ~1200px */
+    margin-block: clamp(2rem, 6vh, 6rem);
+}
+
+/* Add vertical spacing in mobile view to push chat demo below viewport */
+@media (max-width: 49.99em) {
+    body {
+        min-height: 100vh;
+        padding-top: 10vh; /* Add top padding to push content down */
+    }
+    
+    .wrapper {
+        gap: 30vh; /* Maintain 30% viewport height spacing between sections */
+        margin-top: 5vh; /* Add some margin at the top */
+    }
+    
+    /* Center text wrapper vertically in the viewport */
+    .text-wrapper {
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+        margin-bottom: 5vh;
+    }
+}
+
+/* Two-column layout once there's enough room */
+@media (min-width: 50em) {
+    .wrapper {
+        grid-template-columns: 1fr minmax(18rem, 34rem);
+        gap: clamp(2rem, 5vw, 6rem); /* Reset to original gap for desktop */
+    }
+    
+    /* Reset min-height for desktop */
+    .text-wrapper {
+        min-height: auto;
+    }
+}
+
+@media (min-width: 50em) {
+    /* reset justify on wide view */
+    .wrapper { justify-items: stretch; }
+    .text-wrapper { align-items: flex-start; text-align: left; }
+}
+
+/* =====  Text column  ===== */
+.text-wrapper {
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.text-wrapper h1 {
+    font-family: var(--font-heading, "Roboto Slab", serif);
+    font-size: clamp(2.5rem, 4.5vw + 0.5rem, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--color-primary, #ff6b35);
+    margin: 0;
+}
+
+.static-text {
+    font-size: clamp(1rem, 0.5vw + 0.9rem, 1.25rem);
+    max-width: 60ch;
+    color: var(--color-text, #33322e);
+}
+
+/* Modern feature badge with flexbox */
+.feature-badge {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    margin: 1rem auto;
+    background-color: var(--color-surface, #FFFFFF);
+    border: 1px solid var(--color-border, #E6DCCE);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.feature-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.checkmark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: var(--color-accent, #3AA553);
+    color: white;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.feature-container {
+    position: relative;
+    height: 1.5rem;
+    overflow: hidden;
+    width: auto;
+    min-width: 12rem; /* Ensure consistent width */
+    text-align: left;
+}
+
+.feature-text {
+    position: absolute;
+    inset-inline: 0;
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); /* Faster transition */
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium, 500);
+    line-height: 1.5;
+    color: var(--color-text, #33322E);
+    pointer-events: none; /* Prevent text from interfering with hover */
+    text-align: left;
+}
+
+.feature-text.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Prevent wrapping within each title line */
+.title-line{
+    display:block;
+    white-space:nowrap;
+}
+
+/* Eyebrow text styling - modern pill design */
+.eyebrow {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+    background-color: var(--color-accent, #3AA553);
+    margin-bottom: 1.25rem;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wide);
+    position: relative;
+    display: inline-block;
+    box-shadow: 0 0 12px rgba(58, 165, 83, 0.5);
+    transition: all 0.3s ease;
+}
+
+.eyebrow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 16px rgba(58, 165, 83, 0.7);
+}
+
+/* CTA wrapper and subtext styles */
+.cta-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.cta-subtext {
+    font-size: 0.875rem;
+    color: var(--color-text, #33322E);
+    margin: 0;
+    opacity: 0.8;
+}
+
+/* =====  Chat demo column  ===== */
+/* Ensure the chat card is never wider than its column */
+.chat-demo .card {
+    width: 100%;
+    height: auto;
+}
+
+/* Ensure VECI logo has proper weight */
+.chat-demo .logo {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 900;
+    color: var(--color-primary);
+}
