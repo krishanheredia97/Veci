@@ -9,7 +9,7 @@ body {
     min-height: 100vh;
 }
 
-.wrapper {
+.hero-grid {
     display: grid;
     /* Mobile-first: single column */
     grid-template-columns: 1fr;
@@ -27,7 +27,7 @@ body {
         padding-top: 10vh; /* Add top padding to push content down */
     }
     
-    .wrapper {
+    .hero-grid {
         gap: 30vh; /* Maintain 30% viewport height spacing between sections */
         margin-top: 5vh; /* Add some margin at the top */
     }
@@ -46,7 +46,7 @@ body {
 
 /* Two-column layout once there's enough room */
 @media (min-width: 50em) {
-    .wrapper {
+    .hero-grid {
         grid-template-columns: 1fr minmax(18rem, 34rem);
         gap: clamp(2rem, 5vw, 6rem); /* Reset to original gap for desktop */
     }
@@ -59,7 +59,7 @@ body {
 
 @media (min-width: 50em) {
     /* reset justify on wide view */
-    .wrapper { justify-items: stretch; }
+    .hero-grid { justify-items: stretch; }
     .text-wrapper { align-items: flex-start; text-align: left; }
 }
 
