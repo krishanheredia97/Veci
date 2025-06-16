@@ -100,6 +100,13 @@
   .faq-section {
     grid-template-columns: 1fr;
   }
+  /* Adjust intro section for full width on mobile/tablet */
+  .faq-intro {
+    max-width: none; /* Allow intro to take full width of the grid column */
+    align-items: center; /* Center the intro content when it's stacked */
+    text-align: center; /* Center the text within the intro */
+  }
+
   /* Full-width CTA on mobile */
   .faq-intro .cta-button {
     width: 100%;

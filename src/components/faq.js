@@ -3,6 +3,14 @@
 (function () {
   const faqItems = document.querySelectorAll('.faq-item');
 
+  // Set initial state for already expanded items
+  faqItems.forEach(item => {
+    const answer = item.querySelector('.faq-answer');
+    if (item.classList.contains('expanded')) {
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }
+  });
+
   faqItems.forEach(item => {
     const questionBtn = item.querySelector('.faq-question');
     const answer = item.querySelector('.faq-answer');
