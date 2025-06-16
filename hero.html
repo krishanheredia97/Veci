@@ -40,17 +40,37 @@
             margin-block: clamp(2rem, 6vh, 6rem);
         }
 
-        /* Two-column layout once there’s enough room */
+        /* Add vertical spacing in mobile view to push chat demo below viewport */
+        @media (max-width: 49.99em) {
+            .wrapper {
+                gap: 30vh; /* More reasonable spacing - 30% of viewport height */
+            }
+            
+            /* Ensure text wrapper takes up enough space in viewport */
+            .text-wrapper {
+                min-height: 60vh;
+                justify-content: center;
+                padding-bottom: 10vh; /* Add some padding at the bottom */
+            }
+        }
+
+        /* Two-column layout once there's enough room */
         @media (min-width: 50em) {
             .wrapper {
                 grid-template-columns: 1fr minmax(18rem, 34rem);
+                gap: clamp(2rem, 5vw, 6rem); /* Reset to original gap for desktop */
+            }
+            
+            /* Reset min-height for desktop */
+            .text-wrapper {
+                min-height: auto;
             }
         }
 
         @media (min-width: 50em) {
             /* reset justify on wide view */
             .wrapper { justify-items: stretch; }
-    .text-wrapper { align-items: flex-start; text-align: left; }
+            .text-wrapper { align-items: flex-start; text-align: left; }
         }
 
         /* =====  Text column  ===== */
