@@ -46,6 +46,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    /* Prevent internal scrolling */
+    overflow-y: hidden;
 }
 
 /* Fix for when used inside content containers */
@@ -54,6 +56,9 @@ body {
     margin-top: 2rem;
     width: 100%;
     padding: 0;
+    overflow: hidden;
+    /* Prevent scrolling within the container */
+    overflow-y: hidden;
 }
 
 /* Add padding only when carousel view is active (controlled by JS) */
@@ -77,12 +82,12 @@ body {
     margin: 0 auto;
     
     /* Mobile carousel styles - will be overridden by grid on larger screens */
-    overflow-x: hidden;
+    overflow: visible;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
-    touch-action: pan-y; /* Disable browser's horizontal touch actions to avoid conflicts */
+    touch-action: none; /* Disable all touch actions to prevent scrolling */
 }
 
 /* Hide scrollbar */
@@ -128,6 +133,8 @@ body {
         max-width: 1500px;
         padding-left: 0;
         padding-right: 0;
+        overflow: visible;
+        touch-action: none;
     }
     
     .content-container .carousel-container {
@@ -135,11 +142,13 @@ body {
         padding-bottom: 2rem;
         width: 100%;
         max-width: 100%;
+        overflow: visible;
     }
     
     .content-container .carousel {
         padding-top: 1rem;
         width: 100%;
+        overflow: visible;
     }
 }
 
