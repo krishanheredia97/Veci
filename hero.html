@@ -59,6 +59,7 @@
             align-items: center;
             gap: 1.5rem;
             text-align: center;
+            position: relative;
         }
 
         .text-wrapper h1 {
@@ -123,6 +124,28 @@
             display:block;
             white-space:nowrap;
         }
+        
+        /* Eyebrow text styling - modern pill design */
+        .eyebrow {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+            background-color: var(--color-accent, #3AA553);
+            margin-bottom: 1.25rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            text-transform: uppercase;
+            letter-spacing: var(--letter-spacing-wide);
+            position: relative;
+            display: inline-block;
+            box-shadow: 0 0 12px rgba(58, 165, 83, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .eyebrow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 16px rgba(58, 165, 83, 0.7);
+        }
 
         /* =====  Chat demo column  ===== */
         /* Ensure the chat card is never wider than its column */
@@ -144,6 +167,7 @@
     <main class="wrapper">
         <!-- ❶  Text column -->
         <section class="text-wrapper">
+            <div class="eyebrow">Para restaurantes inteligentes</div>
             <h1><span class="title-line">TU MESERO</span><span class="title-line">AL INSTANTE</span></h1>
             <p class="static-text">
                 ¿Tu equipo no da abasto? Automatiza la toma de pedidos y deja que tu personal se enfoque en despachar y cobrar.
