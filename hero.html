@@ -77,21 +77,45 @@
             color: var(--color-text, #33322e);
         }
 
-        /* Feature badge animation reused from the existing hero */
+        /* Modern feature badge with flexbox */
         .feature-badge {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            height: 1.5rem;
-            overflow: hidden;
-            margin: 0 auto;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            margin: 1rem auto;
+            background-color: var(--color-surface, #FFFFFF);
+            border: 1px solid var(--color-border, #E6DCCE);
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .feature-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkmark {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background-color: var(--color-accent, #3AA553);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.875rem;
+            flex-shrink: 0;
         }
 
         .feature-container {
             position: relative;
             height: 1.5rem;
+            overflow: hidden;
             width: auto;
-            min-width: 12rem;
+            min-width: 12rem; /* Ensure consistent width */
         }
 
         .feature-text {
@@ -99,24 +123,17 @@
             inset-inline: 0;
             opacity: 0;
             transform: translateY(1.25rem);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             font-size: 1rem;
-            line-height: 1;
-            color: var(--color-text, #33322e);
+            font-weight: var(--font-weight-medium, 500);
+            line-height: 1.5;
+            color: var(--color-text, #33322E);
+            pointer-events: none; /* Prevent text from interfering with hover */
         }
+        
         .feature-text.active {
             opacity: 1;
             transform: translateY(0);
-        }
-
-        .checkmark {
-            font-size: 1rem;
-            line-height: 1;
-            color: var(--color-primary, #ff6b35);
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* Prevent wrapping within each title line */
@@ -175,8 +192,9 @@
             <div class="feature-badge">
                 <i class="fas fa-check checkmark"></i>
                 <div class="feature-container">
-                    <span class="feature-text active">Memoriza tu menú</span>
-                    <span class="feature-text">Responde de inmediato</span>
+                    <span class="feature-text active">Responde de inmediato</span>
+                    <span class="feature-text">Memoriza tu menú</span>
+                    <span class="feature-text">No comete errores</span>
                 </div>
             </div>
         </section>
@@ -223,15 +241,27 @@
 
     <!-- =====  Behaviour scripts  ===== -->
     <script>
-        /* Feature badge cycling (copied from the original hero) */
-        function cycleFeatures () {
+        /* Enhanced feature badge cycling with smoother transitions */
+        function cycleFeatures() {
             const features = document.querySelectorAll('.feature-text');
             let activeIndex = [...features].findIndex((f) => f.classList.contains('active'));
+            
+            // Remove active class with a slight delay to allow for fade out
             features[activeIndex].classList.remove('active');
+            
+            // Calculate next index
             activeIndex = (activeIndex + 1) % features.length;
-            features[activeIndex].classList.add('active');
+            
+            // Add active class to next feature
+            setTimeout(() => {
+                features[activeIndex].classList.add('active');
+            }, 400); // Matches the transition duration for a smooth sequence
         }
-        setInterval(cycleFeatures, 1500);
+        
+        // Start cycling after a short delay to ensure DOM is ready
+        setTimeout(() => {
+            setInterval(cycleFeatures, 3000); // Longer interval for better readability
+        }, 1000);
     </script>
     <!-- Chat demo behaviour -->
     <script src="src/components/dummy_chats.js"></script>
