@@ -54,7 +54,7 @@
 
         .text-wrapper h1 {
             font-family: var(--font-heading, "Roboto Slab", serif);
-            font-size: clamp(2.5rem, 5vw + 1rem, 6rem);
+            font-size: clamp(2.5rem, 4.5vw + 0.5rem, 5.5rem);
             font-weight: 600;
             line-height: 1.05;
             color: var(--color-primary, #ff6b35);
@@ -102,6 +102,12 @@
             flex-shrink: 0;
         }
 
+        /* Prevent wrapping within each title line */
+        .title-line{
+            display:block;
+            white-space:nowrap;
+        }
+
         /* =====  Chat demo column  ===== */
         /* Ensure the chat card is never wider than its column */
         .chat-demo .card {
@@ -115,7 +121,7 @@
     <main class="wrapper">
         <!-- ❶  Text column -->
         <section class="text-wrapper">
-            <h1>TU MESERO <br> AL INSTANTE</h1>
+            <h1><span class="title-line">TU MESERO</span><span class="title-line">AL INSTANTE</span></h1>
             <p class="static-text">
                 ¿Tu equipo no da abasto? Automatiza la toma de pedidos y deja que tu personal se enfoque en despachar y cobrar.
             </p>
