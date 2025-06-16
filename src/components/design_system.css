@@ -24,6 +24,9 @@
   --color-overlay: rgba(0, 0, 0, 0.5);
   --color-disabled: #DAD7CD;
 
+  /* Layout & Spacing */
+  --section-spacing: 10vh;
+
   /* Typography */
   --font-heading: 'Poppins', sans-serif;
   --font-body: 'Inter', sans-serif;
