@@ -5,8 +5,8 @@
 }
 
 :root {
-    /* Fluid card sizing using clamp */
-    --card-width: clamp(280px, 85vw, 320px);
+    /* Fluid card sizing using clamp - increased max size for desktop */
+    --card-width: clamp(280px, 85vw, 350px);
     --card-aspect-ratio: 2/3;
     
     /* Fluid typography */
@@ -37,10 +37,10 @@ body {
 
 .carousel-container {
     position: relative;
-    width: min(100%, 1400px);
+    width: 100%;
     min-height: 100vh;
     margin: 0 auto;
-    padding: 0 max(1rem, 5%);
+    padding: 0;
     overflow: visible; /* Allow dots to be fully visible */
     display: flex;
     flex-direction: column;
@@ -52,6 +52,8 @@ body {
 .content-container .carousel-container {
     min-height: auto;
     margin-top: 2rem;
+    width: 100%;
+    padding: 0;
 }
 
 /* Add padding only when carousel view is active (controlled by JS) */
@@ -122,16 +124,22 @@ body {
 @media (min-width: 1024px) and (orientation: landscape) {
     .carousel {
         grid-template-columns: repeat(4, 1fr);
-        width: min(100%, 1400px);
+        width: 100%;
+        max-width: 1500px;
+        padding-left: 0;
+        padding-right: 0;
     }
     
     .content-container .carousel-container {
         padding-top: 0;
         padding-bottom: 2rem;
+        width: 100%;
+        max-width: 100%;
     }
     
     .content-container .carousel {
         padding-top: 1rem;
+        width: 100%;
     }
 }
 
@@ -152,6 +160,12 @@ body {
     will-change: transform, opacity; /* Optimize for animations */
     margin: 0 auto; /* Center card in its container */
     max-width: var(--card-width); /* Limit maximum width */
+}
+
+/* Ensure flipcards in content container maintain proper size */
+.content-container .flip-card {
+    max-width: var(--card-width);
+    width: 100%;
 }
 
 /* Mobile view adjustments */
