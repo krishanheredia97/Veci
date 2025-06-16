@@ -1,216 +1,186 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hero Section</title>
+    <title>Hero – Veci</title>
+
+    <!-- Design tokens / utilities that already exist in the project -->
     <link rel="stylesheet" href="src/components/design_system.css">
+    <!-- Chat-demo assets -->
+    <link rel="stylesheet" href="src/components/dummy_chats.css">
+    <link rel="stylesheet" href="src/components/food_card.css">
+
+    <!-- Icons (for the feature checkmark) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Page-specific layout styles  -->
     <style>
+        /* =====  Layout wrapper  ===== */
         body {
+            margin: 0;
+            padding-inline: clamp(1rem, 4vw, 5rem);
+            font-family: var(--font-body, "Poppins", sans-serif);
+            background: var(--color-background, #faf6ec);
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 0 10%;
-            font-family: var(--font-body);
-            background-color: var(--color-background);
-        }
-        
-        .wrapper {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 15rem;
-            margin: 0 5%;
+            min-height: 100vh;
         }
 
+        .wrapper {
+            display: grid;
+            /* Mobile-first: single column */
+            grid-template-columns: 1fr;
+            gap: clamp(2rem, 5vw, 6rem);
+            align-items: center;
+            width: min(100%, 75rem); /* Clamp at ~1200px */
+            margin-block: clamp(2rem, 6vh, 6rem);
+        }
+
+        /* Two-column layout once there’s enough room */
+        @media (min-width: 50em) {
+            .wrapper {
+                grid-template-columns: 1fr minmax(18rem, 34rem);
+            }
+        }
+
+        /* =====  Text column  ===== */
         .text-wrapper {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
             gap: 1.5rem;
             text-align: left;
-            flex: 1;
-        }
-        
-        .text-wrapper h1 {
-            font-family: var(--font-heading);
-            font-size: 6rem;
-            font-weight: 600;
-            color: var(--color-primary);
-        }
-        
-        .static-text, .animated-text {
-            font-family: var(--font-body);
-            font-size: 1.5rem;
-            color: var(--color-text);
-        }
-        
-        .image-container {
-            position: relative;
-            width: 25vw;
-            height: 25vw;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 0 0 auto;
-        }
-        
-        img { 
-            --img-size: 20vw;
-            --img-inactive-size: calc(var(--img-size) * 0.9);
-            --base-size: var(--img-size);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: var(--img-inactive-size);
-            height: var(--img-inactive-size);
-            border-radius: 30%;
-            overflow: hidden;
-            z-index: 2;
-            transition: opacity 0.3s ease;
-            opacity: 0;
-        }
-        
-        img.active {
-            opacity: 1;
-        }
-        
-        img.last-active {
-            animation: glow 0.8s ease-in-out infinite;
-            width: var(--img-size);
-            height: var(--img-size);
         }
 
-        @keyframes glow {
-            0%, 100% {
-                box-shadow: 
-                    0 0 0 calc(var(--base-size) * 0.04) rgba(56, 176, 0, 0.8),
-                    0 0 0 calc(var(--base-size) * 0.08) rgba(56, 176, 0, 0.6),
-                    0 0 0 calc(var(--base-size) * 0.12) rgba(56, 176, 0, 0.4),
-                    0 0 0 calc(var(--base-size) * 0.16) rgba(56, 176, 0, 0.2);
-                filter: drop-shadow(0 0 calc(var(--base-size) * 0.1) #38B000);
-                transform: translate(-50%, -50%) rotate(0deg);
-            }
-            25% {
-                transform: translate(-50%, -50%) rotate(1deg);
-            }
-            50% {
-                box-shadow: 
-                    0 0 0 calc(var(--base-size) * 0.0333) rgba(56, 176, 0, 0.8),
-                    0 0 0 calc(var(--base-size) * 0.0666) rgba(56, 176, 0, 0.6),
-                    0 0 0 calc(var(--base-size) * 0.1) rgba(56, 176, 0, 0.4),
-                    0 0 0 calc(var(--base-size) * 0.1333) rgba(56, 176, 0, 0.2);
-                filter: drop-shadow(0 0 calc(var(--base-size) * 0.14) #38B000);
-                transform: translate(-50%, -50%) rotate(-1deg);
-            }
-            75% {
-                transform: translate(-50%, -50%) rotate(1deg);
-            }
+        .text-wrapper h1 {
+            font-family: var(--font-heading, "Roboto Slab", serif);
+            font-size: clamp(2.5rem, 5vw + 1rem, 6rem);
+            font-weight: 600;
+            line-height: 1.05;
+            color: var(--color-primary, #ff6b35);
+            margin: 0;
         }
-        
+
+        .static-text {
+            font-size: clamp(1rem, 0.5vw + 0.9rem, 1.25rem);
+            max-width: 60ch;
+            color: var(--color-text, #33322e);
+        }
+
+        /* Feature badge animation reused from the existing hero */
         .feature-badge {
             display: flex;
             align-items: center;
-            gap: 12px;
-            height: 24px;
+            gap: 0.75rem;
+            height: 1.5rem;
             overflow: hidden;
         }
+
         .feature-container {
             position: relative;
-            height: 24px;
-            width: 500px;
-            display: flex;
-            align-items: center;
+            height: 1.5rem;
+            width: 18rem;
         }
+
         .feature-text {
             position: absolute;
-            left: 0;
-            width: 100%;
+            inset-inline: 0;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(1.25rem);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            color: var(--color-text, #33322E);
-            font-family: var(--font-body, sans-serif);
+            font-size: 1rem;
             line-height: 1;
-            font-size: var(--font-size-md);
+            color: var(--color-text, #33322e);
         }
         .feature-text.active {
             opacity: 1;
             transform: translateY(0);
         }
+
         .checkmark {
-            color: var(--color-primary, #FF6B35);
+            color: var(--color-primary, #ff6b35);
             flex-shrink: 0;
-            font-size: var(--font-size-md);
+        }
+
+        /* =====  Chat demo column  ===== */
+        /* Ensure the chat card is never wider than its column */
+        .chat-demo .card {
+            width: 100%;
+            height: auto;
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="text-wrapper">
-            <h1 style="font-family: var(--font-heading);">TU MESERO <br> AL INSTANTE</h1>
-            <div class="static-text">
-              ¿Tu equipo no da abasto? Automatiza la toma de pedidos y deja que tu personal se enfoque en despachar y cobrar.
-            </div>
+
+    <main class="wrapper">
+        <!-- ❶  Text column -->
+        <section class="text-wrapper">
+            <h1>TU MESERO <br> AL INSTANTE</h1>
+            <p class="static-text">
+                ¿Tu equipo no da abasto? Automatiza la toma de pedidos y deja que tu personal se enfoque en despachar y cobrar.
+            </p>
             <div class="feature-badge">
-              <i class="fas fa-check checkmark"></i>
-              <div class="feature-container">
-                <span class="feature-text active">Memoriza tu menú</span>
-                <span class="feature-text">Responde de inmediato</span>
-              </div>
+                <i class="fas fa-check checkmark"></i>
+                <div class="feature-container">
+                    <span class="feature-text active">Memoriza tu menú</span>
+                    <span class="feature-text">Responde de inmediato</span>
+                </div>
             </div>
-        </div>
-        <div class="image-container">
-            <img src="assets/images/scene1.png" class="active">
-            <img src="assets/images/scene2.png">
-            <img src="assets/images/scene3.png">
-            <img src="assets/images/scene4.png">
-        </div>
-    </div>
+        </section>
 
+        <!-- ❷  Chat demo column -->
+        <section class="chat-demo">
+            <!-- The complete chat card markup copied from dummy_chats.html -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="logo">VECI</div>
+                        <div class="restaurant-name">Mamma Mia</div>
+                        <button id="cartToggleButton" class="cart-toggle-button" aria-label="Toggle cart">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="chat-container" id="chatContainer"></div>
+                    <div class="input-container">
+                        <input type="text" id="messageInput" placeholder="Type your message..." class="message-input">
+                        <button id="sendButton" class="send-button" aria-label="Send message">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="cart-container" id="cartContainer">
+                        <div class="cart-header">
+                            <h3>Carrito</h3>
+                            <span class="cart-item-count">0 artículos</span>
+                        </div>
+                        <div class="cart-content">
+                            <p class="cart-empty-message">Tu carrito está vacío</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- =====  Behaviour scripts  ===== -->
     <script>
-        let currentIndex = 0;
-        const images = document.querySelectorAll('img');
-        const totalImages = images.length;
-
-        function cycle() {
-            // Remove all active classes
-            images.forEach(img => {
-                img.classList.remove('active', 'last-active');
-            });
-            
-            // Move to next image
-            currentIndex = (currentIndex + 1) % totalImages;
-            
-            // Add appropriate class based on position
-            if (currentIndex === totalImages - 1) {
-                images[currentIndex].classList.add('active', 'last-active');
-            } else {
-                images[currentIndex].classList.add('active');
-            }
-            
-            // Set appropriate delay based on which frame is showing
-            const delay = (currentIndex === totalImages - 1) ? 4000 : 1000;
-            setTimeout(cycle, delay);
+        /* Feature badge cycling (copied from the original hero) */
+        function cycleFeatures () {
+            const features = document.querySelectorAll('.feature-text');
+            let activeIndex = [...features].findIndex((f) => f.classList.contains('active'));
+            features[activeIndex].classList.remove('active');
+            activeIndex = (activeIndex + 1) % features.length;
+            features[activeIndex].classList.add('active');
         }
-
-        setTimeout(cycle, 500);
-    </script>
-    <script>
-        function cycleFeatures() {
-          const features = document.querySelectorAll('.feature-text');
-          let activeIndex = [...features].findIndex(f => f.classList.contains('active'));
-          
-          features[activeIndex].classList.remove('active');
-          activeIndex = (activeIndex + 1) % features.length;
-          features[activeIndex].classList.add('active');
-        }
-        
         setInterval(cycleFeatures, 1500);
     </script>
+    <!-- Chat demo behaviour -->
+    <script src="src/components/dummy_chats.js"></script>
 </body>
 </html>
