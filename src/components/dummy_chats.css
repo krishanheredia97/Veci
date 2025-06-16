@@ -331,6 +331,21 @@
 }
 
 /* Responsive adjustments */
+
+/* Fix: keep chat card width consistent on mobile (applies when embedded in hero.html) */
+@media (max-width: 50em) {
+    /* Stretch the chat-demo grid item so its width is determined by the grid track, not its content */
+    .chat-demo {
+        justify-self: stretch;
+        width: 100%;
+    }
+
+    /* Ensure the card itself fills that space from the outset */
+    .chat-demo .card {
+        width: 100%;
+    }
+}
+
 @media (max-width: 400px) {
     .input-container {
         gap: 0.5em;
