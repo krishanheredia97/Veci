@@ -22,11 +22,7 @@ body {
     margin-bottom: clamp(2rem, 6vw, 3rem);
 }
 
-.pricing-header h2 {
-    font: var(--text-h2);
-    margin-bottom: clamp(0.75rem, 2vw, 1rem);
-    color: var(--color-text);
-}
+/* H2 styling is handled by section-title.css */
 
 .pricing-header p {
     font: var(--text-body-lg);
