@@ -72,17 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Predefined conversation for demonstration
     const demoConversation = [
         { sender: 'bot', text: '¿Qué más, Veci? 😊 ¿Qué se le antoja? 🍔🔥' },  
-        { sender: 'user', text: '¡Sí! ¿Qué me recomiendas?' },  
-        { sender: 'bot', text: '¡Nuestra Hamburguesa Picante de Pollo es LA favorita! 🔥 ¿Quieres probarla con unas papas crujientes? 🍟✨' },  
+        { sender: 'user', text: '¿Tienen mute?' },  
+        { sender: 'bot', text: '¡Claro! Nuestro delicioso mute trae mazorca, fríjoles, papa criolla, costilla de cerdo y chorizo' },  
         { sender: 'bot', type: 'image', content: {
-            title: 'Bandeja Paisa',
+            title: 'Mute',
             price: '16.500',
             image: 'assets/images/food_example_1.png'
         }},
-        { sender: 'user', text: '¡Suena perfecto! Añade un refresco también.' },  
-        { sender: 'bot', text: '¡Excelente elección! 📝✔️ Una Hamburguesa Picante, papas 🍟 y un refresco 🥤. ¿Algo más o confirmamos el pedido? 😊' },  
-        { sender: 'user', text: '¡Confirmar, por favor!' },  
-        { sender: 'bot', text: '¡Listo! 🎉 Tu pedido estará listo en 15 minutos. ¡Gracias por elegirnos! ❤️ ¡Que lo disfrutes! 😋' }  
+        { sender: 'user', text: 'De una👌' } 
     ];
 
     // Create typing indicator element
@@ -152,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Create description element
                 const descriptionElement = document.createElement('p');
                 descriptionElement.className = 'food-card-description';
-                descriptionElement.textContent = 'Deliciosa hamburguesa de pollo con salsa picante casera, lechuga fresca, tomate, cebolla caramelizada y queso derretido. Servida en pan artesanal tostado con mayonesa de chipotle.';
+                descriptionElement.textContent = 'Tradicional mute santandereano con costilla de cerdo, chorizo, mazorca tierna, fríjoles rojos, papa criolla y verduras frescas. Servido en olla de barro con cilantro y cebolla larga.';
                 
                 // Insert description after card info
                 const cardInfo = foodCard.querySelector('.food-card-info');
