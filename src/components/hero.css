@@ -24,23 +24,24 @@ body {
 @media (max-width: 49.99em) {
     body {
         min-height: 100vh;
-        padding-top: 10vh; /* Add top padding to push content down */
+        padding-top: 3vh; /* Reduced from 10vh to 3vh to fix excessive top spacing */
     }
     
     .hero-grid {
         gap: 30vh; /* Maintain 30% viewport height spacing between sections */
-        margin-top: 5vh; /* Add some margin at the top */
+        margin-top: 2vh; /* Reduced from 5vh to 2vh */
     }
     
     /* Center text wrapper vertically in the viewport */
     .text-wrapper {
-        min-height: 70vh;
+        min-height: 60vh; /* Reduced from 70vh to 60vh */
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start; /* Changed from center to flex-start */
         align-items: center;
         margin-top: 0;
         margin-bottom: 5vh;
+        padding-top: 2vh; /* Added small padding at the top */
     }
 }
 
