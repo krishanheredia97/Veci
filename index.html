@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="src/components/flipcard.css">
     <link rel="stylesheet" href="src/components/pricing.css">
     <link rel="stylesheet" href="src/components/tooltip.css">
+    <link rel="stylesheet" href="src/components/faq.css">
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="src/components/hero.css">
 
@@ -279,7 +280,7 @@
                 <div class="limited-badge">Solo 10 cupos disponibles</div>
                 <div class="pricing-card-header">
                     <h3>VISIONARIO</h3>
-                    <p>Para restaurantes listos para liderar el cambio</p>
+                    <p>Para restaurantes que desean liderar el cambio</p>
                 </div>
                 <div class="pricing-card-price">300.000 <span class="tooltip-container">
                     <span class="tooltip-trigger">?</span>
@@ -352,6 +353,72 @@
             </div>
         </div>
     </section>
+    
+    <!-- Section separator -->
+    <div style="margin-bottom: var(--section-spacing);"></div>
+
+    <!-- FAQ section -->
+    <section class="faq-section" id="faq">
+        <!-- Intro Column -->
+        <div class="faq-intro">
+            <h2 class="section-title" style="text-align: left;">Preguntas<br>frecuentes</h2>
+            <p class="faq-description">Estas son las preguntas más comunes sobre cómo nuestro asistente virtual puede transformar la experiencia de tus clientes y optimizar las operaciones de tu restaurante.</p>
+            <button class="cta-button" onclick="window.location.href='https://forms.gle/...'">Registrarme</button>
+        </div>
+
+        <!-- Accordion Column -->
+        <div class="faq-accordion">
+            <div class="faq-item expanded">
+                <button class="faq-question" aria-expanded="true">
+                    <span>¿Qué es Veci?</span>
+                    <i class="icon fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="faq-answer" aria-hidden="false">
+                    Veci es un mesero virtual impulsado por inteligencia artificial que conoce tu menú al pie de la letra y atiende a tus clientes al instante. Toma pedidos, recomienda platos y responde preguntas, como si fuera parte de tu equipo.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    <span>¿Toca descargar una app para usarlo?</span>
+                    <i class="icon fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="faq-answer" aria-hidden="true">
+                    ¡Para nada! Tus clientes no tienen que descargar nada. Pueden acceder al chat de Veci directamente desde su celular, escaneando un código QR en la mesa o haciendo clic en un link que tú mismo puedes enviar por WhatsApp.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    <span>¿Es necesario tener una página web para usar el chatbot?</span>
+                    <i class="icon fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="faq-answer" aria-hidden="true">
+                    No necesitas tener página web. Veci funciona desde nuestra propia plataforma, así que puedes empezar a usarlo hoy mismo sin complicaciones técnicas.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    <span>¿Soporta pedidos complejos (modificaciones, combinaciones)?</span>
+                    <i class="icon fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="faq-answer" aria-hidden="true">
+                    ¡Claro que sí! Solo nos compartes qué combinaciones o modificaciones están permitidas en tu menú, y nosotros configuramos a Veci para que pueda guiar a los clientes como lo haría tu mejor mesero.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    <span>¿Puede tomar pedidos a domicilio?</span>
+                    <i class="icon fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="faq-answer" aria-hidden="true">
+                    ¡Por supuesto! Te entregamos un link personalizado para que los clientes puedan ordenar desde su casa. Solo necesitas configurar tu WhatsApp para que lo envíe automáticamente cuando alguien te escriba (es muy fácil y toma menos de 5 minutos).
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- =====  Behaviour scripts  ===== -->
     <!-- Component scripts -->
@@ -363,6 +430,7 @@
     <!-- Page-specific scripts -->
     <script src="src/components/hero.js"></script>
     <script src="src/components/flipcard.js"></script>
+    <script src="src/components/faq.js"></script>
 
 </body>
 </html>
