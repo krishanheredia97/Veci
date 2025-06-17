@@ -8,7 +8,8 @@
     const answer = item.querySelector('.faq-answer');
     
     if (item.classList.contains('expanded')) {
-      answer.style.maxHeight = answer.scrollHeight + 'px';
+      // Set a large enough value to ensure content is fully visible
+      answer.style.maxHeight = '1000px';
       // Icon rotation is handled by CSS
     }
   });
@@ -46,9 +47,16 @@
 
       // Update content height based on state
       if (isExpanded) {
-        answer.style.maxHeight = answer.scrollHeight + 'px';
+        // Set a large enough value to ensure content is fully visible
+        answer.style.maxHeight = '1000px';
+        
+        // Add a small delay to ensure transition works smoothly
+        setTimeout(() => {
+          // Recalculate actual height after expansion for smoother animation
+          answer.style.maxHeight = Math.max(answer.scrollHeight, 300) + 'px';
+        }, 10);
       } else {
-        answer.style.maxHeight = null;
+        answer.style.maxHeight = '0';
       }
     });
   });

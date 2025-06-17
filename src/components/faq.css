@@ -47,7 +47,7 @@
 .faq-item {
   border: none;
   border-radius: 0.75rem;
-  background-color: var(--color-cta);
+  background-color: var(--color-secondary);
   overflow: hidden;
   transition: box-shadow 0.3s ease;
 }
@@ -91,13 +91,16 @@
   padding: 0 1.25rem;
   font: var(--text-body);
   color: var(--color-text);
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  transition: max-height 0.5s ease, padding 0.3s ease;
+  line-height: 1.5;
+  word-wrap: break-word;
 }
 
 /* Expanded state */
 .faq-item.expanded .faq-answer {
   padding: 1rem 1.25rem 1.25rem;
-  max-height: 40rem; /* large enough to fit content */
+  max-height: 1000px; /* Much larger to ensure all content fits */
+  height: auto;
 }
 
 /* Use rotation animation for the chevron */
