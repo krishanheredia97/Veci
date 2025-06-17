@@ -17,6 +17,16 @@
     transform: translateX(0);
 }
 
+/* Section subtitle styling */
+.section-subtitle {
+    font: var(--text-subtitle);
+    color: var(--color-text);
+    max-width: 36rem;
+    margin: 0 auto 2rem;
+    text-align: center;
+    padding-inline: 0.5rem;
+}
+
 /* A 'responsive-only' class can be added to the element if it should be hidden on desktop */
 @media (min-width: 50em) {
     .section-title.responsive-only {

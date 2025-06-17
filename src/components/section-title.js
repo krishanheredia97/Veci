@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const sectionTitles = document.querySelectorAll('.section-title');
+    const sectionSubtitles = document.querySelectorAll('.section-subtitle');
 
-    if (sectionTitles.length === 0) {
+    if (sectionTitles.length === 0 && sectionSubtitles.length === 0) {
         return;
     }
 
@@ -21,5 +22,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     sectionTitles.forEach(title => {
         observer.observe(title);
+    });
+    
+    sectionSubtitles.forEach(subtitle => {
+        observer.observe(subtitle);
     });
 });

@@ -75,6 +75,9 @@
   --text-body: var(--font-weight-regular) var(--font-size-base)/var(--line-height-normal) var(--font-body);
   --text-body-sm: var(--font-weight-regular) var(--font-size-sm)/var(--line-height-normal) var(--font-body);
   --text-body-lg: var(--font-weight-regular) var(--font-size-lg)/var(--line-height-normal) var(--font-body);
+  
+  /* Section subtitle preset */
+  --text-subtitle: var(--font-weight-regular) var(--font-size-lg)/var(--line-height-normal) var(--font-body);
 }
 
 /* ===== Global Layout ===== */
