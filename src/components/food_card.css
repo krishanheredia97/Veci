@@ -105,6 +105,8 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 0.75rem; /* Was 16px */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Prevent overflow */
 }
 
 .food-card-title {
@@ -113,6 +115,12 @@
     font-weight: var(--font-weight-semibold);
     font-size: var(--font-size-md);
     color: var(--color-text);
+    white-space: nowrap; /* Prevent line breaks */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    max-width: 65%; /* Limit width to leave space for price */
+    flex: 1; /* Allow it to take available space */
+    padding-right: 8px; /* Add some spacing between title and price */
 }
 
 .food-card-price {
@@ -121,6 +129,9 @@
     font-weight: var(--font-weight-bold);
     font-size: var(--font-size-md);
     color: var(--color-primary);
+    white-space: nowrap; /* Prevent line breaks */
+    flex-shrink: 0; /* Prevent price from shrinking */
+    text-align: right; /* Align text to the right */
 }
 
 .food-card-button {
