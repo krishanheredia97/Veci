@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="src/components/food_card.css">
     <link rel="stylesheet" href="src/components/section-title.css">
     <link rel="stylesheet" href="src/components/flipcard.css">
+    <link rel="stylesheet" href="src/components/pricing.css">
+    <link rel="stylesheet" href="src/components/tooltip.css">
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="src/components/hero.css">
 
@@ -190,6 +192,163 @@
                 <span class="dot" data-index="1"></span>
                 <span class="dot" data-index="2"></span>
                 <span class="dot" data-index="3"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing section -->
+    <section id="pricing" class="pricing-section">
+        <div class="pricing-header">
+            <h2>Nuestros precios pre-lanzamiento</h2>
+            <p>Haz de tu restaurante el más inteligente de la cuadra y sé pionero en la industria gastronómica Colombiana</p>
+        </div>
+        
+        <div class="pricing-cards">
+            <!-- Lista de espera Card -->
+            <div class="pricing-card">
+                <div class="pricing-card-header">
+                    <h3>LISTA DE ESPERA</h3>
+                    <p>Ideal si quieres probar cuando esté 100% listo</p>
+                </div>
+                <div class="pricing-card-price">Gratis</div>
+                <div class="pricing-card-features">
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Notificación prioritaria del lanzamiento
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Acceso el primer día disponible
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Oferta especial de lanzamiento
+                    </div>
+                    <div class="feature-item inactive">
+                        <span class="feature-icon inactive">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                            </svg>
+                        </span>
+                        Acceso exclusivo por 3 meses
+                    </div>
+                    <div class="feature-item inactive">
+                        <span class="feature-icon inactive">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                            </svg>
+                        </span>
+                        Influyes directamente el producto final
+                    </div>
+                    <div class="feature-item inactive">
+                        <span class="feature-icon inactive">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                            </svg>
+                        </span>
+                        Insignia 'Visionario' para tu restaurante
+                    </div>
+                    <div class="feature-item inactive">
+                        <span class="feature-icon inactive">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                            </svg>
+                        </span>
+                        Precio preferencial de por vida
+                    </div>
+                </div>
+                <div class="pricing-card-cta">
+                    <a href="#" class="btn btn-primary">Unirme gratis</a>
+                </div>
+            </div>
+
+            <!-- Visionario Card -->
+            <div class="pricing-card featured">
+                <div class="limited-badge">Solo 10 cupos disponibles</div>
+                <div class="pricing-card-header">
+                    <h3>VISIONARIO</h3>
+                    <p>Para restaurantes listos para liderar el cambio</p>
+                </div>
+                <div class="pricing-card-price">300.000 <span class="tooltip-container">
+                    <span class="tooltip-trigger">?</span>
+                    <span class="tooltip-content">Esta es una oferta exclusiva pre-lanzamiento. El precio es por local (ej: si tienes 2 locales y pagas una vez, los beneficios aplican para uno de tus dos locales)</span>
+                </span></div>
+                <div class="pricing-card-features">
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Notificación prioritaria del lanzamiento
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Acceso el primer día disponible
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Oferta especial de lanzamiento
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Acceso exclusivo por 3 meses <span class="tooltip-container">
+                            <span class="tooltip-trigger">?</span>
+                            <span class="tooltip-content">El tiempo de acceso exclusivo comienza a partir de la fecha de lanzamiento</span>
+                        </span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Influyes directamente el producto final
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Insignia 'Visionario' para tu restaurante
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon active">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                        Precio preferencial de por vida
+                    </div>
+                </div>
+                <div class="pricing-card-cta">
+                    <a href="#" class="btn btn-primary">Registrarme</a>
+                </div>
             </div>
         </div>
     </section>
