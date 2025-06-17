@@ -121,6 +121,7 @@
     max-width: 65%; /* Limit width to leave space for price */
     flex: 1; /* Allow it to take available space */
     padding-right: 8px; /* Add some spacing between title and price */
+    text-align: left !important; /* Force left alignment */
 }
 
 .food-card-price {

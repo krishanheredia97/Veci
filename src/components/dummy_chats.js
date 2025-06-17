@@ -193,64 +193,36 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear the chat to start fresh
         clearChat();
         
-        // Timeline for the demo conversation (total ~15 seconds)
-        setTimeout(() => {
-            // First bot message
-            addMessage(demoConversation[0]);
-        }, 500);
-
-        setTimeout(() => {
-            // First user message
-            addMessage(demoConversation[1]);
-        }, 2000);
-
-        setTimeout(() => {
-            // Show typing indicator for second bot message
-            const typingIndicator = showTypingIndicator();
+        // Helper function to process messages with proper timing
+        const processMessages = (index, delay) => {
+            if (index >= demoConversation.length) return;
+            
+            const message = demoConversation[index];
             
             setTimeout(() => {
-                // Remove typing indicator and show second bot message
-                chatContainer.removeChild(typingIndicator);
-                addMessage(demoConversation[2]);
-                
-                // Show food card image after a short delay
-                setTimeout(() => {
-                    addMessage(demoConversation[3]);
-                }, 800);
-            }, 1500);
-        }, 3500);
-
-        setTimeout(() => {
-            // Second user message (now at index 4 due to added food card)
-            addMessage(demoConversation[4]);
-        }, 7000);
+                if (message.sender === 'user') {
+                    // User messages are added immediately
+                    addMessage(message);
+                    // Process next message after a delay
+                    processMessages(index + 1, 1500);
+                } else {
+                    // For bot messages, show typing indicator first
+                    const typingIndicator = showTypingIndicator();
+                    
+                    setTimeout(() => {
+                        // Remove typing indicator and show bot message
+                        chatContainer.removeChild(typingIndicator);
+                        addMessage(message);
+                        
+                        // Process next message after a delay
+                        processMessages(index + 1, message.type === 'image' ? 1000 : 2000);
+                    }, 1500);
+                }
+            }, delay);
+        };
         
-        setTimeout(() => {
-            // Show typing indicator for third bot message
-            const typingIndicator = showTypingIndicator();
-            
-            setTimeout(() => {
-                // Remove typing indicator and show third bot message
-                chatContainer.removeChild(typingIndicator);
-                addMessage(demoConversation[5]);
-            }, 1500);
-        }, 9000);
-        
-        setTimeout(() => {
-            // Third user message
-            addMessage(demoConversation[6]);
-        }, 12000);
-        
-        setTimeout(() => {
-            // Show typing indicator for final bot message
-            const typingIndicator = showTypingIndicator();
-            
-            setTimeout(() => {
-                // Remove typing indicator and show final bot message
-                chatContainer.removeChild(typingIndicator);
-                addMessage(demoConversation[7]);
-            }, 1500);
-        }, 14000);
+        // Start processing messages
+        processMessages(0, 500);
     };
 
     // Disable the input field and button since this is just a demo

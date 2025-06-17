@@ -86,6 +86,7 @@
     transform-origin: bottom;
     animation: message-pop-in 0.3s ease-out forwards;
     opacity: 0;
+    text-align: left;
 }
 
 @keyframes message-pop-in {
@@ -105,6 +106,7 @@
     align-self: flex-start;
     border-bottom-left-radius: 0.25em;
     animation-delay: 0.1s;
+    text-align: left;
 }
 
 .user-message {
@@ -112,6 +114,7 @@
     color: white;
     align-self: flex-end;
     border-bottom-right-radius: 0.25em;
+    text-align: left;
 }
 
 /* Typing indicator */
