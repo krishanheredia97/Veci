@@ -27,6 +27,13 @@
   max-width: 25rem;
 }
 
+/* Ensure left alignment on desktop */
+.faq-intro .section-title,
+.faq-intro .section-subtitle {
+  text-align: left !important;
+  margin-left: 0 !important;
+}
+
 .faq-title {
   font: var(--text-h2);
   color: var(--color-text);
@@ -118,6 +125,18 @@
     max-width: none; /* Allow intro to take full width of the grid column */
     align-items: center; /* Center the intro content when it's stacked */
     text-align: center; /* Center the text within the intro */
+  }
+
+  /* Center section title and subtitle on mobile */
+  .faq-intro .section-title {
+    text-align: center !important;
+  }
+
+  .faq-intro .section-subtitle {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 90%;
   }
 
   /* Full-width CTA on mobile */

@@ -1,7 +1,7 @@
 /* Section title styling */
 .section-title {
     font-family: var(--font-heading, "Roboto Slab", serif);
-    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+    font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.5rem);
     font-weight: 900;
     color: var(--color-text);
     margin: 0 0 1.5rem 0;
@@ -10,6 +10,10 @@
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     text-align: center;
     text-transform: uppercase;
+    line-height: 1.2;
+    word-spacing: -0.05em;
+    padding: 0 0.5rem;
+    hyphens: auto;
 }
 
 .section-title.visible {
@@ -24,12 +28,38 @@
     max-width: 36rem;
     margin: 0 auto 2rem;
     text-align: center;
-    padding-inline: 0.5rem;
+    padding-inline: 1rem;
+    line-height: 1.5;
 }
 
 /* A 'responsive-only' class can be added to the element if it should be hidden on desktop */
 @media (min-width: 50em) {
     .section-title.responsive-only {
         display: none;
+    }
+}
+
+/* Responsive adjustments for section titles and subtitles on small screens */
+@media (max-width: 30em) {
+    .section-title {
+        font-size: clamp(1.25rem, 5vw, 1.75rem);
+        letter-spacing: -0.02em;
+        word-break: break-word;
+    }
+    
+    .section-subtitle {
+        max-width: 85%;
+        padding-inline: 0.5rem;
+        line-height: 1.6;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Additional breakpoint for very narrow screens */
+@media (max-width: 25em) {
+    .section-subtitle {
+        max-width: 80%;
     }
 }
