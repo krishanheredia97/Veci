@@ -12,8 +12,8 @@
     padding: 0 var(--section-padding);
     margin: 0 auto;
     max-width: var(--max-width);
-    justify-content: space-between;
-    grid-template-columns: 1fr 1fr; /* Equal columns */
+    justify-content: center;
+    grid-template-columns: 1fr; /* Single column layout for all screen sizes */
     gap: 2rem; /* Consistent gap */
 }
 
@@ -21,15 +21,16 @@
     position: relative;
     width: 25vw;
     height: 25vw;
-    justify-self: end; /* Align to the right end of its grid cell */
+    justify-self: center; /* Center in the grid cell */
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
+    margin: 0 auto; /* Center horizontally */
 }
 
 #bottom-cta .image-container img { 
-    --img-size: 20vw;
+    --img-size: 17vw; /* Slightly larger for desktop */
     --img-inactive-size: calc(var(--img-size) * 0.9);
     --base-size: var(--img-size);
     position: absolute;
@@ -85,7 +86,6 @@
 /* Responsive styles */
 @media (max-width: 49.99em) {
     #bottom-cta .hero-grid {
-        grid-template-columns: 1fr;
         gap: 1rem; /* Override hero.css 30vh gap, ensure small fixed gap */
         padding: 0 1rem; /* Smaller padding on mobile */
         align-items: start; /* Align items to the top */
@@ -95,9 +95,10 @@
     #bottom-cta .text-wrapper {
         text-align: center;
         align-items: center;
-        margin-bottom: 1rem; /* Small margin below text before image */
+        margin-bottom: 2rem; /* Add margin below text before image on all screen sizes */
         min-height: auto; /* Override hero.css 60vh min-height */
         padding-top: 0; /* Ensure no extra top padding from hero.css */
+        width: 100%; /* Full width */
     }
 
     #bottom-cta h1 {
