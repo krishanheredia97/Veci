@@ -1,26 +1,42 @@
 /* Guide Message Component Styles */
 
 .guide-message {
+    --guide-size: clamp(4rem, 20vw, 6rem);
+    --guide-font-size: clamp(0.9rem, 3vw, 1.1rem);
+    
     position: absolute;
-    top: 10%;
+    top: clamp(10%, 5vh, 20%);
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--color-primary);
     color: white;
-    padding: 12px;
-    border-radius: 0; /* Square corners */
+    padding: 0.5rem;
+    border-radius: 50%; /* Circle shape */
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: var(--guide-font-size);
     font-weight: 600;
     text-align: center;
     opacity: 0.85;
     z-index: 10;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
     pointer-events: none; /* Prevents the guide from blocking interactions with the card */
-    max-width: 80%;
+    width: var(--guide-size);
+    height: var(--guide-size);
     animation: pulsate 1.5s infinite alternate ease-in-out;
     transition: opacity 0.3s ease;
     display: none; /* Hidden by default, will be shown via JS */
+    display: flex;
+    flex-direction: column; /* Stack words vertically */
+    align-items: center;
+    justify-content: center;
+    line-height: 0.7; /* Tighten the line spacing */
+}
+
+/* Style for spans inside guide message to ensure proper centering */
+.guide-message span {
+    display: block;
+    margin: 0;
+    padding: 0;
 }
 
 /* Pulsating animation */
@@ -35,18 +51,23 @@
     }
 }
 
-/* Mobile-specific adjustments */
-@media (max-width: 767px), (orientation: portrait) {
-    .guide-message {
-        font-size: 12px;
-        padding: 10px 15px;
+/* Contextual size adjustments based on container size using container queries */
+@supports (container-type: inline-size) {
+    .flip-card {
+        container-type: inline-size;
     }
-}
-
-/* Desktop-specific adjustments */
-@media (min-width: 768px) and (orientation: landscape) {
-    .guide-message {
-        top: 15%;
-        padding: 12px 25px;
+    
+    @container (min-width: 20em) {
+        .guide-message {
+            --guide-padding-base: clamp(1rem, 5%, 1.5rem);
+            --guide-font-size: clamp(1.1rem, 5%, 1.3rem);
+        }
+    }
+    
+    @container (min-width: 30em) {
+        .guide-message {
+            --guide-padding-base: clamp(1.25rem, 6%, 1.75rem);
+            --guide-font-size: clamp(1.2rem, 6%, 1.4rem);
+        }
     }
 }
