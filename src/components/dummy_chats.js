@@ -206,17 +206,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Process next message after a delay
                     processMessages(index + 1, 1500);
                 } else {
-                    // For bot messages, show typing indicator first
-                    const typingIndicator = showTypingIndicator();
-                    
-                    setTimeout(() => {
-                        // Remove typing indicator and show bot message
-                        chatContainer.removeChild(typingIndicator);
+                    // For bot messages: first message appears immediately, others show typing indicator
+                    if (index === 0) {
+                        // First bot message appears immediately without typing indicator
                         addMessage(message);
-                        
                         // Process next message after a delay
-                        processMessages(index + 1, message.type === 'image' ? 1000 : 2000);
-                    }, 1500);
+                        processMessages(index + 1, 1500);
+                    } else {
+                        // For subsequent bot messages, show typing indicator first
+                        const typingIndicator = showTypingIndicator();
+                        
+                        setTimeout(() => {
+                            // Remove typing indicator and show bot message
+                            chatContainer.removeChild(typingIndicator);
+                            addMessage(message);
+                            
+                            // Process next message after a delay
+                            processMessages(index + 1, message.type === 'image' ? 1000 : 2000);
+                        }, 1500);
+                    }
                 }
             }, delay);
         };
