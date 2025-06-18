@@ -464,43 +464,13 @@
     <script src="src/components/section-title.js"></script>
     <script src="src/components/pricing.js" fetchpriority="low"></script>
     <script src="src/components/tooltip.js" fetchpriority="low"></script>
-    <!-- Image container animation script -->
-    <script>
-        // Image container animation for bottom CTA section
-        (function() {
-            const bottomImages = document.querySelectorAll('#bottom-cta .image-container img');
-            let currentIndex = 0;
-            const totalImages = bottomImages.length;
-
-            function cycle() {
-                // Remove all active classes
-                bottomImages.forEach(img => {
-                    img.classList.remove('active', 'last-active');
-                });
-                
-                // Move to next image
-                currentIndex = (currentIndex + 1) % totalImages;
-                
-                // Add appropriate class based on position
-                if (currentIndex === totalImages - 1) {
-                    bottomImages[currentIndex].classList.add('active', 'last-active');
-                } else {
-                    bottomImages[currentIndex].classList.add('active');
-                }
-                
-                // Set appropriate delay based on which frame is showing
-                const delay = (currentIndex === totalImages - 1) ? 4000 : 1000;
-                setTimeout(cycle, delay);
-            }
-
-            setTimeout(cycle, 500);
-        })();
-    </script>
+    <!-- Page-specific scripts -->
     <!-- Page-specific scripts -->
     <script src="src/components/hero.js" fetchpriority="high"></script>
     <script src="src/components/guide_message.js"></script>
     <script src="src/components/flipcard.js"></script>
     <script src="src/components/faq.js"></script>
+    <script src="src/components/image-animation-section.js" loading="lazy" fetchpriority="low"></script>
 
 </body>
 </html>
