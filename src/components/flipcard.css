@@ -340,39 +340,69 @@ p {
     }
 }
 
-/* Dots navigation */
+/* Hide old Dots navigation */
 .dots-container {
-    display: flex;
-    justify-content: center;
-    gap: clamp(6px, 2vw, 10px);
-    padding-top: 10px;
-    padding-bottom: 10px;
-    position: relative;
-    z-index: 5;
-    width: 100%;
-    margin-top: 10px;
+    display: none !important; /* Ensure it's hidden */
 }
 
-/* Hide dots when not in mobile view */
-@media (min-width: 768px) and (orientation: landscape) {
-    .dots-container {
-        display: none;
+/* New Navigation Buttons for responsive view */
+.flipcard-nav-buttons-container {
+    display: none; /* Hidden by default, shown in responsive mode via media query */
+    justify-content: center; /* This will center the items when only one is visible due to the other being 'visibility: hidden' or if 'display: none' was used */
+    align-items: center;
+    margin-top: 1rem;
+    gap: 1rem; /* Space between buttons */
+    width: 100%; /* Ensure it takes full width for centering */
+    position: relative; /* For positioning if needed */
+    z-index: 5;
+}
+
+.flipcard-nav-button {
+    background-color: var(--color-primary);
+    color: white; /* Icon color */
+    border: none;
+    border-radius: 50%; /* Circular shape */
+    width: 3.5rem; /* Approx 40% larger (was 2.5rem) */
+    height: 3.5rem; /* Approx 40% larger (was 2.5rem) */
+    font-size: 1.75rem; /* Icon size - Approx 40% larger (was 1.25rem) */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .flipcard-nav-button:hover {
+        background-color: #e55a24; /* Darker shade for hover */
+        transform: translateY(-2px); /* Lift effect */
     }
 }
 
-.dot {
-    width: clamp(8px, 2vw, 12px);
-    height: clamp(8px, 2vw, 12px);
-    border-radius: 50%;
-    background-color: #ddd;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    -webkit-tap-highlight-color: transparent;
+.flipcard-nav-button:active {
+    background-color: #d04f1e; /* Even darker shade for active (pressed) state */
+    transform: translateY(1px); /* Simulate press down */
 }
 
-.dot.active {
-    background-color: #333;
-    transform: scale(1.2);
+.flipcard-nav-button:focus {
+    background-color: var(--color-primary); /* Explicitly set base background for focus state */
+    transform: translateY(0); /* Explicitly reset transform for focus state */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 2px white, 0 0 0 4px var(--color-primary); /* Custom focus ring */
+}
+
+.flipcard-nav-button.hidden {
+    display: none; /* Remove from layout to allow true centering */
+    pointer-events: none;
+}
+
+/* Responsive styles for flipcard navigation */
+@media (max-width: 767px), (orientation: portrait) {
+    .flipcard-nav-buttons-container {
+        display: flex; /* Show buttons container in responsive mode */
+    }
 }
 
 /* Responsive typography adjustments */

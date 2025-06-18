@@ -2,10 +2,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const carousel = document.querySelector('.carousel');
     const cards = document.querySelectorAll('.flip-card');
-    const prevBtn = document.querySelector('.nav-btn.prev');
-    const nextBtn = document.querySelector('.nav-btn.next');
-    const dots = document.querySelectorAll('.dot');
     const carouselContainer = document.querySelector('.carousel-container');
+    let navPrevButton, navNextButton;
     
     let currentIndex = 0;
     let isDesktopView = false; // Will be determined dynamically
@@ -161,8 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCardGap();
         updateCardDimensions();
         checkCardsVisibility(); 
-        updateActiveCard(currentIndex); // Update active card on resize
+        updateArrowButtonsVisibility(); // Update arrow buttons based on current index
         updateNavigation(); // Always update navigation to reflect new state
+        updateArrowButtonsVisibility(); // Ensure arrows update on resize
         
         // If view mode changed or we're in mobile view, ensure proper positioning
         if (wasDesktopView !== isDesktopView || !isDesktopView) {
@@ -238,46 +237,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // This function is kept as a placeholder in case you want to expand this behavior later
     }
     
-    // Next button click
-    nextBtn.addEventListener('click', () => {
-        if (currentIndex < cards.length - 1) {
-            currentIndex++;
-            updateActiveCard(currentIndex);
-            scrollToCard(currentIndex);
-            updateNavigation();
-            updateDots(currentIndex);
-            unflipAllCardsExcept(currentIndex);
-            checkForDemonstration();
-        }
-    });
-    
-    // Previous button click
-    prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateActiveCard(currentIndex);
-            scrollToCard(currentIndex);
-            updateNavigation();
-            updateDots(currentIndex);
-            unflipAllCardsExcept(currentIndex);
-            checkForDemonstration();
-        }
-    });
-    
-    // Dot navigation
-    dots.forEach(dot => {
-        dot.addEventListener('click', () => {
-            const index = parseInt(dot.getAttribute('data-index'));
-            currentIndex = index;
-            updateActiveCard(currentIndex);
-            scrollToCard(currentIndex);
-            updateNavigation();
-            updateDots(currentIndex);
-            unflipAllCardsExcept(currentIndex);
-            checkForDemonstration();
-        });
-    });
-    
+    // Initial setup for arrow buttons
+    createArrowButtons();
+
     // Card click/touch functionality for flipping
     cards.forEach((card, index) => {
         card.addEventListener('click', (e) => {
@@ -385,162 +347,137 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentIndex++;
             }
             
-            // Update UI - order matters here
-            updateDots(currentIndex);
-            updateNavigation();
-            scrollToCard(currentIndex); // This will also call updateActiveCard
-            unflipAllCardsExcept(currentIndex);
+            // A significant swipe occurred, update the card.
+            showCard(currentIndex); // This will handle active card, scroll, nav, unflip, and demo.
         } else {
-            // If swipe wasn't significant, make sure we're still properly positioned
+            // If swipe wasn't significant, make sure we're still properly positioned.
             scrollToCard(currentIndex, true);
         }
-    }, { passive: false }); // Changed to non-passive to allow preventDefault in some cases
-    
+    }, { passive: false }); // End of touchend event listener
+
     // Helper functions
+    // (Assuming scrollToCard, createArrowButtons, updateArrowButtonsVisibility, 
+    // showPrevCard, showNextCard, showCard, updateActiveCard are defined below correctly and only once)
+
     function scrollToCard(index, smooth = true) {
-        if (isDesktopView) return; // No need to scroll in desktop view
-        
-        // Use a simpler, more reliable approach for mobile
-        // Calculate position based on card index, width and gap
-        const scrollPosition = index * (cardWidth + cardGap);
-        
-        // Apply the scroll
-        carousel.scrollTo({
-            left: scrollPosition,
-            behavior: smooth ? 'smooth' : 'auto'
-        });
-        
-        // Force update active card
-        updateActiveCard(index);
-    }
+        if (!carousel) return;
+
+    const cardWidth = cards[0].offsetWidth;
+    const gap = parseInt(window.getComputedStyle(carousel).getPropertyValue('gap')) || 0;
+    const scrollAmount = index * (cardWidth + gap);
     
-    function updateDots(index) {
-        // This function assumes the dots-container visibility is handled by updateNavigation.
-        // It only focuses on setting the active class.
-        dots.forEach((dot, i) => {
-            if (i === index) {
-                dot.classList.add('active');
+    carousel.scrollTo({
+        left: scrollAmount,
+        behavior: smooth ? 'smooth' : 'auto'
+    });
+}
+
+function createArrowButtons() {
+        if (!carouselContainer) return;
+        let navButtonsContainer = carouselContainer.querySelector('.flipcard-nav-buttons-container');
+        if (!navButtonsContainer) {
+            navButtonsContainer = document.createElement('div');
+            navButtonsContainer.className = 'flipcard-nav-buttons-container';
+            if (carousel.nextSibling) {
+                carouselContainer.insertBefore(navButtonsContainer, carousel.nextSibling);
             } else {
-                dot.classList.remove('active');
+                carouselContainer.appendChild(navButtonsContainer);
             }
-        });
+        }
+
+        navPrevButton = document.createElement('button');
+        navPrevButton.className = 'flipcard-nav-button nav-prev';
+        navPrevButton.innerHTML = '<i class="fas fa-arrow-left"></i>';
+        navPrevButton.setAttribute('aria-label', 'Previous card');
+        navPrevButton.addEventListener('click', () => showPrevCard());
+
+        navNextButton = document.createElement('button');
+        navNextButton.className = 'flipcard-nav-button nav-next';
+        navNextButton.innerHTML = '<i class="fas fa-arrow-right"></i>';
+        navNextButton.setAttribute('aria-label', 'Next card');
+        navNextButton.addEventListener('click', () => showNextCard());
+
+        navButtonsContainer.appendChild(navPrevButton);
+        navButtonsContainer.appendChild(navNextButton);
+        updateArrowButtonsVisibility();
     }
 
-    // Function to update which card is active (visible) in mobile view
+    function updateArrowButtonsVisibility() {
+        if (!navPrevButton || !navNextButton) return;
+        if (isDesktopView) {
+            navPrevButton.classList.add('hidden');
+            navNextButton.classList.add('hidden');
+            return;
+        }
+        navPrevButton.classList.toggle('hidden', currentIndex === 0);
+        navNextButton.classList.toggle('hidden', currentIndex === cards.length - 1 && cards.length > 0);
+    }
+
+    function showPrevCard() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            showCard(currentIndex);
+        }
+    }
+
+    function showNextCard() {
+        if (currentIndex < cards.length - 1) {
+            currentIndex++;
+            showCard(currentIndex);
+        }
+    }
+
+    function showCard(index) {
+        currentIndex = index;
+        updateActiveCard(currentIndex);
+        scrollToCard(currentIndex);
+        updateNavigation(); 
+        updateArrowButtonsVisibility(); 
+        unflipAllCardsExcept(currentIndex);
+        checkForDemonstration();
+    }
+
     function updateActiveCard(index) {
         if (isDesktopView) {
-            // In desktop view, all cards are visible in grid layout
             cards.forEach(card => {
                 card.style.display = 'block';
-                card.style.opacity = '1';
-                card.style.visibility = 'visible';
-                card.style.position = 'relative';
-                card.style.zIndex = '1';
                 card.classList.remove('active');
-                // Reset any transforms
-                card.style.transform = '';
             });
             return;
         }
         
-        // In mobile view, create a smoother transition between cards
         cards.forEach((card, i) => {
-            // Keep all cards in the flow for proper sizing and positioning
-            card.style.display = 'block';
-            card.style.position = 'relative';
-            
-            // Calculate the position relative to the active card
-            const positionDiff = i - index;
-            
             if (i === index) {
-                // Active card
                 card.classList.add('active');
                 card.style.opacity = '1';
                 card.style.visibility = 'visible';
-                card.style.zIndex = '2';
-                card.style.transform = 'scale(1)';
-            } else if (i === index - 1) {
-                // Card to the left (previous)
-                card.classList.remove('active');
-                card.style.opacity = '0.5'; // Semi-visible during transition
-                card.style.visibility = 'visible';
-                card.style.zIndex = '1';
-                card.style.transform = 'translateX(-50%) scale(0.95)';
-                
-                // Fade it out completely after transition completes
-                setTimeout(() => {
-                    if (i !== currentIndex && i !== currentIndex - 1 && i !== currentIndex + 1) {
-                        card.style.opacity = '0';
-                        card.style.visibility = 'hidden';
-                    }
-                }, 400); // Match transition duration in CSS
-            } else if (i === index + 1) {
-                // Card to the right (next)
-                card.classList.remove('active');
-                card.style.opacity = '0.5'; // Semi-visible during transition
-                card.style.visibility = 'visible';
-                card.style.zIndex = '1';
-                card.style.transform = 'translateX(50%) scale(0.95)';
-                
-                // Fade it out completely after transition completes
-                setTimeout(() => {
-                    if (i !== currentIndex && i !== currentIndex - 1 && i !== currentIndex + 1) {
-                        card.style.opacity = '0';
-                        card.style.visibility = 'hidden';
-                    }
-                }, 400); // Match transition duration in CSS
             } else {
-                // Cards further away
                 card.classList.remove('active');
-                card.style.opacity = '0';
-                card.style.visibility = 'hidden';
-                card.style.zIndex = '0';
-                card.style.transform = positionDiff < 0 ? 'translateX(-100%)' : 'translateX(100%)';
             }
         });
     }
 
     function updateNavigation() {
-        const dotsContainer = document.querySelector('.dots-container');
+        const navButtonsContainer = carouselContainer.querySelector('.flipcard-nav-buttons-container');
+        if (!navButtonsContainer) return;
 
-        if (isDesktopView) { 
-            // Case 1: All cards fit in the main carousel-container (true desktop view)
-            prevBtn.style.display = 'none';
-            nextBtn.style.display = 'none';
-            if (dotsContainer) dotsContainer.style.display = 'none';
-            carousel.scrollLeft = 0; // Ensure it's at the start
-            carouselContainer.classList.remove('carousel-active'); // Remove padding in desktop view
+        if (isDesktopView) {
+            navButtonsContainer.style.display = 'none';
+            carouselContainer.classList.remove('carousel-active');
+            carousel.scrollLeft = 0;
+            updateArrowButtonsVisibility(); // Ensure arrows are hidden
             return;
         }
-        
-        // Add carousel-active class when in carousel mode
+
         carouselContainer.classList.add('carousel-active');
+        const isCarouselActuallyScrollable = carousel.scrollWidth > carousel.clientWidth + 1;
 
-        // Case 2: Not isDesktopView. Check if the .carousel element itself is scrollable.
-        const isCarouselActuallyScrollable = carousel.scrollWidth > carousel.clientWidth + 1; // +1 for subpixel buffer
-
-        if (isCarouselActuallyScrollable) {
-            // Carousel is scrollable, so show nav and manage state
-            prevBtn.style.display = 'flex';
-            nextBtn.style.display = 'flex';
-            if (dotsContainer) dotsContainer.style.display = 'flex';
-
-            prevBtn.disabled = currentIndex === 0;
-            nextBtn.disabled = cards.length === 0 || currentIndex >= cards.length - 1;
-
-            if (cards.length <= 1) { // Handles 0 or 1 card
-                prevBtn.disabled = true;
-                nextBtn.disabled = true;
-            }
-            updateDots(currentIndex); // Call simplified updateDots
+        if (isCarouselActuallyScrollable && cards.length > 1) {
+            navButtonsContainer.style.display = 'flex';
         } else {
-            // Carousel is NOT scrollable (all its content fits within its own viewport)
-            // This means even in 'carousel mode', no navigation is needed.
-            prevBtn.style.display = 'none';
-            nextBtn.style.display = 'none';
-            if (dotsContainer) dotsContainer.style.display = 'none';
-            carousel.scrollLeft = 0; // Ensure it's at the start
+            navButtonsContainer.style.display = 'none';
         }
+        updateArrowButtonsVisibility(); // Update individual button states
     }
 
     function unflipAllCardsExcept(activeIndex) {
@@ -556,21 +493,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isDesktopView) return; // No need to handle this in desktop view
         
         if (e.key === 'ArrowRight') {
-            if (currentIndex < cards.length - 1) {
-                currentIndex++;
-                scrollToCard(currentIndex);
-                updateNavigation();
-                updateDots(currentIndex);
-                unflipAllCardsExcept(currentIndex);
-            }
+            showNextCard();
         } else if (e.key === 'ArrowLeft') {
-            if (currentIndex > 0) {
-                currentIndex--;
-                scrollToCard(currentIndex);
-                updateNavigation();
-                updateDots(currentIndex);
-                unflipAllCardsExcept(currentIndex);
-            }
+            showPrevCard();
         }
     });
 });
