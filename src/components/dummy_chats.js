@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             foodCard.classList.add('food-card');
             foodCard.innerHTML = `
                 <div class="food-card-image-container">
-                    <img src="${message.content.image}" alt="${message.content.title}" class="food-card-image" ${message.content.image.includes('food_example_1') ? 'loading="eager" fetchpriority="high"' : ''}>
+                    <img src="${message.content.image}" alt="${message.content.title}" class="food-card-image" ${message.content.image.includes('food_example_1') ? 'loading="eager" fetchpriority="high" rel="preload"' : ''}>
                     <button class="add-to-cart-btn" aria-label="Add to cart">
                         <span class="plus-icon">+</span>
                     </button>
