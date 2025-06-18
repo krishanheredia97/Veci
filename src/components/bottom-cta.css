@@ -21,6 +21,7 @@
     position: relative;
     width: 25vw;
     height: 25vw;
+    justify-self: end; /* Align to the right end of its grid cell */
     display: flex;
     align-items: center;
     justify-content: center;
