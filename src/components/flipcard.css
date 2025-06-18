@@ -201,6 +201,11 @@ body {
     transform: rotateY(180deg);
 }
 
+/* Partial flip for hint animation - rotates just 15 degrees */
+.flip-card.partial-flip .flip-card-inner {
+    transform: rotateY(50deg);
+}
+
 /* Add hover effect for desktop/landscape views */
 @media (min-width: 768px) and (orientation: landscape) {
     .flip-card:hover .flip-card-inner {

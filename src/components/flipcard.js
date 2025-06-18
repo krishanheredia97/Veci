@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         );
     }
 
-    // Function to demonstrate the flip functionality and repeat every 12 seconds
+    // Function to demonstrate the flip functionality and repeat every second
     function demonstrateFlip() {
         // Don't demonstrate if user has manually flipped a card or if demo has already played
         if (hasUserFlippedCard || demoPlayed) return;
@@ -44,22 +44,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Mark that demo has played
         demoPlayed = true;
         
-        // Immediately flip the card for the first demonstration
+        // Immediately do a partial flip of the card for the first demonstration
         // Only proceed if user hasn't manually flipped a card
         if (!hasUserFlippedCard) {
             // Get the first visible card
             const firstCard = isDesktopView ? cards[0] : cards[currentIndex];
             
-            // Flip the card
-            firstCard.classList.add('flipped');
+            // Partially flip the card to hint at functionality
+            firstCard.classList.add('partial-flip');
             
-            // Flip back after 1.5 seconds
+            // Flip back after 0.5 seconds
             setTimeout(() => {
-                firstCard.classList.remove('flipped');
-            }, 1500);
+                firstCard.classList.remove('partial-flip');
+            }, 500);
         }
         
-        // Set up interval to repeat demonstration every 12 seconds
+        // Set up interval to repeat demonstration every second
         // Clear any existing interval first
         if (demonstrationInterval) {
             clearInterval(demonstrationInterval);
@@ -69,17 +69,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Only demonstrate if user hasn't manually flipped a card
             if (!hasUserFlippedCard) {
                 const firstCard = isDesktopView ? cards[0] : cards[currentIndex];
-                firstCard.classList.add('flipped');
                 
+                // Add the partial-flip class
+                firstCard.classList.add('partial-flip');
+                
+                // Remove the class after 0.5 seconds to complete the animation
                 setTimeout(() => {
-                    firstCard.classList.remove('flipped');
-                }, 1500);
+                    firstCard.classList.remove('partial-flip');
+                }, 500);
             } else {
                 // If user has flipped a card, stop the interval
                 clearInterval(demonstrationInterval);
                 demonstrationInterval = null;
             }
-        }, 12000); // 12 seconds 
+        }, 1500); // Repeat every 1 second
     }
     
     // Add mouse enter event listeners for desktop hover detection
