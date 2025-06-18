@@ -1,3 +1,4 @@
+// Import the guide message component
 document.addEventListener('DOMContentLoaded', function() {
     const carousel = document.querySelector('.carousel');
     const cards = document.querySelectorAll('.flip-card');
@@ -13,6 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
     let hasUserFlippedCard = false; // Track if user has manually flipped a card
     let demonstrationInterval = null; // Interval for repeating demonstration
     let demoPlayed = false; // Track if the demo has already played
+    
+    // Initialize guide message component
+    const guideMessage = new GuideMessage({
+        parentSelector: '.flip-card',
+        showDelay: 500
+    });
+    guideMessage.init();
 
     function updateCardGap() {
         const carouselStyle = window.getComputedStyle(carousel);
@@ -49,6 +57,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!hasUserFlippedCard) {
             // Get the first visible card
             const firstCard = isDesktopView ? cards[0] : cards[currentIndex];
+            const cardIndex = isDesktopView ? 0 : currentIndex;
+            
+            // Show guide message
+            guideMessage.show(cardIndex);
             
             // Partially flip the card to hint at functionality
             firstCard.classList.add('partial-flip');
@@ -69,6 +81,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Only demonstrate if user hasn't manually flipped a card
             if (!hasUserFlippedCard) {
                 const firstCard = isDesktopView ? cards[0] : cards[currentIndex];
+                const cardIndex = isDesktopView ? 0 : currentIndex;
+                
+                // Show guide message
+                guideMessage.show(cardIndex);
                 
                 // Add the partial-flip class
                 firstCard.classList.add('partial-flip');
@@ -81,12 +97,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 // If user has flipped a card, stop the interval
                 clearInterval(demonstrationInterval);
                 demonstrationInterval = null;
+                
+                // Hide all guide messages
+                guideMessage.hideAll();
             }
-        }, 1500); // Repeat every 1 second
+        }, 1500); // Repeat every 1.5 seconds
     }
     
     // Add mouse enter event listeners for desktop hover detection
-    cards.forEach(card => {
+    cards.forEach((card, index) => {
         card.addEventListener('mouseenter', () => {
             // Only consider it a manual flip in desktop/landscape mode
             if (isDesktopView) {
@@ -97,6 +116,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     clearInterval(demonstrationInterval);
                     demonstrationInterval = null;
                 }
+                
+                // Mark user interaction and hide all guide messages
+                guideMessage.setUserInteracted();
             }
         });
     });
@@ -273,6 +295,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     demonstrationInterval = null;
                 }
                 
+                // Mark user interaction and hide all guide messages
+                guideMessage.setUserInteracted();
+                
                 // In mobile view, ensure only one card is flipped at a time
                 if (card.classList.contains('flipped')) {
                     unflipAllCardsExcept(index);
@@ -310,6 +335,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         clearInterval(demonstrationInterval);
                         demonstrationInterval = null;
                     }
+                    
+                    // Mark user interaction and hide all guide messages
+                    guideMessage.setUserInteracted();
                     
                     // In mobile view, ensure only one card is flipped at a time
                     if (card.classList.contains('flipped')) {
