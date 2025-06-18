@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="src/components/pricing.css">
     <link rel="stylesheet" href="src/components/tooltip.css">
     <link rel="stylesheet" href="src/components/faq.css">
+    <link rel="stylesheet" href="src/components/bottom-cta.css">
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="src/components/hero.css">
 
@@ -421,6 +422,28 @@
         </div>
     </section>
 
+    <!-- New dual-column section -->
+    <section id="bottom-cta">
+        <div class="hero-grid">
+            <!-- Text column -->
+            <div class="text-wrapper">
+                <h1><span class="title-line">AHORA TUS MESAS</span><span class="title-line">SE ATIENDEN SOLAS</span></h1>
+                <div class="cta-wrapper">
+                    <button class="cta-button" onclick="window.location.href='#pricing'">Reserva tu lugar</button>
+                    <p class="cta-subtext">Reserva gratis, sin compromiso</p>
+                </div>
+            </div>
+
+            <!-- Image container column -->
+            <div class="image-container">
+                <img src="assets/images/scene1.png" class="active">
+                <img src="assets/images/scene2.png">
+                <img src="assets/images/scene3.png">
+                <img src="assets/images/scene4.png">
+            </div>
+        </div>
+    </section>
+
     <!-- =====  Behaviour scripts  ===== -->
     <!-- Component scripts -->
     <script src="src/components/button.js"></script>
@@ -428,6 +451,38 @@
     <script src="src/components/section-title.js"></script>
     <script src="src/components/pricing.js"></script>
     <script src="src/components/tooltip.js"></script>
+    <!-- Image container animation script -->
+    <script>
+        // Image container animation for bottom CTA section
+        (function() {
+            const bottomImages = document.querySelectorAll('#bottom-cta .image-container img');
+            let currentIndex = 0;
+            const totalImages = bottomImages.length;
+
+            function cycle() {
+                // Remove all active classes
+                bottomImages.forEach(img => {
+                    img.classList.remove('active', 'last-active');
+                });
+                
+                // Move to next image
+                currentIndex = (currentIndex + 1) % totalImages;
+                
+                // Add appropriate class based on position
+                if (currentIndex === totalImages - 1) {
+                    bottomImages[currentIndex].classList.add('active', 'last-active');
+                } else {
+                    bottomImages[currentIndex].classList.add('active');
+                }
+                
+                // Set appropriate delay based on which frame is showing
+                const delay = (currentIndex === totalImages - 1) ? 4000 : 1000;
+                setTimeout(cycle, delay);
+            }
+
+            setTimeout(cycle, 500);
+        })();
+    </script>
     <!-- Page-specific scripts -->
     <script src="src/components/hero.js"></script>
     <script src="src/components/flipcard.js"></script>
