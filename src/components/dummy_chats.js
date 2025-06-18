@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { sender: 'bot', type: 'image', content: {
             title: 'Mute',
             price: '16.500',
-            image: 'assets/images/food_example_1.png'
+            image: 'assets/images/food_example_1.webp'
         }},
         { sender: 'user', text: 'De una👌' } 
     ];
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             foodCard.classList.add('food-card');
             foodCard.innerHTML = `
                 <div class="food-card-image-container">
-                    <img src="${message.content.image}" alt="${message.content.title}" class="food-card-image">
+                    <img src="${message.content.image}" alt="${message.content.title}" class="food-card-image" ${message.content.image.includes('food_example_1') ? 'loading="eager" fetchpriority="high"' : ''}>
                     <button class="add-to-cart-btn" aria-label="Add to cart">
                         <span class="plus-icon">+</span>
                     </button>
