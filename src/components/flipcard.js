@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let cardGap = 30; // Default, will be updated from CSS
     let hasUserFlippedCard = false; // Track if user has manually flipped a card
     let demonstrationInterval = null; // Interval for repeating demonstration
+    let demoPlayed = false; // Track if the demo has already played
 
     function updateCardGap() {
         const carouselStyle = window.getComputedStyle(carousel);
@@ -24,27 +25,39 @@ document.addEventListener('DOMContentLoaded', function() {
         cardWidth = cards[0].offsetWidth;
     }
     
+    // Function to check if an element is fully visible in the viewport
+    function isElementFullyVisible(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
     // Function to demonstrate the flip functionality and repeat every 12 seconds
     function demonstrateFlip() {
-        // Don't demonstrate if user has manually flipped a card
-        if (hasUserFlippedCard) return;
+        // Don't demonstrate if user has manually flipped a card or if demo has already played
+        if (hasUserFlippedCard || demoPlayed) return;
         
-        // Wait for page to load fully for the first demonstration
-        setTimeout(() => {
-            // Only proceed if user hasn't manually flipped a card
-            if (!hasUserFlippedCard) {
-                // Get the first visible card
-                const firstCard = isDesktopView ? cards[0] : cards[currentIndex];
-                
-                // Flip the card
-                firstCard.classList.add('flipped');
-                
-                // Flip back after 1.5 seconds
-                setTimeout(() => {
-                    firstCard.classList.remove('flipped');
-                }, 1500);
-            }
-        }, 1000);
+        // Mark that demo has played
+        demoPlayed = true;
+        
+        // Immediately flip the card for the first demonstration
+        // Only proceed if user hasn't manually flipped a card
+        if (!hasUserFlippedCard) {
+            // Get the first visible card
+            const firstCard = isDesktopView ? cards[0] : cards[currentIndex];
+            
+            // Flip the card
+            firstCard.classList.add('flipped');
+            
+            // Flip back after 1.5 seconds
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+            }, 1500);
+        }
         
         // Set up interval to repeat demonstration every 12 seconds
         // Clear any existing interval first
@@ -85,13 +98,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Function to handle scroll events to check when cards become visible
+    function handleScroll() {
+        // Only check if demo hasn't played yet
+        if (!demoPlayed && isElementFullyVisible(carouselContainer)) {
+            demonstrateFlip();
+            // Remove the scroll listener once demo has played
+            window.removeEventListener('scroll', handleScroll);
+        }
+    }
+
     // Initial setup
     updateCardGap();
     updateCardDimensions();
     checkCardsVisibility(); 
     updateActiveCard(currentIndex); // Set initial active card
     updateNavigation();     // This will determine if dots need to be updated and call updateDots internally
-    demonstrateFlip(); // Show flip demonstration and set up repeating interval
+    
+    // Add scroll listener to check when cards become visible
+    window.addEventListener('scroll', handleScroll);
+    
+    // Check if already visible on load - use minimal delay to ensure DOM is ready
+    setTimeout(() => handleScroll(), 100);
     
     // Always ensure proper initial positioning on mobile
     if (!isDesktopView) {
@@ -120,9 +148,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // If view mode changed, we might want to re-demonstrate the flip
-        // but only if user hasn't manually flipped a card
-        if (wasDesktopView !== isDesktopView && !hasUserFlippedCard) {
-            demonstrateFlip();
+        // but only if user hasn't manually flipped a card and demo hasn't played yet
+        if (wasDesktopView !== isDesktopView && !hasUserFlippedCard && !demoPlayed) {
+            // Check if the carousel is visible before demonstrating
+            if (isElementFullyVisible(carouselContainer)) {
+                demonstrateFlip();
+            }
         }
     });
     
