@@ -26,7 +26,6 @@
     animation: pulsate 1.5s infinite alternate ease-in-out;
     transition: all 0.3s ease;
     display: none; /* Hidden by default, will be shown via JS */
-    display: flex;
     flex-direction: column; /* Stack words vertically */
     align-items: center;
     justify-content: center;
@@ -69,6 +68,24 @@
 .guide-message:active {
     transform: translateX(-50%) scale(0.95);
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.25);
+}
+
+/* Media queries for smaller screens */
+@media screen and (max-width: 480px) {
+    .guide-message {
+        --guide-size: clamp(3.5rem, 18vw, 5rem); /* Slightly smaller on mobile */
+        --guide-font-size: clamp(0.8rem, 2.5vw, 1rem);
+        top: 15%; /* Position it a bit higher on mobile */
+        z-index: 100; /* Ensure it's above other elements */
+    }
+}
+
+/* Specific adjustments for very small screens like iPhone SE */
+@media screen and (max-width: 375px) {
+    .guide-message {
+        --guide-size: clamp(3rem, 16vw, 4rem);
+        --guide-font-size: clamp(0.7rem, 2.2vw, 0.9rem);
+    }
 }
 
 /* Contextual size adjustments based on container size using container queries */

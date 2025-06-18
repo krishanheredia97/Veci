@@ -73,6 +73,8 @@ class GuideMessage {
         const element = this.elements.find(el => el.index === index);
         if (element) {
             element.guide.style.display = 'flex';
+            element.guide.style.visibility = 'visible'; // Ensure visibility is set to visible
+            element.guide.style.opacity = '1'; // Ensure opacity is set to 1
             this.isVisible = true;
         }
     }

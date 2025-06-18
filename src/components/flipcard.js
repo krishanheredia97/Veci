@@ -31,14 +31,30 @@ document.addEventListener('DOMContentLoaded', function() {
         cardWidth = cards[0].offsetWidth;
     }
     
-    // Function to check if an element is fully visible in the viewport
+    // Function to check if an element or the nav buttons container is visible in the viewport
     function isElementFullyVisible(el) {
+        // First check if the nav buttons container exists and is visible
+        const navButtonsContainer = document.querySelector('.flipcard-nav-buttons-container');
+        if (navButtonsContainer) {
+            const navRect = navButtonsContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+            
+            // If the nav buttons are visible in the viewport, return true
+            if (navRect.top < windowHeight && navRect.bottom > 0) {
+                return true;
+            }
+        }
+        
+        // Fall back to checking the provided element
         const rect = el.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+        
         return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            // At least some part is visible vertically
+            rect.top < windowHeight && rect.bottom > 0 &&
+            // Fully visible horizontally
+            rect.left >= 0 && rect.right <= windowWidth
         );
     }
 
